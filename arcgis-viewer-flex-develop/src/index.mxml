@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+///////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2010-2011 Esri. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///////////////////////////////////////////////////////////////////////////
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:viewer="com.esri.viewer.*"
+			   xmlns:managers="com.esri.viewer.managers.*"
+			   
+			   creationComplete="application1_creationCompleteHandler(event)"
+			   pageTitle="土壤重金属检测系统">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.esri.viewer.AppEvent;
+			
+			import mx.controls.Alert;
+			import mx.core.IVisualElement;
+			import mx.events.FlexEvent;
+			import mx.events.ModuleEvent;
+			import mx.modules.IModuleInfo;
+			import mx.modules.ModuleManager;
+			
+			private var mInfo:IModuleInfo=null;
+			protected function Submit_clickHandler(event:MouseEvent):void
+			{
+				
+				if(txtUname.text == "admin"&&txtPwd.text=="admin")
+				{
+					this.currentState = "index";
+					//viewerContainer.removeAllElements();
+					ViewerContainer.configFile = "config-admin.xml"; 
+				}else if(txtUname.text == "user"&&txtPwd.text=="user"){
+					this.currentState = "index";
+					viewerContainer.config= "config-user.xml";
+					
+				}else{
+					Alert.show("帐号密码错误！");
+				}
+				txtPwd.text="";
+				
+			}
+			
+			
+			private function modulError(e:ModuleEvent):void{  
+				Alert.show('modulError');  
+			}  
+			private function modulProgress(e:ModuleEvent):void{  
+				log.text=e.bytesLoaded+'%'+e.bytesTotal;  
+			}  
+			private function modulReady(e:ModuleEvent):void{  
+				var moduleInfo:IModuleInfo = e.currentTarget as IModuleInfo;  
+				var b:IVisualElement=e.module.factory.create() as IVisualElement; 
+				
+				g.addElement(b);  
+			} 
+			
+			private function GenerateCheckCode():String{
+				var ran:Number;
+				var number:Number;
+				var code:String;
+				var checkcode:String="";
+				//生成四为随机数
+				for(var i:int=0;i<4;i++){
+					ran=Math.random();
+					number=Math.round(ran*1000);
+					if(number%2==0)
+						code=String.fromCharCode(48+(number));
+					else
+						code=String.fromCharCode(65+(number));
+					checkcode+=code;
+				}
+				
+				return checkcode;
+			}
+			
+			protected function KEY_DOWN_handler(event:KeyboardEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(event.keyCode==Keyboard.ENTER){
+					Submit_clickHandler(null);
+				}
+			}
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				//pnlLogin.addEventListener(KeyboardEvent.KEY_DOWN,KEY_DOWN_handler);
+				
+				
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<s:states>
+		
+		<s:State name="index" />
+		<s:State name="login" />
+	</s:states>
+	
+	<fx:Style source="defaults.css"/>
+	
+	<fx:Metadata>
+		[ResourceBundle("ViewerStrings")]
+	</fx:Metadata>
+	
+	<viewer:ViewerContainer id="viewerContainer" includeIn="index" >
+		<viewer:configManager>
+			<managers:ConfigManager id="configManager"/>
+		</viewer:configManager>
+		<viewer:dataManager>
+			<managers:DataManager id="dataManager"/>
+		</viewer:dataManager>
+		<viewer:mapManager>
+			<managers:MapManager id="mapManager"/>
+		</viewer:mapManager>
+		<viewer:uiManager>
+			<managers:UIManager id="uiManager"/>
+		</viewer:uiManager>
+		<viewer:widgetManager>
+			<managers:WidgetManager id="widgetManager"/>
+		</viewer:widgetManager>
+	</viewer:ViewerContainer>
+	
+	
+	<s:BorderContainer id="MainContainer" includeIn="login" width="100%" height="100%"
+					   backgroundColor="#5B4F4F">
+		<s:Panel id="pnlLogin"
+				 width="300"
+				 height="200"
+				 title="登录"
+				 horizontalCenter="0"
+				 verticalCenter="0">
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="center"
+								  verticalAlign="middle"/>
+			</s:layout>
+			<s:HGroup gap="5" horizontalAlign="center">
+				<s:Label text="用户名:" id="lblName"/>
+				<s:TextInput id="txtUname"/>
+			</s:HGroup>
+			<s:HGroup gap="5" horizontalAlign="center">
+				<s:Label text="密    码:" id="lblPwd"/>
+				<s:TextInput id="txtPwd" displayAsPassword="true"/>
+			</s:HGroup>
+			<s:HGroup horizontalAlign="center">
+				<s:Button id="Submit" label="登录" click="Submit_clickHandler(event)"
+						  />
+			</s:HGroup>
+			<s:HGroup horizontalAlign="center" id="g">
+				<s:Label id="log"/> 
+			</s:HGroup>
+		</s:Panel>
+	</s:BorderContainer>
+</s:Application>

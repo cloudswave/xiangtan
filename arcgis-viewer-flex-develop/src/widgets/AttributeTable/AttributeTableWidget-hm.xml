@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<configuration>
+	<layersettings>
+		<layer name="汞"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+		<layer name="镍"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+		<layer name="镉"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+		<layer name="锌"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+		<layer name="铜"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+		<layer name="铅"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+
+		<layer name="砷"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+		
+		<layer name="铬"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</layer>
+	</layersettings>
+<excludelayer>重金属图层</excludelayer>
+<excludelayer>时间演变</excludelayer>
+</configuration>
+
+<!-- See Attribute Table widget documentation at http://links.esri.com/attributetablewidget -->

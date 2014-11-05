@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<configuration>
+    <addfeatures>true</addfeatures>
+    <deletefeatures>true</deletefeatures>
+    <updategeometry>true</updategeometry>
+    <updateattributes>true</updateattributes>
+    <toolbarvisible>true</toolbarvisible>
+    <toolbarcutvisible>true</toolbarcutvisible>
+    <toolbarmergevisible>true</toolbarmergevisible>
+    <toolbarreshapevisible>true</toolbarreshapevisible>
+    <layersettings>
+        <layer name="HeavyMetal">
+            <fields>
+                <field name="ID" alias="ID"/>
+                <field name="CD" alias="镉"/>
+                <field name="HG" alias="汞"/>
+                <field name="DP_AS" alias="砷"/>
+                <field name="CU" alias="铜"/>
+                <field name="PB" alias="铅"/>
+                <field name="CR" alias="铬"/>
+                <field name="ZN" alias="薪"/>
+                <field name="NI" alias="镍"/>
+                <field name="HM_TIME" alias="采集时间"/>
+                <field name="HM_NAME" alias="采集地点"/>
+            </fields>
+        </layer>
+    </layersettings>
+</configuration>

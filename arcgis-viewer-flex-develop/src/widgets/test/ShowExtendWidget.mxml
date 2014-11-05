@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<viewer:BaseWidget xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:viewer="com.esri.viewer.*"
+				   creationComplete="show()"
+				   widgetConfigLoaded="init()">
+	<fx:Script>
+		<![CDATA[
+			//this function called when the widget's configuration is loaded
+			private function init():void
+			{
+				if (configXML) // checking for valid content in the configuration file
+				{
+					//lbl.text = configXML.content || getDefaultString("helloContent");
+				}
+			}
+			
+			private function show():void
+			{
+	
+				ta.text=map.extent.toString();
+			}
+		]]>
+	</fx:Script>
+	<viewer:WidgetTemplate id="helloWorld"
+						   width="300" height="300">
+		<viewer:layout>
+			<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
+		</viewer:layout>
+		
+		<s:TextArea id="ta"></s:TextArea>
+		<s:Button label="查询Extend" click="show()"/>
+		
+		
+	</viewer:WidgetTemplate>
+</viewer:BaseWidget>

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<configuration>
+    <title>{hm_name}</title>
+    <fields>
+        <field name="hm_name"/>
+        <field name="Cd" alias="Cd" visible="true"/>
+        <field name="Hg" alias="Hg" visible="true"/>
+        <field name="dp_As" alias="dp_As" visible="true"/>
+        <field name="Cu" alias="Cu" visible="true"/>
+        <field name="Pb" alias="Pb" visible="true"/>
+        <field name="Cr" alias="Cr" visible="true"/>
+        <field name="Zn" alias="Zn" visible="true"/>
+        <field name="Ni" alias="Ni" visible="true"/>
+        
+    </fields>
+    <showattachments>true</showattachments>
+</configuration>
+
+<!--
+    Pop-up configuration file for:
+    http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0
+
+    See pop-up documentation at
+    http://links.esri.com/flexviewer/popups
+-->

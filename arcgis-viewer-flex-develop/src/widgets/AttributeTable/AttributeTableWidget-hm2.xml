@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<configuration>
+<layersettings>
+		<layer name="汞"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="HG" alias="汞含量" />
+			</fields>
+		</layer>
+		<layer name="镍"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="NI" alias="镍含量" />
+			</fields>
+		</layer>
+		<layer name="镉"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="CD" alias="镉含量" />
+			</fields>
+		</layer>
+		<layer name="锌"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="ZN" alias="锌含量" />
+			</fields>
+		</layer>
+		<layer name="铜"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="CU" alias="铜含量" />
+			</fields>
+		</layer>
+		<layer name="铅"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="PB" alias="铅含量" />
+			</fields>
+		</layer>
+
+		<layer name="砷"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="DP_AS" alias="砷含量" />
+			</fields>
+		</layer>
+		
+		<layer name="铬"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+				<field name="CR" alias="铬含量" />
+			</fields>
+		</layer>
+		
+		<layer name="编辑"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="HM_NAME" alias="采样点" />
+			    <field name="HM_TIME" alias="采集时间"/>
+				<field name="HG" alias="汞含量" />
+				<field name="NI" alias="镍含量" />
+				<field name="CD" alias="镉含量" />
+				<field name="ZN" alias="锌含量" />
+				<field name="CU" alias="铜含量" />
+				<field name="PB" alias="铅含量" />
+				<field name="DP_AS" alias="砷含量" />
+				<field name="CR" alias="铬含量" />
+				 <field name="USER_NAME" alias="上传者"/>
+			</fields>
+		</layer>
+	</layersettings>
+<excludelayer>时间演变</excludelayer>
+</configuration>
+
+<!-- See Attribute Table widget documentation at http://links.esri.com/attributetablewidget -->

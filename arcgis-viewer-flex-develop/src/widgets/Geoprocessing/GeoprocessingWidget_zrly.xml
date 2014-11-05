@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<configuration>
+    <description/>
+    <taskurl>http://192.168.24.210/ArcGIS/rest/services/HMAnalysis/GPServer/idw_v3</taskurl>
+    <helpurl>http://win-kul6xduo1pa/arcgisoutput/HMAnalysis/模型222.htm</helpurl>
+    <autosubmit>false</autosubmit>
+    <shareresults>false</shareresults>
+    <inputparams>
+        <param type="featurerecordset" name="polygon" geometrytype="polygon"  required="true" visible="true" label="选择区域">
+            <renderer type="simple">
+                <defaultsymbol type="simplefill" alpha="0.5" color="0x3FAFDC">
+                    <outline color="0x000000" width="2"/>
+                </defaultsymbol>
+            </renderer>
+        </param>
+        <param type="string" name="Z_value" required="true" visible="true" label="Z 值字段" defaultvalue="CU">
+            <choicelist>
+                <choice value="Cd"/>
+                <choice value="Hg"/>
+                <choice value="dp_As"/>
+                <choice value="CU"/>
+                <choice value="Pb"/>
+                <choice value="Cr"/>
+                <choice value="Zn"/>
+                <choice value="Ni"/>
+            </choicelist>
+        </param>
+    </inputparams>
+    <outputparams>
+        <param type="featurerecordset" name="out_shp" geometrytype="polygon" mode="drawtool" required="true" visible="true" label="out.shp">
+            <popup>
+                <fields>
+                    <field name="FID" label="FID" visible="true"/>
+                    <field name="ID" label="ID" visible="true"/>
+                    <field name="GRIDCODE" label="GRIDCODE" visible="true"/>
+                    <field name="Shape_Length" label="Shape_Length" visible="true"/>
+                    <field name="Shape_Area" label="Shape_Area" visible="true"/>
+                </fields>
+                <medias/>
+                <showattachments>false</showattachments>
+                <showrelatedrecords>false</showrelatedrecords>
+            </popup>
+            
+            <!-- autoclass为自动分级 不需要配置min max -->
+            <renderer type="classbreaks" attribute="GRIDCODE" autoclass="true">
+                <infos>
+                    <symbol min="3" max="110" type="simplefill" alpha="0.5" color="0xFFECEC" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                    <symbol min="111" max="208" type="simplefill" alpha="0.5" color="0xFF5151" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0xEA0000" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0xAE0000" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0x750000" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                </infos>
+                <defaultsymbol type="simplefill" alpha="0.5" color="0x3FAFDC" >
+                    <outline color="0x000000" width="2"/>
+                </defaultsymbol>
+            </renderer>
+        </param>
+    </outputparams>
+    <layerorder>out_shp,polygon</layerorder>
+</configuration>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<configuration>
+    <geocoder/>
+
+    <links>
+        <link>
+            <content>
+                <![CDATA[
+             <p align='center'>
+                 <img src='assets/images/globe.png'/>
+                 <br/>
+                 <b><a href="http://it.ctgu,edu.cn" target='_blank'><font size="+2" color="#FFFF00">三峡大学重金属检测地理信息系统</font></a></b>
+             </p>
+                ]]>
+            </content>
+        </link>
+        <link label="退出" url="exit"/>
+    </links>
+</configuration>
+
+<!--
+    For valid HTML tags in Flash applications (that can be used for 'content'), see
+    http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flashx/textLayout/conversion/TextConverter.html#TEXT_FIELD_HTML_FORMAT
+-->
+<!--
+    See HeaderController widget tag reference at
+    http://links.esri.com/headercontrollerwidget
+-->

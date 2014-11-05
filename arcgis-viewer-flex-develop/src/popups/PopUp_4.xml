@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<configuration>
+    <title>{poin_name}镉含量</title>
+    <fields>
+        <field name="poin_name" alias="采集点" visible="true"/>
+        <field name="hm_content" alias="含量" visible="true"/>
+    </fields>
+    <showattachments>false</showattachments>
+    <showrelatedrecords>false</showrelatedrecords>
+</configuration>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+///////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2010-2011 Esri. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///////////////////////////////////////////////////////////////////////////
+-->
+<viewer:BaseWidget xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:s="library://ns.adobe.com/flex/spark"
+                   xmlns:mx="library://ns.adobe.com/flex/mx"
+                   xmlns:viewer="com.esri.viewer.*"
+                   widgetConfigLoaded="init()">
+    <fx:Script>
+        <![CDATA[
+            //this function called when the widget's configuration is loaded
+			
+			import mx.rpc.events.FaultEvent;    
+			import mx.rpc.events.ResultEvent;    
+			import flash.net.FileReference;    
+			import mx.controls.Alert;    
+			import mx.events.CloseEvent;    
+			import flash.events.*;    
+			
+			private var file:FileReference;    
+			
+			private var filePath:String="";  
+			
+            private function init():void
+            {
+                if (configXML) // checking for valid content in the configuration file
+                {
+                    filePath = configXML.fileUploadPath;
+                }
+				
+				Security.allowDomain("*");    
+				file=new FileReference();    
+				file.addEventListener(ProgressEvent.PROGRESS, onProgress);    
+				file.addEventListener(Event.SELECT, onSelect);    
+				file.addEventListener(Event.COMPLETE,fileUploadCompleteHandler); 
+            }
+			
+			private function fileUploadCompleteHandler(e:Event):void{    
+				Alert.show("上传完成");    
+				vBox.removeChild(bar);    
+			}   
+			
+			private function uploadfile():void   
+			{    
+				var imageTypes:FileFilter=new FileFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg;*.jpeg;*.png");    
+				var docFilter:FileFilter = new FileFilter("Documents", "*.*;*.doc;*.txt"); 
+				//var viewFilter:FileFilter = new FileFilter("Views", "*.avi;*.flv;*.rmvb"); 
+				var allTypes:Array=new Array(imageTypes,docFilter);    
+				//              file.browse(allTypes);    
+				file.browse();    
+			}    
+			
+			private function onSelect(e:Event):void   
+			{    
+				Alert.show("上传 " + file.name + " (共 " + Math.round(file.size) + " 字节)?", "确认上传", Alert.YES | Alert.NO, null, proceedWithUpload);    
+			}    
+			
+			private function onProgress(e:ProgressEvent):void   
+			{    
+				lbProgress.text=" 已上传 " + e.bytesLoaded + " 字节，共 " + e.bytesTotal + " 字节";    
+				var proc:uint=e.bytesLoaded / e.bytesTotal * 100;    
+				bar.setProgress(proc, 100);    
+				bar.label="当前进度: " + " " + proc + "%";    
+			}    
+			
+			private function proceedWithUpload(e:CloseEvent):void   
+			{    
+				if (e.detail == Alert.YES)    
+				{    
+					var request:URLRequest=new URLRequest(filePath);    
+					try   
+					{    
+						file.upload(request);    
+					}    
+					catch (error:Error)    
+					{    
+						trace("上传失败");    
+					}    
+					
+				}    
+			} 
+        ]]>
+    </fx:Script>
+    <viewer:WidgetTemplate id="upload"
+                           width="300" height="300">
+        <viewer:layout>
+            <s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
+        </viewer:layout>
+
+		<mx:VBox width="100%"    
+				 horizontalAlign="center" id="vBox">     
+			<mx:Label id="lbProgress"    
+					  text="上传"/>     
+			<mx:ProgressBar id="bar"    
+							labelPlacement="bottom"    
+							minimum="0"    
+							visible="true"    
+							maximum="100"    
+							label="当前进度: 0%"    
+							direction="right"    
+							mode="manual"    
+							width="200"/>     
+			
+			<mx:Button label="上传文件"    
+					   click="uploadfile();"/>     
+		</mx:VBox> 
+    </viewer:WidgetTemplate>
+</viewer:BaseWidget>

@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Folder\shell\清除SVN信息] @="清除 .SVN文件夹"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Folder\shell\清除SVN信息\command]
+@="cmd.exe /c \"TITLE 清除 %1 中的.SVN文件夹 && FOR /r \"%1\" %%f IN (.svn) DO RD /s /q \"%%f\" \""

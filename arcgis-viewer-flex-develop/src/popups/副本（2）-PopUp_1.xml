@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<configuration>
+    <title>{HM_NAME}重金属</title>
+    <fields>
+        <field name="SDE.hm_v2.ID" alias="设备ID" visible="true"/>
+        <field name="SDE.hm_v2.HM_NAME" alias="采集点" visible="true"/>
+        <field name="SDE.hm_v2.HM_TIME" alias="采集时间" visible="true"/>
+        <field name="SDE.hm_v2.CD" alias="镉" visible="true"/>
+        <field name="SDE.hm_v2.HG" alias="汞" visible="true"/>
+        <field name="SDE.hm_v2.DP_AS" alias="砷" visible="true"/>
+        <field name="SDE.hm_v2.CU" alias="铜" visible="true"/>
+        <field name="SDE.hm_v2.PB" alias="铅" visible="true"/>
+        <field name="SDE.hm_v2.CR" alias="铬" visible="true"/>
+        <field name="SDE.hm_v2.ZN" alias="锌" visible="true"/>
+        <field name="SDE.hm_v2.NI" alias="镍" visible="true"/>
+        <field name="SDE.hm_pollution_level.CD_LEVEL" alias="CD等级" visible="true"/>
+        <field name="SDE.hm_pollution_level.HG_LEVEL" alias="HG等级" visible="true"/>
+
+    </fields>
+    <medias>
+        <media type="barchart" title="{HM_NAME}重金属条形图" chartfields="CD,HG,DP_AS,CU,PB,CR,ZN,NI"/>
+    </medias>
+    <showattachments>false</showattachments>
+    <showrelatedrecords>false</showrelatedrecords>
+</configuration>
