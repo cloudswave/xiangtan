@@ -13,16 +13,17 @@
 安装配置
 ----
 
-** 前端安装配置**
+**前端安装配置**
 
 1. git clone源码到本地，将arcgis-viewer-flex-develop导入到Flash Builder 4.6([如何安装破解](http://blog.xlanlab.com/index.php/archives/7/))中;
 2. 根据情况配置项目文件：
 > \arcgis-viewer-flex-develop\src\config-admin.xml 管理员
 > \arcgis-viewer-flex-develop\src\config-user.xml  普通用户
+
 3. 运行配置,运行：
 ![运行配置](http://t1.qpic.cn/mblogpic/32f142b5c18e7d70a0fe/2000)
 
-** 服务器端安装配置**
+**服务器端安装配置**
 
 待加
 
