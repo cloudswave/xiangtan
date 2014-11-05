@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<configuration>
+    <highlightcolor>3368601</highlightcolor>
+    <labels>
+        <layerselectionlabel>选择图层</layerselectionlabel>
+        <drawtoolmenulabel>选择绘制工具</drawtoolmenulabel>
+    </labels>
+    <layers>
+        <layer label="汞">
+            <labelfield>HM_NAME</labelfield>
+            <fields>
+                <field name="ID"/>
+                <field name="CD"/>
+                <field name="HG"/>
+                <field name="DP_AS"/>
+                <field name="CU"/>
+                <field name="PB"/>
+                <field name="CR"/>
+                <field name="ZN"/>
+                <field name="NI"/>
+            </fields>
+            <medias>
+                <media chartfields="CD" title="镉" caption="Cd含量" type="barchart"/>
+                <media chartfields="HG" title="汞" type="columnchart"/>
+                <media chartfields="DP_AS" title="砷" type="linechart"/>
+                <media chartfields="CU" title="铜" type="piechart"/>
+                <media chartfields="PB" title="铅" type="columnchart"/>
+                <media chartfields="CR" title="铬" type="columnchart"/>
+                <media chartfields="ZN" title="锌" type="barchart"/>
+                <media chartfields="NI" title="镍" type="columnchart"/>
+            </medias>
+        </layer>
+    </layers>
+</configuration>

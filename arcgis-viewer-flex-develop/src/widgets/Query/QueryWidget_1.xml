@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<configuration>
+    <layer>http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/0</layer>
+    <query/>
+    <titlefield>HM_NAME</titlefield>
+    <linkfield/>
+    <refreshrate/>
+    <zoomscale/>
+    <shareresults>true</shareresults>
+    <orderbyfields>HM_NAME ASC</orderbyfields>
+    <fields all="false">
+        
+        <field name="HM_NAME" alias="采集点" visible="true"/>
+        <field name="HM_TIME" alias="采集时间" visible="true"/>
+        <field name="CD" alias="镉" visible="true"/>
+        <field name="HG" alias="汞" visible="true"/>
+        <field name="DP_AS" alias="砷" visible="true"/>
+        <field name="CU" alias="铜" visible="true"/>
+        <field name="PB" alias="铅" visible="true"/>
+        <field name="CR" alias="铬" visible="true"/>
+        <field name="ZN" alias="锌" visible="true"/>
+        <field name="NI" alias="镍" visible="true"/>
+    </fields>
+</configuration>

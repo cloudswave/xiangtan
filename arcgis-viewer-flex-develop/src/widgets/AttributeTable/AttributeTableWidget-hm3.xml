@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<configuration>
+	<layersettings>
+	<layer name="图层">
+		<sublayer id="2"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+		<sublayer id="3"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+		<sublayer id="4"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+		<sublayer id="5"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+		<sublayer id="6"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+		<sublayer id="7"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+
+		<sublayer id="8"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+		
+	     <sublayer id="9"> <!-- Overwriting layer settings for a feature layer -->
+			<fields>
+				<field name="poin_name" alias="采样点" />
+				<field name="hm_content" alias="含量" />
+			</fields>
+		</sublayer>
+		</layer>
+	</layersettings>
+<excludelayer>图层/0</excludelayer>
+<excludelayer>图层/1</excludelayer>
+<excludelayer>图层/10</excludelayer>
+<excludelayer>图层/11</excludelayer>
+<excludelayer>图层/12</excludelayer>
+<excludelayer>时间演变</excludelayer>
+</configuration>
+
+<!-- See Attribute Table widget documentation at http://links.esri.com/attributetablewidget -->

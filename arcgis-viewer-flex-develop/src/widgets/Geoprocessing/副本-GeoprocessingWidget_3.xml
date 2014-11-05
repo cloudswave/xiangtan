@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<configuration>
+    <description/>
+    <taskurl>http://192.168.24.210/ArcGIS/rest/services/HMAnalysis/GPServer/idw_v2</taskurl>
+    <helpurl>http://win-kul6xduo1pa/arcgisoutput/HMAnalysis/模型22.htm</helpurl>
+    <autosubmit>false</autosubmit>
+    <shareresults>false</shareresults>
+    <inputparams>
+        <param type="featurerecordset" name="points" geometrytype="point" mode="layers" required="true" visible="true" label="points">
+            <renderer type="simple">
+                <defaultsymbol type="simplemarker" alpha="1" color="0x3FAFDC" size="15">
+                    <outline color="0x000000" width="2"/>
+                </defaultsymbol>
+            </renderer>
+        </param>
+    </inputparams>
+    <outputparams>
+        <param type="featurerecordset" name="out_shp" geometrytype="polygon" mode="drawtool" required="true" visible="true" label="out.shp">
+            <popup>
+                <fields>
+                    <field name="FID" label="FID" visible="true"/>
+                    <field name="ID" label="ID" visible="true"/>
+                    <field name="GRIDCODE" label="GRIDCODE" visible="true"/>
+                    <field name="Shape_Length" label="Shape_Length" visible="true"/>
+                    <field name="Shape_Area" label="Shape_Area" visible="true"/>
+                </fields>
+                <medias/>
+                <showattachments>false</showattachments>
+                <showrelatedrecords>false</showrelatedrecords>
+            </popup>
+            <renderer type="classbreaks" attribute="GRIDCODE">
+                <infos>
+                    <symbol min="3" max="110" type="simplefill" alpha="1" color="0xFFCCFF" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                    <symbol min="111" max="208" type="simplefill" alpha="1" color="0xFF66FF" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                    <symbol min="209" max="479" type="simplefill" alpha="1" color="0xFF0000" >
+                        <outline color="0x000000" width="2"/>
+                    </symbol>
+                </infos>
+                <defaultsymbol type="simplefill" alpha="1" color="0x3FAFDC" >
+                    <outline color="0x000000" width="2"/>
+                </defaultsymbol>
+            </renderer>
+        </param>
+    </outputparams>
+    <layerorder>out_shp,points</layerorder>
+</configuration>

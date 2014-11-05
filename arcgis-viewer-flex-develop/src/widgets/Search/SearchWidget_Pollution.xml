@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<configuration>
+	<zoomscale>50000</zoomscale>
+	<shareresults>true</shareresults>
+	<hmfields>
+        <field name="CD" alias="镉" visible="true"/>
+        <field name="HG" alias="汞" visible="true"/>
+        <field name="DP_AS" alias="砷" visible="true"/>
+        <field name="CU" alias="铜" visible="true"/>
+        <field name="PB" alias="铅" visible="true"/>
+        <field name="CR" alias="铬" visible="true"/>
+        <field name="ZN" alias="锌" visible="true"/>
+        <field name="NI" alias="镍" visible="true"/>
+	</hmfields>
+	<layers>
+		<layer>
+			<name>按照地名搜索</name>
+			<url>http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/0
+			</url>
+			<expression>HM_NAME like '%[value]%'</expression>
+			<textsearchlabel>输入地名</textsearchlabel>
+			<titlefield>HM_NAME</titlefield>
+			<fields>
+		<field name="ID" alias="Id" visible="true" />
+        <field name="HM_NAME" alias="采集点" visible="true"/>
+        <field name="HM_TIME" alias="采集时间" visible="true"/>
+        <field name="CD" alias="镉" visible="true"/>
+        <field name="HG" alias="汞" visible="true"/>
+        <field name="DP_AS" alias="砷" visible="true"/>
+        <field name="CU" alias="铜" visible="true"/>
+        <field name="PB" alias="铅" visible="true"/>
+        <field name="CR" alias="铬" visible="true"/>
+        <field name="ZN" alias="锌" visible="true"/>
+        <field name="NI" alias="镍" visible="true"/>
+        <field name="USER_NAME" alias="上传者"/>
+        <field name="POLLUTION_LEVEL" alias="污染等级"/>
+			</fields>
+			<orderbyfields>HM_NAME ASC</orderbyfields>
+		</layer>
+		<layer>
+			<name>按照镉含量搜索</name>
+			<url>http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/0
+			</url>
+			<expression>CD &gt; [value]</expression>
+			<textsearchlabel>含量大于</textsearchlabel>
+			<titlefield>HM_NAME</titlefield>
+			<fields>
+				<field name="ID" alias="Id" visible="true" />
+        <field name="HM_NAME" alias="采集点" visible="true"/>
+        <field name="HM_TIME" alias="采集时间" visible="true"/>
+        <field name="CD" alias="镉" visible="true"/>
+        <field name="HG" alias="汞" visible="true"/>
+        <field name="DP_AS" alias="砷" visible="true"/>
+        <field name="CU" alias="铜" visible="true"/>
+        <field name="PB" alias="铅" visible="true"/>
+        <field name="CR" alias="铬" visible="true"/>
+        <field name="ZN" alias="锌" visible="true"/>
+        <field name="NI" alias="镍" visible="true"/>
+			</fields>
+		</layer>
+	</layers>
+</configuration>

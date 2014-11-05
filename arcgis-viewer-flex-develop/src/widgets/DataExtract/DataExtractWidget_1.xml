@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<configuration>
+    <dataextractionservice>http://sampleserver4.arcgisonline.com/ArcGIS/rest/services/HomelandSecurity/Incident_Data_Extraction/GPServer/Extract%20Data%20Task</dataextractionservice>
+    <aioselectionmethod>draw</aioselectionmethod>
+</configuration>

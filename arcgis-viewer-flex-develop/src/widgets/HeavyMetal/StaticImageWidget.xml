@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<configuration label="三峡大学">
+    <imageurl>assets/images/globe.png</imageurl>
+    <linkurl>http://it.ctgu.edu.cn</linkurl>
+    <tooltip>三峡大学计算机与信息学院</tooltip>
+</configuration>
+
+<!--
+    See Static Image widget tag reference at
+    http://links.esri.com/staticimagewidget
+-->
