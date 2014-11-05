@@ -3,7 +3,7 @@
 	// // Read more about ArcGIS Viewer for Flex - http://links.esri.com/flexviewer 
 	// //////////////////////////////////////////////////////////////////////////////// -->
 <configuration>
-	<title>土壤重金属检测系统</title>
+	<title>产地安全等级评价与禁产区边界确认分析平台</title>
 	<logo>assets/images/earth.jpg</logo>
 	<subtitle></subtitle>
 	<style>
@@ -31,26 +31,29 @@
 		config="widgets/Coordinate/CoordinateWidget.xml" url="widgets/Coordinate/CoordinateWidget.swf" />
 
 	<map wraparound180="true"
-		initialextent="12343937.572395457 3570293.726295035 12441776.96860035 3623188.1498683053"
-		fullextent="-20000000 -20000000 20000000 20000000" top="40"
+		initialextent="676931.369244576 3018994.8542325394  710389.9886815157 3114388.2655324386"
+		fullextent="634564.4566226229 -20000000 20000000 20000000" top="40"
+		
 		addarcgisbasemaps="false">
 		<!-- 自定义图层 -->
 		<basemaps>
 			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
-             <layer label="地形图" type="googlemap" visible="true"
-				icon="assets/images/basemap_streets.jpg" />
-			<layer label="影像" type="tiled" visible="false" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" 
+<!--              <layer label="地形图" type="googlemap" visible="true"
+				icon="assets/images/basemap_streets.jpg" /> -->
+			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image2/MapServer" 
 				icon="assets/images/basemap_imagery.jpg" />  
 
 			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
 				<layer label="航空图" type="tiled" visible="false" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"/> 
 				<layer label="地形图" type="tiled" visible="false" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"/> -->
-
+		
 
 		</basemaps>
 		<operationallayers>
 
-			<layer label="时间演变" type="feature" visible="false" alpha="1.0"
+			<layer label="边界" type="feature" visible="true" alpha="1.0" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_map/MapServer/0"/>
+
+<!-- 			<layer label="时间演变" type="feature" visible="false" alpha="1.0"
 				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/Since_1970/MapServer/0" />
 
 
@@ -58,19 +61,21 @@
 				url="http://210.42.41.30:8399/arcgis/rest/services/Hm/MapServer"/> 
 
 
-             <layer type="feature" label="重金属编辑" url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/FeatureServer/1" mode="onDemand" visible="false"/>
+            <layer type="feature" label="重金属编辑" url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/FeatureServer/1" mode="onDemand" visible="false"/>
             <layer type="feature" label="点污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/0" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
             <layer type="feature" label="线污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/2" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
             <layer type="feature" label="面污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/3" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
-
+ -->
 			
 			<layer label="汞" type="feature" visible="true" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
-				<classbreaksrenderer field="HG">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
+				<simplerenderer> 
+				<simplemarkersymbol color="0xFF0000" alpha="1" > 
+					<outline width="2" color="0x0000FF" style="dashdot" /> 
+				</simplemarkersymbol> 
+				</simplerenderer>
+				<classbreaksrenderer field="tu_hg">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
 						<outline width="0"></outline>
@@ -93,13 +98,13 @@
 				</classbreaksrenderer>
 			</layer>
 
-<layer label="镍" type="feature" visible="false" alpha="1.0"
+         <!-- <layer label="镍" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
-				<classbreaksrenderer field="SDE.hm_v2.NI">
+				<classbreaksrenderer field="tu_ni">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
 						<outline width="0"></outline>
@@ -120,15 +125,15 @@
 						</simplemarkersymbol>
 					</classbreakinfo>
 				</classbreaksrenderer>
-			</layer>
+			</layer> -->
 			
 			<layer label="镉" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
-				<classbreaksrenderer field="CD">
+				<classbreaksrenderer field="tu_cd">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
 						<outline width="0"></outline>
@@ -151,9 +156,9 @@
 				</classbreaksrenderer>
 			</layer>
 			
-			<layer label="锌" type="feature" visible="false" alpha="1.0"
+			<!-- <layer label="锌" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -178,14 +183,14 @@
 						</simplemarkersymbol>
 					</classbreakinfo>
 				</classbreaksrenderer>
-			</layer>
+			</layer> -->
 			<layer label="铬" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
-				<classbreaksrenderer field="CR">
+				<classbreaksrenderer field="tu_cr">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
 						<outline width="0"></outline>
@@ -207,9 +212,9 @@
 					</classbreakinfo>
 				</classbreaksrenderer>
 			</layer>
-			<layer label="铜" type="feature" visible="false" alpha="1.0"
+			<!-- <layer label="铜" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -234,14 +239,14 @@
 						</simplemarkersymbol>
 					</classbreakinfo>
 				</classbreaksrenderer>
-			</layer>
+			</layer> -->
 			<layer label="铅" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
-				<classbreaksrenderer field="PB">
+				<classbreaksrenderer field="tu_pb">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
 						<outline width="0"></outline>
@@ -263,13 +268,13 @@
 					</classbreakinfo>
 				</classbreaksrenderer>
 			</layer>
-			<layer label="砷" type="feature" visible="false" alpha="1.0"
+			<!-- <layer label="砷" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/MapServer/1">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
-				<classbreaksrenderer field="DP_AS">
+				<classbreaksrenderer field="tu_as">
 				<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
 						<outline width="0"></outline>
@@ -290,10 +295,7 @@
 						</simplemarkersymbol>
 					</classbreakinfo>
 				</classbreaksrenderer>
-			</layer> 
-			
-
-
+			</layer>  -->
 
 			<!-- <layer label="重金属镍" type="feature" visible="true" alpha="1.0" popupconfig="popups/PopUp_1.xml" 
 				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/FeatureServer/0"> 
