@@ -1,3 +1,12 @@
+arcgis服务器服务接口
+----
+- [服务在线管理](http://192.168.13.39:6080/arcgis/manager): arcgis zbzx****@
+- 采样点接口：http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer
+- 湘潭影像图：http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image2/MapServer
+
+
+
+---------
 简介
 --
 产地安全等级评价与禁产区边界确认分析平台
@@ -19,6 +28,7 @@
 2. 根据情况配置项目文件：
 > \arcgis-viewer-flex-develop\src\config-admin.xml 管理员
 > \arcgis-viewer-flex-develop\src\config-user.xml  普通用户
+
 3. 运行配置,运行：
 ![运行配置](http://t1.qpic.cn/mblogpic/32f142b5c18e7d70a0fe/2000)
 
