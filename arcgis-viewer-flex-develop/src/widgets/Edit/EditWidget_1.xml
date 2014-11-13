@@ -9,20 +9,25 @@
     <toolbarmergevisible>true</toolbarmergevisible>
     <toolbarreshapevisible>true</toolbarreshapevisible>
     <layersettings>
-        <layer name="编辑">
+        <layer name="土壤Hg">
             <fields>
-                <field name="ID" alias="设备ID"/>
-                <field name="CD" alias="镉"/>
-                <field name="HG" alias="汞"/>
-                <field name="DP_AS" alias="砷"/>
-                <field name="CU" alias="铜"/>
-                <field name="PB" alias="铅"/>
-                <field name="CR" alias="铬"/>
-                <field name="ZN" alias="薪"/>
-                <field name="NI" alias="镍"/>
-                <field name="HM_TIME" alias="采集时间"/>
-                <field name="HM_NAME" alias="采集地点"/>
-                 <field name="USER_NAME" alias="上传者"/>
+		        <field name="bh" alias="编号" />
+		        <field name="wz" alias="地点" />
+		        <field name="jd" alias="经度" />
+		        <field name="wd" alias="维度" />
+		        <field name="tu_pb" alias="土壤Pb" />
+		        <field name="tu_cd" alias="土壤Cd" />
+		        <field name="tu_as" alias="土壤As" />
+		        <field name="tu_cr" alias="土壤Cr" />
+		        <field name="tu_hg" alias="土壤Hg" />
+		        <field name="ph" alias="pH" />
+		        <field name="nong_pb" alias="农产品Pb" />
+		        <field name="nong_cd" alias="农产品Cd" />
+		        <field name="nong_as" alias="农产品As" />
+		        <field name="nong_cr" alias="农产品Cr" />
+		        <field name="nong_hg" alias="农产品Hg" />  
+		        <field name="type" alias="作物种类" />
+		        <field name="isok" alias="是否超标" />
             </fields>
         </layer>
     </layersettings>

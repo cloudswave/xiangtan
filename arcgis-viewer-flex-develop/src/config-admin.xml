@@ -67,20 +67,20 @@
             <layer type="feature" label="面污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/3" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
  -->
 			
-			<layer label="汞" type="feature" visible="true" alpha="1.0"
+			<layer label="土壤Hg" type="feature" visible="true" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
-				<simplerenderer> 
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+<!-- 				<simplerenderer> 
 				<simplemarkersymbol color="0xFF0000" alpha="1" > 
 					<outline width="2" color="0x0000FF" style="dashdot" /> 
 				</simplemarkersymbol> 
-				</simplerenderer>
+				</simplerenderer> -->
 				<classbreaksrenderer field="tu_hg">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
 						<outline width="0"></outline>
 					</simplemarkersymbol>
-					<defaultlabel>0-0.15:1级</defaultlabel>
+ 					<defaultlabel>0-0.15:1级</defaultlabel>
 					<classbreakinfo min="1.5" max="9999" label=">1.5:3级">
 						<simplemarkersymbol color="0xFF0000" alpha="1"
 							style="triangle">
@@ -93,14 +93,14 @@
 							style="triangle">
 							<outline width="0">
 							</outline>
-						</simplemarkersymbol>
+						</simplemarkersymbol> 
 					</classbreakinfo>
 				</classbreaksrenderer>
 			</layer>
 
          <!-- <layer label="镍" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -127,12 +127,9 @@
 				</classbreaksrenderer>
 			</layer> -->
 			
-			<layer label="镉" type="feature" visible="false" alpha="1.0"
+			<layer label="土壤Cd" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<classbreaksrenderer field="tu_cd">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
@@ -158,7 +155,7 @@
 			
 			<!-- <layer label="锌" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -184,12 +181,10 @@
 					</classbreakinfo>
 				</classbreaksrenderer>
 			</layer> -->
-			<layer label="铬" type="feature" visible="false" alpha="1.0"
+			<layer label="土壤Cr" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+
 				<classbreaksrenderer field="tu_cr">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
@@ -214,7 +209,7 @@
 			</layer>
 			<!-- <layer label="铜" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -240,12 +235,10 @@
 					</classbreakinfo>
 				</classbreaksrenderer>
 			</layer> -->
-			<layer label="铅" type="feature" visible="false" alpha="1.0"
+			<layer label="土壤Pb" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+
 				<classbreaksrenderer field="tu_pb">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
@@ -268,12 +261,10 @@
 					</classbreakinfo>
 				</classbreaksrenderer>
 			</layer>
-			<!-- <layer label="砷" type="feature" visible="false" alpha="1.0"
+			<layer label="土壤As" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/MapServer/0">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+
 				<classbreaksrenderer field="tu_as">
 				<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
@@ -295,7 +286,7 @@
 						</simplemarkersymbol>
 					</classbreakinfo>
 				</classbreaksrenderer>
-			</layer>  -->
+			</layer>
 
 			<!-- <layer label="重金属镍" type="feature" visible="true" alpha="1.0" popupconfig="popups/PopUp_1.xml" 
 				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/FeatureServer/0"> 
@@ -388,10 +379,6 @@
 				    config="widgets/Geoprocessing/GeoprocessingWidget_king.xml"
 				    icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
 				 
-			
-			     <widget label="时间演变" icon="assets/images/i_clock.png"
-				    config="widgets/Time/TimeWidget_1.xml" url="widgets/Time/TimeWidget.swf" />
-					
 			    <widget label="范围分析"
 				 config="widgets/Geoprocessing/GeoprocessingWidget_CalculateViewshed_1.xml"
 				 icon="assets/images/i_options.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />

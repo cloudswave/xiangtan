@@ -1,72 +1,420 @@
 <?xml version="1.0" ?>
-<!--
-////////////////////////////////////////////////////////////////////////////////
-//
-// Read more about ArcGIS Viewer for Flex - http://links.esri.com/flexviewer
-//
-////////////////////////////////////////////////////////////////////////////////
--->
+<!-- //////////////////////////////////////////////////////////////////////////////// 
+	// // Read more about ArcGIS Viewer for Flex - http://links.esri.com/flexviewer 
+	// //////////////////////////////////////////////////////////////////////////////// -->
 <configuration>
-    <title>重金属检测</title>
-    <subtitle>重金属</subtitle>
-    <logo>assets/images/logo1.png</logo>
-    <style>
-        <colors>0xFFFFFF,0x333333,0x101010,0x000000,0xFFD700</colors>
-        <alpha>0.8</alpha>
-    </style>
-    <!-- replace the following url with your own geometryservice -->
-    <geometryservice url="http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer" />
+	<title>产地安全等级评价与禁产区边界确认分析平台</title>
+	<logo>assets/images/earth.jpg</logo>
+	<subtitle></subtitle>
+	<style>
+		<!-- Black Gold -->
+<!--  Cobalt Blue  -->
+<colors>0xCEE7F4,0x39628C,0x355D89,0x294867,0xCEE7F4</colors>
+<alpha>0.6</alpha>
+	</style>
+	<!-- replace the following url with your own geometryservice -->
+	<geometryservice
+		url="http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer" />
+	<!-- <splashpage label="重金属检测" config="widgets/Splash/SplashWidget.xml" 
+		url="widgets/Splash/SplashWidget.swf"/> -->
+	<widget left="10" top="50" config="widgets/Navigation/NavigationWidget.xml"
+		url="widgets/Navigation/NavigationWidget.swf" />
+	<widget bottom="35" right="5"
+		config="widgets/HeavyMetal/StaticImageWidget.xml" url="widgets/StaticImage/StaticImageWidget.swf" />
+	<widget right="0" bottom="0"
+		config="widgets/OverviewMap/OverviewMapWidget.xml" url="widgets/OverviewMap/OverviewMapWidget.swf" />
+	<widget right="15" top="55"
+		config="widgets/MapSwitcher/MapSwitcherWidget.xml" url="widgets/MapSwitcher/MapSwitcherWidget.swf" />
+	<widget left="0" top="0"
+		config="widgets/HeaderController/HeaderControllerWidget.xml" url="widgets/HeaderController/HeaderControllerWidget.swf" />
+	<widget left="3" bottom="3"
+		config="widgets/Coordinate/CoordinateWidget.xml" url="widgets/Coordinate/CoordinateWidget.swf" />
 
-    <!-- UI elements -->
-    <widget left="10"  top="50"    config="widgets/Navigation/NavigationWidget.xml" url="widgets/Navigation/NavigationWidget.swf"/>
-    <widget right="0" bottom="0"   config="widgets/OverviewMap/OverviewMapWidget.xml" url="widgets/OverviewMap/OverviewMapWidget.swf"/>
-    <widget right="20" top="55"    config="widgets/MapSwitcher/MapSwitcherWidget.xml" url="widgets/MapSwitcher/MapSwitcherWidget.swf"/>
-    <widget left="0"   top="0"     config="widgets/HeaderController/HeaderControllerWidget.xml" url="widgets/HeaderController/HeaderControllerWidget.swf"/>
+	<map wraparound180="true"
+		initialextent="676931.369244576 3018994.8542325394  710389.9886815157 3114388.2655324386"
+		fullextent="634564.4566226229 -20000000 20000000 20000000" top="40"
+		
+		addarcgisbasemaps="false">
+		<!-- 自定义图层 -->
+		<basemaps>
+			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
+<!--              <layer label="地形图" type="googlemap" visible="true"
+				icon="assets/images/basemap_streets.jpg" /> -->
+			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image2/MapServer" 
+				icon="assets/images/basemap_imagery.jpg" />  
 
-    <map wraparound180="true" initialextent="12343937.572395457 3570293.726295035 12441776.96860035 3623188.1498683053" fullextent="-20000000 -20000000 20000000 20000000" top="40" addarcgisbasemaps="true">
-        
+			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
+				<layer label="航空图" type="tiled" visible="false" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"/> 
+				<layer label="地形图" type="tiled" visible="false" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"/> -->
+		
 
-    </map>
+		</basemaps>
+		<operationallayers>
 
-    <!-- widgets organized into widget containers that manage close/open etc -->
-    <!-- supported layout property options: horizontal(default)|float|vertical|fix-->
-    <widgetcontainer layout="float">
-        <widget label="Bookmarks"         left="430" top="90"
-                icon="assets/images/i_bookmark.png"
-                config="widgets/Bookmark/BookmarkWidget.xml"
-                url="widgets/Bookmark/BookmarkWidget.swf"/>
-        <widget label="Louisville Police" left="590" top="280"
-                icon="assets/images/i_police.png"
-                config="widgets/Query/QueryWidget_Louisville_PoliceStations.xml"
-                url="widgets/Query/QueryWidget.swf"/>
-        <widget label="Search" left="80" top="280"
-                icon="assets/images/i_search.png"
-                config="widgets/Search/SearchWidget_Louisville.xml"
-                url="widgets/Search/SearchWidget.swf"/>
-        <widget label="Earthquakes (GeoRSS)" left="410" top="280"
-                icon="assets/images/i_rss.png"
-                config="widgets/GeoRSS/GeoRSSWidget.xml"
-                url="widgets/GeoRSS/GeoRSSWidget.swf"/>
-        <widget label="Draw" left="60" top="400"
-                icon="assets/images/i_draw2.png"
-                config="widgets/Draw/DrawWidget.xml"
-                url="widgets/Draw/DrawWidget.swf"/>
-        <widget label="Print" left="390" top="400"
-                icon="assets/images/i_print.png"
-                config="widgets/Print/PrintWidget.xml"
-                url="widgets/Print/PrintWidget.swf"/>
+			<layer label="边界" type="feature" visible="true" alpha="1.0" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_map/MapServer/0"/>
+
+<!-- 			<layer label="时间演变" type="feature" visible="false" alpha="1.0"
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/Since_1970/MapServer/0" />
 
 
-        <widget label="My first widget"
-                icon="assets/images/i_widget.png"
-                config="widgets/Samples/HelloWorld/HelloWorldWidget.xml"
-                url="widgets/Samples/HelloWorld/HelloWorldWidget.swf"/>
-                
-       <widget label="showExtend widget"
-                icon="assets/images/i_widget.png"
-                config="widgets/test/ShowExtendWidget.xml"
-                url="widgets/test/ShowExtendWidget.swf"/>
+         <layer label="其他" type="dynamic" visible="false" alpha="1.0"  
+				url="http://210.42.41.30:8399/arcgis/rest/services/Hm/MapServer"/> 
 
-    </widgetcontainer>
-    
+
+            <layer type="feature" label="重金属编辑" url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/FeatureServer/1" mode="onDemand" visible="false"/>
+            <layer type="feature" label="点污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/0" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
+            <layer type="feature" label="线污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/2" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
+            <layer type="feature" label="面污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/3" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
+ -->
+			
+			<layer label="土壤Hg" type="feature" visible="true" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+<!-- 				<simplerenderer> 
+				<simplemarkersymbol color="0xFF0000" alpha="1" > 
+					<outline width="2" color="0x0000FF" style="dashdot" /> 
+				</simplemarkersymbol> 
+				</simplerenderer> -->
+				<classbreaksrenderer field="tu_hg">
+					<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+ 					<defaultlabel>0-0.15:1级</defaultlabel>
+					<classbreakinfo min="1.5" max="9999" label=">1.5:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="0.15" max="1.5" label="0.15-1.5:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol> 
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer>
+
+         <!-- <layer label="镍" type="feature" visible="false" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
+					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
+					</simplerenderer>
+				<classbreaksrenderer field="tu_ni">
+					<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+					<defaultlabel>0-40:1级</defaultlabel>
+					<classbreakinfo min="200" max="9999" label=">200:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="40" max="200" label="40-200:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer> -->
+			
+			<layer label="土壤Cd" type="feature" visible="false" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				<classbreaksrenderer field="tu_cd">
+					<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+					<defaultlabel>0-0.2:1级</defaultlabel>
+					<classbreakinfo min="1.0" max="99999" label=">1.0:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="0.2" max="1.0" label="0.2-1.0:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer>
+			
+			<!-- <layer label="锌" type="feature" visible="false" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
+					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
+					</simplerenderer>
+				<classbreaksrenderer field="ZN">
+					<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+					<defaultlabel>0-100:1级</defaultlabel>
+					<classbreakinfo min="500" max="99999" label=">500:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="100" max="500" label="100-500:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer> -->
+			<layer label="土壤Cr" type="feature" visible="false" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+
+				<classbreaksrenderer field="tu_cr">
+					<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+					<defaultlabel>0-90:1级</defaultlabel>
+					<classbreakinfo min="300" max="9999" label=">300:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="90" max="300" label="90-300:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer>
+			<!-- <layer label="铜" type="feature" visible="false" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
+					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
+					</simplerenderer>
+				<classbreaksrenderer field="CU">
+					<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+					<defaultlabel>0-35:1级</defaultlabel>
+					<classbreakinfo min="400" max="9999" label=">400:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="35" max="400" label="35-400:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer> -->
+			<layer label="土壤Pb" type="feature" visible="false" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+
+				<classbreaksrenderer field="tu_pb">
+					<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+					<defaultlabel>0-35:1级</defaultlabel>
+					<classbreakinfo min="500" max="9999" label=">500:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="35" max="500" label="35-500:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer>
+			<layer label="土壤As" type="feature" visible="false" alpha="1.0"
+				popupconfig="popups/PopUp_1.xml"
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+
+				<classbreaksrenderer field="tu_as">
+				<simplemarkersymbol color="0xFFFF00" alpha="1"
+						style="triangle">
+						<outline width="0"></outline>
+					</simplemarkersymbol>
+					<defaultlabel>0-15:1级</defaultlabel>
+					<classbreakinfo min="30" max="9999" label=">30:3级">
+						<simplemarkersymbol color="0xFF0000" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+					<classbreakinfo min="15" max="30" label="15-30:2级">
+						<simplemarkersymbol color="0xFF8C00" alpha="1"
+							style="triangle">
+							<outline width="0">
+							</outline>
+						</simplemarkersymbol>
+					</classbreakinfo>
+				</classbreaksrenderer>
+			</layer>
+
+			<!-- <layer label="重金属镍" type="feature" visible="true" alpha="1.0" popupconfig="popups/PopUp_1.xml" 
+				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/FeatureServer/0"> 
+				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" > <outline 
+				width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> </simplerenderer> 
+				<classbreaksrenderer field="Ni"> <simplemarkersymbol color="0xFFFF00" alpha="1" 
+				style="triangle"> <outline width="0"></outline> </simplemarkersymbol> <defaultlabel>0-40:1级</defaultlabel> 
+				<classbreakinfo min="200" max="9999" label=">200:3级"> <simplemarkersymbol 
+				color="0xFF0000" alpha="1" style="triangle"> <outline width="0"> </outline> 
+				</simplemarkersymbol> </classbreakinfo> <classbreakinfo min="40" max="200" 
+				label="40-200:2级"> <simplemarkersymbol color="0xFF8C00" alpha="1" style="triangle"> 
+				<outline width="0"> </outline> </simplemarkersymbol> </classbreakinfo> </classbreaksrenderer> 
+				</layer> -->
+
+			<!-- <layer label="锌" type="feature" visible="false" alpha="1.0" popupconfig="popups/PopUp_311.xml" 
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"/> 
+				<layer label="锡" type="feature" visible="false" alpha="1.0" popupconfig="popups/PopUp_311.xml" 
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"/> 
+				<layer label="镍" type="feature" visible="false" alpha="1.0" popupconfig="popups/PopUp_311.xml" 
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"/> 
+				<layer label="钴" type="feature" visible="false" alpha="1.0" popupconfig="popups/PopUp_311.xml" 
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"/> 
+				<layer label="锑" type="feature" visible="false" alpha="1.0" popupconfig="popups/PopUp_311.xml" 
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"/> 
+				<layer label="镉" type="feature" visible="false" alpha="1.0" popupconfig="popups/PopUp_311.xml" 
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"/> 
+				<layer label="铋" type="feature" visible="false" alpha="1.0" popupconfig="popups/PopUp_311.xml" 
+				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"/> -->
+
+		</operationallayers>
+	</map>
+
+	<widgetcontainer layout="float"> <!--horizontal(default)|float|vertical|fix -->
+		<widget label="书签" icon="assets/images/i_bookmark.png" config="widgets/Bookmark/BookmarkWidget.xml"
+			url="widgets/Bookmark/BookmarkWidget.swf" />
+		<widget label="绘图" icon="assets/images/i_draw2.png" config="widgets/Draw/DrawWidget.xml"
+			url="widgets/Draw/DrawWidget.swf" />
+		<!-- <widget label="RSS" icon="assets/images/i_rss.png" config="widgets/GeoRSS/GeoRSSWidget.xml" 
+			url="widgets/GeoRSS/GeoRSSWidget.swf"/> -->
+		<widget label="打印" icon="assets/images/i_print.png" config="widgets/Print/PrintWidget.xml"
+			url="widgets/Print/PrintWidget.swf" />
+
+
+		<widget url="widgets/Locate/LocateWidget.swf" config="widgets/Locate/LocateWidget_1.xml"
+			label="定位器" icon="assets/images/i_target.png" />
+		<widget url="widgets/Query/QueryWidget.swf" config="widgets/Query/QueryWidget_1.xml"
+			label="查询" icon="assets/images/GenericSearch32.png" />
+		<widget label="搜索" icon="assets/images/i_search.png" config="widgets/Search/SearchWidget_1.xml"
+			url="widgets/Search/SearchWidget.swf" />
+		<widget label="图例" config="widgets/Legend/LegendWidget_1.xml"
+			icon="assets/images/Legend32.png" url="widgets/Legend/LegendWidget.swf" />
+		<widget label="图表" config="widgets/Chart/ChartWidget.xml" icon="assets/images/i_piechart.png"
+			url="widgets/Chart/ChartWidget.swf" left="80" bottom="80" />
+		<widget label="图层" icon="assets/images/i_layers.png"
+			config="widgets/HeavyMetal/LayerListWidget.xml" url="widgets/HeavyMetal/LayerListWidget.swf" />
+			
+	   <widgetgroup label="采样点管理" >
+			<widget label="上传数据" config="widgets/HeavyMetal/UploadWidget.xml"
+				icon="assets/images/i_layers.png" url="widgets/HeavyMetal/UploadWidget.swf" />
+
+
+	      <widget url="widgets/DataExtract/DataExtractWidget.swf"
+				config="widgets/DataExtract/DataExtractWidget_1.xml" label="数据提取"
+				icon="assets/images/i_scissors.png" />
+				
+			<widget label="采样点添加" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
+				url="widgets/Edit/EditWidget.swf" />		
+			<widget label="采样点编辑" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
+				url="widgets/Edit/EditWidget.swf" />		
+
+
+		</widgetgroup>	
+		
+		   <widgetgroup label="地块管理" >
+			    <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="污染源添加" icon="assets/images/i_edit.png"/>
+			    <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="污染源编辑" icon="assets/images/i_edit.png"/>
+				
+                <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="地块添加" icon="assets/images/i_edit.png"/>	
+                <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="地块编辑" icon="assets/images/i_edit.png"/>	
+		</widgetgroup>	
+		
+	   <widgetgroup label="统计分析" >
+			     <widget label="反距离插值分析"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				 <widget label="自然领域法分析"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_zrly.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+			      <widget label="克里金插值分析"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_king.xml"
+				    icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				 
+			    <widget label="范围分析"
+				 config="widgets/Geoprocessing/GeoprocessingWidget_CalculateViewshed_1.xml"
+				 icon="assets/images/i_options.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+			
+		</widgetgroup>	
+
+		<widgetgroup label="产地安全" >
+			<widget label="污染评价" icon="assets/images/i_search.png" config="widgets/Search/SearchWidget_Pollution.xml"
+			url="widgets/Search/SearchWidget_Pollution.swf" />	
+			<widget label="污染溯源"
+				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
+				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+			<widget label="污染预测"
+				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
+				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />					
+			<widget label="治理方案"
+				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
+				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />	
+				
+			<widget label="农作物种植指导"
+				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
+				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />	
+		</widgetgroup>
+		
+	   <widgetgroup label="系统管理" icon="assets/images/GeoprocessingTool32.png">
+			<widget label="用户管理"
+				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
+				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+			<widget label="系统配置"
+				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
+				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />	
+		</widgetgroup>
+	</widgetcontainer>
+	<widgetcontainer paneltype="bottom" initialstate="collapsed"
+		size="250">
+		<widget label="属性表"
+			config="widgets/AttributeTable/AttributeTableWidget-hm2.xml" url="widgets/AttributeTable/AttributeTableWidget.swf" />
+	</widgetcontainer>
 </configuration>
