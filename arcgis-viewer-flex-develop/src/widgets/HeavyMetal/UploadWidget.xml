@@ -1,7 +1,5 @@
 <configuration>
-
 	<fileUploadPath>
 		http://210.42.41.30:8080/FileUpload/UploadHandler
 	</fileUploadPath>
-
 </configuration>

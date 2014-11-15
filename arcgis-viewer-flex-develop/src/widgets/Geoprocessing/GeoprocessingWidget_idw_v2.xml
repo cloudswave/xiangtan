@@ -5,7 +5,7 @@
     <helpurl>http://win-kul6xduo1pa/arcgisoutput/HMAnalysis/模型22.htm</helpurl>
     <autosubmit>false</autosubmit>
     <shareresults>false</shareresults>
-    <outputparams>
+<outputparams>
         <param type="featurerecordset" name="out_shp" geometrytype="polygon" mode="drawtool" required="true" visible="true" label="out.shp">
             <popup>
                 <fields>
@@ -19,20 +19,28 @@
                 <showattachments>false</showattachments>
                 <showrelatedrecords>false</showrelatedrecords>
             </popup>
-            <renderer type="classbreaks" attribute="GRIDCODE">
+            
+            <!-- autoclass为自动分级 不需要配置min max -->
+            <renderer type="classbreaks" attribute="GRIDCODE" autoclass="true">
                 <infos>
-                    <symbol min="3" max="110" type="simplefill" alpha="1" color="0xFFCCFF" >
-                        <outline color="0x000000" width="2"/>
+                    <symbol min="3" max="110" type="simplefill" alpha="0.5" color="0x39AA00" >
+                        <outline color="0x6B6D6B" width="0.1"  />
                     </symbol>
-                    <symbol min="111" max="208" type="simplefill" alpha="1" color="0xFF66FF" >
-                        <outline color="0x000000" width="2"/>
+                    <symbol min="111" max="208" type="simplefill" alpha="0.5" color="0x8CD300" >
+                        <outline color="0x6B6D6B" width="0.1"/>
                     </symbol>
-                    <symbol min="209" max="479" type="simplefill" alpha="1" color="0xFF0000" >
-                        <outline color="0x000000" width="2"/>
+                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0xFFFF00" >
+                        <outline color="0x6B6D6B" width="0.1"/>
+                    </symbol>
+                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0xFF8200" >
+                        <outline color="0x6B6D6B" width="0.1"/>
+                    </symbol>
+                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0xFF0000" >
+                        <outline color="0x6B6D6B" width="0.1"/>
                     </symbol>
                 </infos>
-                <defaultsymbol type="simplefill" alpha="1" color="0x3FAFDC" >
-                    <outline color="0x000000" width="2"/>
+                <defaultsymbol type="simplefill" alpha="0.5" color="0x3FAFDC" >
+                    <outline color="0x6B6D6B" width="0.1"/>
                 </defaultsymbol>
             </renderer>
         </param>
