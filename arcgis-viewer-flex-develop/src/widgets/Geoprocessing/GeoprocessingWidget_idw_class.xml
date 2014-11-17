@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <configuration>
     <description/>
-    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/interp_idw/GPServer/interp_idw</taskurl>
-    <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/interpolation_GPServer/interpolation/Model.htm</helpurl>
+    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/idw_class/GPServer/idw_class</taskurl>
+    <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/idw_class_GPServer/idw_class/idw-class.htm </helpurl>
     <autosubmit>false</autosubmit>
     <shareresults>true</shareresults>
     <inputparams>
@@ -13,7 +13,6 @@
                 </defaultsymbol>
             </renderer>
         </param>
-<!--         <param type="string" name="Reclassification" required="true" visible="true" label="Reclassification" defaultvalue="0 0.16600000000000001 1;0.16600000000000001 0.59799999999999998 2;0.59799999999999998 26 3"/> -->
         <param type="string" name="Z_value_field" required="true" visible="true" label="插值对象" defaultvalue="tu_pb">
             <choicelist>
                 <choice value="tu_pb"/>
@@ -30,10 +29,11 @@
         </param>
         <param type="double" name="Power" required="false" visible="true" label="距离指数" defaultvalue="2">
         </param>
+        
     </inputparams>
-    <outputparams>
-         <param type="rasterdatalayer" name="result" required="true" visible="true" label="result">
+     <outputparams>
+         <param type="rasterdatalayer" name="result" required="true" visible="true" label="插值结果">
           </param>
     </outputparams>
-    <layerorder/>
+    <layerorder></layerorder>
 </configuration>

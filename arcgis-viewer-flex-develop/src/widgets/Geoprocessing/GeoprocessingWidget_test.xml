@@ -1,15 +1,24 @@
 <?xml version="1.0" ?>
 <configuration>
     <description/>
-    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/interpolation/GPServer/interp_lv</taskurl>
+    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/interp_idw/GPServer/interp_idw</taskurl>
     <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/interpolation_GPServer/interpolation/Model.htm</helpurl>
     <autosubmit>false</autosubmit>
     <shareresults>true</shareresults>
     <inputparams>
-        <param type="string" name="Reclassification" required="true" visible="true" label="Reclassification" defaultvalue="0 0.16600000000000001 1;0.16600000000000001 0.59799999999999998 2;0.59799999999999998 26 3"/>
+        <param type="featurerecordset" name="polygon" geometrytype="polygon"  required="true" visible="true" label="选择区域">
+            <renderer type="simple">
+                <defaultsymbol type="simplefill" alpha="0.5" color="0x3FAFDC">
+                    <outline color="0x000000" width="2"/>
+                </defaultsymbol>
+            </renderer>
+        </param>
+<!--         <param type="string" name="Reclassification" required="true" visible="true" label="Reclassification" defaultvalue="0 0.16600000000000001 1;0.16600000000000001 0.59799999999999998 2;0.59799999999999998 26 3"/> -->
+    
     </inputparams>
     <outputparams>
-        <param type="rasterdatalayer" name="Reclass_lv" required="true" visible="true" label="Reclass_lv"/>
+         <param type="rasterdatalayer" name="result" required="true" visible="true" label="result">
+          </param>
     </outputparams>
     <layerorder/>
 </configuration>
