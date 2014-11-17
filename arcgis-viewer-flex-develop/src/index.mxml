@@ -21,9 +21,9 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:viewer="com.esri.viewer.*"
 			   xmlns:managers="com.esri.viewer.managers.*"
-			   
-			   creationComplete="application1_creationCompleteHandler(event)"
-			   pageTitle="土壤重金属检测系统">
+			   initialize="initializeHandler(event)"
+			   creationComplete="application_creationCompleteHandler(event)"
+			   pageTitle="系统">
 	
 	<fx:Script>
 		<![CDATA[
@@ -35,27 +35,56 @@
 			import mx.events.ModuleEvent;
 			import mx.modules.IModuleInfo;
 			import mx.modules.ModuleManager;
+			import mx.rpc.Fault;
+			import mx.rpc.Responder;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;	
+			
 			
 			private var mInfo:IModuleInfo=null;
+			private var _webService_wsdl:String="";
+			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
+
+			private function initializeHandler(event:FlexEvent):void
+			{
+				loadConfig();
+			}
+			
+			
+			
 			protected function Submit_clickHandler(event:MouseEvent):void
 			{
 				
-				if(txtUname.text == "admin"&&txtPwd.text=="admin")
-				{
-					this.currentState = "index";
-					//viewerContainer.removeAllElements();
-					ViewerContainer.configFile = "config-admin.xml"; 
-				}else if(txtUname.text == "user"&&txtPwd.text=="user"){
-					this.currentState = "index";
-					viewerContainer.config= "config-user.xml";
-					
-				}else{
-					Alert.show("帐号密码错误！");
-				}
-				txtPwd.text="";
+				webService.login(txtUname.text, txtPwd.text);
+				
+//				if(txtUname.text == "admin"&&txtPwd.text=="admin")
+//				{
+//					this.currentState = "index";
+//					//viewerContainer.removeAllElements();
+//					ViewerContainer.configFile = "config-admin.xml"; 
+//				}else if(txtUname.text == "user"&&txtPwd.text=="user"){
+//					this.currentState = "index";
+//					viewerContainer.config= "config-user.xml";
+//					
+//				}else{
+//					Alert.show("帐号密码错误！");
+//				}
+//				txtPwd.text="";
 				
 			}
-			
+			private function onResult(event:ResultEvent):void
+			{     
+				var Userinfo_lv:Object;
+				Userinfo_lv = event.result;
+				if(Userinfo_lv!=null){
+					
+					this.currentState = "index";
+					//ViewerContainer.configFile = "config-admin.xml"; 
+				}else{
+					Alert.show("账号或密码错误");
+				}
+			}			
 			
 			private function modulError(e:ModuleEvent):void{  
 				Alert.show('modulError');  
@@ -97,23 +126,103 @@
 				}
 			}
 			
-			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			protected function application_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
+				
+				
+				webService.loadWSDL();   
+				//this.currentState = "login";
 				//pnlLogin.addEventListener(KeyboardEvent.KEY_DOWN,KEY_DOWN_handler);
 				
+			}
+			
+			private function loadConfig():void
+			{
+				var configService:HTTPService = new HTTPService();
+				configService.url = DEFAULT_CONFIG_FILE;
+				configService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+				configService.addEventListener(ResultEvent.RESULT, configService_resultHandler);
+				configService.addEventListener(FaultEvent.FAULT, configService_faultHandler);
+				configService.send();
+			}
+			
+			private function configService_faultHandler(event:FaultEvent):void
+			{
+				var sInfo:String = "";
 				
+				if (event.fault.rootCause is IOErrorEvent)
+				{
+					var ioe:IOErrorEvent = event.fault.rootCause as IOErrorEvent;
+					// Missing config file
+					if (ioe.errorID == 2032)
+					{
+						sInfo += 'missingConfigFileText' + "\n\n";
+					}
+					else
+					{
+						// some other IOError
+						sInfo += event.fault.rootCause + "\n\n";
+					}
+				}
 				
+				if (event.fault.rootCause is SecurityErrorEvent)
+				{
+					var sec:SecurityErrorEvent = event.fault.rootCause as SecurityErrorEvent;
+					// config file with crossdomain issue
+					if (sec.errorID == 2048)
+					{
+						sInfo += 'configFileCrossDomain'+ "\n\n";
+					}
+						// some other Security error
+					else
+					{
+						sInfo += event.fault.rootCause + "\n\n";
+					}
+				}
+				
+				if (event.statusCode) // e.g. 404 - Not Found - http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+				{
+					sInfo += 'httpResponseStatus'+ "\n\n";
+				}
+				
+				sInfo += event.fault.faultCode + "\n\n";
+				sInfo += event.fault.faultString + "\n\n";
+				sInfo += event.fault.faultDetail;
+				Alert.show(sInfo);
+			}
+			
+			private function configService_resultHandler(event:ResultEvent):void
+			{
+				try
+				{
+					//parse main configuration file to create config data object
+
+					var configXML:XML = XML(event.result);
+					_webService_wsdl = configXML.login_url;
+					webService.wsdl = _webService_wsdl;
+					
+				}catch (error:Error)
+				{
+					Alert.show(error.message);
+				}
 			}
 			
 		]]>
 	</fx:Script>
-	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<mx:WebService 
+			id="webService" useProxy="false" showBusyCursor="true" wsdl="{_webService_wsdl}">
+			<mx:operation name="login" result="onResult(event)" />
+		</mx:WebService>
+	</fx:Declarations>	
 	
 	<s:states>
-		
 		<s:State name="index" />
 		<s:State name="login" />
+		
+		
 	</s:states>
 	
 	<fx:Style source="defaults.css"/>
