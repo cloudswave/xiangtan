@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <configuration>
     <description/>
-    <taskurl>http://192.168.24.210/ArcGIS/rest/services/HMAnalysis/GPServer/idw_v3</taskurl>
-    <helpurl>http://win-kul6xduo1pa/arcgisoutput/HMAnalysis/模型222.htm</helpurl>
+    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/NaturalNeighbor/GPServer/NaturalNeighbor</taskurl>
+    <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/NaturalNeighbor_GPServer/NaturalNeighbor/NaturalNeighbor.htm</helpurl>
     <autosubmit>false</autosubmit>
-    <shareresults>false</shareresults>
+    <shareresults>true</shareresults>
     <inputparams>
         <param type="featurerecordset" name="polygon" geometrytype="polygon"  required="true" visible="true" label="选择区域">
             <renderer type="simple">
@@ -13,58 +13,28 @@
                 </defaultsymbol>
             </renderer>
         </param>
-        <param type="string" name="Z_value" required="true" visible="true" label="Z 值字段" defaultvalue="CU">
+<!--         <param type="string" name="Reclassification" required="true" visible="true" label="Reclassification" defaultvalue="0 0.16600000000000001 1;0.16600000000000001 0.59799999999999998 2;0.59799999999999998 26 3"/> -->
+        <param type="string" name="Z_value_field" required="true" visible="true" label="插值对象" defaultvalue="tu_pb">
             <choicelist>
-                <choice value="Cd"/>
-                <choice value="Hg"/>
-                <choice value="dp_As"/>
-                <choice value="CU"/>
-                <choice value="Pb"/>
-                <choice value="Cr"/>
-                <choice value="Zn"/>
-                <choice value="Ni"/>
+                <choice value="tu_pb"/>
+                <choice value="tu_cd"/>
+                <choice value="tu_as"/>
+                <choice value="tu_cr"/>
+                <choice value="tu_hg"/>
+                <choice value="nong_pb"/>
+                <choice value="nong_cd"/>
+                <choice value="nong_as"/>
+                <choice value="nong_cr"/>
+                <choice value="nong_hg"/>
             </choicelist>
+        </param>
+        <param type="double" name="Power" required="false" visible="true" label="距离指数" defaultvalue="2">
         </param>
     </inputparams>
     <outputparams>
-        <param type="featurerecordset" name="out_shp" geometrytype="polygon" mode="drawtool" required="true" visible="true" label="out.shp">
-            <popup>
-                <fields>
-                    <field name="FID" label="FID" visible="true"/>
-                    <field name="ID" label="ID" visible="true"/>
-                    <field name="GRIDCODE" label="GRIDCODE" visible="true"/>
-                    <field name="Shape_Length" label="Shape_Length" visible="true"/>
-                    <field name="Shape_Area" label="Shape_Area" visible="true"/>
-                </fields>
-                <medias/>
-                <showattachments>false</showattachments>
-                <showrelatedrecords>false</showrelatedrecords>
-            </popup>
-            
-            <!-- autoclass为自动分级 不需要配置min max -->
-            <renderer type="classbreaks" attribute="GRIDCODE" autoclass="true">
-                <infos>
-                    <symbol min="3" max="110" type="simplefill" alpha="0.5" color="0xFFECEC" >
-                        <outline color="0x000000" width="2"/>
-                    </symbol>
-                    <symbol min="111" max="208" type="simplefill" alpha="0.5" color="0xFF5151" >
-                        <outline color="0x000000" width="2"/>
-                    </symbol>
-                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0xEA0000" >
-                        <outline color="0x000000" width="2"/>
-                    </symbol>
-                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0xAE0000" >
-                        <outline color="0x000000" width="2"/>
-                    </symbol>
-                    <symbol min="209" max="479" type="simplefill" alpha="0.5" color="0x750000" >
-                        <outline color="0x000000" width="2"/>
-                    </symbol>
-                </infos>
-                <defaultsymbol type="simplefill" alpha="0.5" color="0x3FAFDC" >
-                    <outline color="0x000000" width="2"/>
-                </defaultsymbol>
-            </renderer>
-        </param>
+         <param type="rasterdatalayer" name="ClassifiedLayer" required="true" visible="true" label="ClassifiedLayer"/>
+<!--          <param type="rasterdatalayer" name="StretchedLayer" required="true" visible="false" label="StretchedLayer"/>
+         <param type="rasterdatalayer" name="DiscreteColorLayer" required="true" visible="false" label="DiscreteColorLayer"/> -->
     </outputparams>
-    <layerorder>out_shp,polygon</layerorder>
+    <layerorder>ClassifiedLayer,StretchedLayer,DiscreteColorLayer</layerorder>
 </configuration>

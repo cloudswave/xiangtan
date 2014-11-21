@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <configuration>
     <description/>
-    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/interp_idw/GPServer/interp_idw</taskurl>
-    <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/interpolation_GPServer/interpolation/Model.htm</helpurl>
+    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/idw_all/GPServer/idw</taskurl>
+    <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/idw_all_GPServer/idw_all/idw.htm</helpurl>
     <autosubmit>false</autosubmit>
     <shareresults>true</shareresults>
     <inputparams>
@@ -32,8 +32,9 @@
         </param>
     </inputparams>
     <outputparams>
-         <param type="rasterdatalayer" name="result" required="true" visible="true" label="result">
-          </param>
+         <param type="rasterdatalayer" name="ClassifiedLayer" required="true" visible="true" label="ClassifiedLayer"/>
+<!--          <param type="rasterdatalayer" name="StretchedLayer" required="true" visible="false" label="StretchedLayer"/>
+         <param type="rasterdatalayer" name="DiscreteColorLayer" required="true" visible="false" label="DiscreteColorLayer"/> -->
     </outputparams>
-    <layerorder/>
+    <layerorder>ClassifiedLayer,StretchedLayer,DiscreteColorLayer</layerorder>
 </configuration>

@@ -369,6 +369,11 @@
 		</widgetgroup>	
 		
 	   <widgetgroup label="统计分析" >
+		   			<widget label="反距离插值"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_test.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />   
+	   
+
 
 		   			<widget label="反距离插值-分级"
 				    config="widgets/Geoprocessing/GeoprocessingWidget_idw_class.xml"
