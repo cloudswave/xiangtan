@@ -1,5 +1,9 @@
 package com.xiangtan.utils;
-
+/**
+ * @author Shangyidong
+ * @date 2014-11-11
+ * @version 1.0
+ */
 public class AreaUtil {
 	
 	public static int getAreaLevelByCode(String areaCode) {

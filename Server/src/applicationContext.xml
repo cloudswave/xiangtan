@@ -64,16 +64,6 @@
 		<property name="urlPrefix"><value>/</value></property>  
 	</bean>
 	
-	<bean id="areaDao" class="com.xiangtan.dao.impl.AreaDaoImpl"></bean>
-	<bean id="areaService" class="com.xiangtan.service.impl.AreaServiceImpl">
-		<property name="areaDao" ref="areaDao">
-		</property>
-	</bean>
-	
-	<bean id="userinfo_lvDao" class="com.xiangtan.dao.impl.Userinfo_lvDaoImpl"></bean>
-	<bean id="userinfo_lvService" class="com.xiangtan.service.impl.Userinfo_lvServiceImpl">
-		<property name="userinfo_lvDao" ref="userinfo_lvDao">
-		</property>
-	</bean>
+	<import resource="classpath:beans.xml" />
 	 
 </beans>

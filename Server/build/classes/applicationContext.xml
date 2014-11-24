@@ -39,11 +39,11 @@
 		<!-- <property name="user" value="sde"></property> -->
 		<property name="user" value="sa"></property>
 		<!-- <property name="password" value="Zbzx2014"></property> -->
-		<property name="password" value="zbzx2014@"></property>
+		<property name="password" value="ctgu2014@"></property>
 		<!-- <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></property> -->
 		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
 		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.24.212:1521:orcl"></property> -->
-		<property name="jdbcUrl" value="jdbc:sqlserver://192.168.13.40:1433;DatabaseName=xiangtan2"></property>
+		<property name="jdbcUrl" value="jdbc:sqlserver://192.168.24.216:1433;DatabaseName=xiangtan2"></property>
 
 		<property name="initialPoolSize" value="5"></property>
 		<property name="maxPoolSize" value="10"></property>
@@ -64,16 +64,6 @@
 		<property name="urlPrefix"><value>/</value></property>  
 	</bean>
 	
-	<bean id="areaDao" class="com.xiangtan.dao.impl.AreaDaoImpl"></bean>
-	<bean id="areaService" class="com.xiangtan.service.impl.AreaServiceImpl">
-		<property name="areaDao" ref="areaDao">
-		</property>
-	</bean>
-	
-	<bean id="userinfo_lvDao" class="com.xiangtan.dao.impl.Userinfo_lvDaoImpl"></bean>
-	<bean id="userinfo_lvService" class="com.xiangtan.service.impl.Userinfo_lvServiceImpl">
-		<property name="userinfo_lvDao" ref="userinfo_lvDao">
-		</property>
-	</bean>
+	<import resource="classpath:beans.xml" />
 	 
 </beans>
