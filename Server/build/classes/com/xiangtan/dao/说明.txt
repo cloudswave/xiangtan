@@ -1,4 +1,0 @@
-select操作  get   返回查找到的对象
-update操作  update 返回更新成功的对象
-delete操作 delete 返回删除成功的对象
-insert操作 add 返回插入成功的对象
