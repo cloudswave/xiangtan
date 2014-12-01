@@ -18,7 +18,9 @@
     <import resource="classpath:META-INF/cxf/cxf.xml" /> 
     <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" /> 
-    
+    <bean id="webServicesAgent" class="org.apache.cxf.spring.remoting.Jsr181HandlerMapping">  
+	    <property name="urlPrefix"><value>/</value></property>  
+	</bean>  
 	<import resource="classpath:webservice.xml" />
 	
 	<!-- <bean id="person" class="com.spring.beans.Person"> <property name="username" 
@@ -58,10 +60,6 @@
 	<bean id="namedParameterJdbcTemplate"
 		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSource"></constructor-arg>
-	</bean>
-	
-	<bean id="webServicesAgent" class="org.apache.cxf.spring.remoting.Jsr181HandlerMapping">  
-		<property name="urlPrefix"><value>/</value></property>  
 	</bean>
 	
 	<import resource="classpath:beans.xml" />
