@@ -11,7 +11,7 @@ import com.xiangtan.beans.Userinfo_lv;
 public interface Userinfo_lvDao {
 	public Userinfo_lv get(String name, String password);
 	
-	public Userinfo_lv add(String name, String password, int role, int groupid);
+	public Userinfo_lv add(String name, String password, String email, String tel, String truename, String department, String note);
 	
 	/**
 	 * 根据id删除用户
@@ -39,7 +39,7 @@ public interface Userinfo_lvDao {
 	 * @param role 用户角色id
 	 * @return 返回查询到的装有满足条件的Userinfo_lv的list。若查询失败则返回null。
 	 */
-	public List<Userinfo_lv> getByRole(int role);
+	//public List<Userinfo_lv> getByRole(int role);
 	
 	/**
 	 * 根据用户组id查询用户
@@ -57,7 +57,13 @@ public interface Userinfo_lvDao {
 	 * @param groupid 用户组id
 	 * @return 更新成功的Userinfo_lv对象。若更新失败则返回null。
 	 */
-	public Userinfo_lv update(int id, String name, int role, String password, int groupid);
+	public Userinfo_lv update(int id, String name, String password, String email, String tel, String truename, String department, String note);
+
+	/**
+	 * 查询所有用户
+	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
+	 */
+	public List<Userinfo_lv> getAll();
 }
 
 /**

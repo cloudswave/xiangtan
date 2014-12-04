@@ -40,7 +40,7 @@
 			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
 <!--              <layer label="地形图" type="googlemap" visible="true"
 				icon="assets/images/basemap_streets.jpg" /> -->
-			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image2/MapServer" 
+			<layer label="影像" type="tiled" visible="true" url="http://123.127.160.57:8399/arcgis/rest/services/xiangtan_image2/MapServer" 
 				icon="assets/images/basemap_imagery.jpg" />  
 
 			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
@@ -51,7 +51,7 @@
 		</basemaps>
 		<operationallayers>
 
-			<layer label="边界" type="feature" visible="true" alpha="1.0" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_map/MapServer/0"/>
+			<layer label="边界" type="feature" visible="true" alpha="1.0" url="http://123.127.160.57:8399/arcgis/rest/services/xiangtan_map/MapServer/0"/>
 
 <!-- 			<layer label="时间演变" type="feature" visible="false" alpha="1.0"
 				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/Since_1970/MapServer/0" />
@@ -69,7 +69,7 @@
 			
 			<layer label="土壤Hg" type="feature" visible="true" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 <!-- 				<simplerenderer> 
 				<simplemarkersymbol color="0xFF0000" alpha="1" > 
 					<outline width="2" color="0x0000FF" style="dashdot" /> 
@@ -100,7 +100,7 @@
 
          <!-- <layer label="镍" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -129,7 +129,7 @@
 			
 			<layer label="土壤Cd" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<classbreaksrenderer field="tu_cd">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
 						style="triangle">
@@ -155,7 +155,7 @@
 			
 			<!-- <layer label="锌" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -183,7 +183,7 @@
 			</layer> -->
 			<layer label="土壤Cr" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 
 				<classbreaksrenderer field="tu_cr">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
@@ -209,7 +209,7 @@
 			</layer>
 			<!-- <layer label="铜" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
 					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
 					</simplerenderer>
@@ -237,7 +237,7 @@
 			</layer> -->
 			<layer label="土壤Pb" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 
 				<classbreaksrenderer field="tu_pb">
 					<simplemarkersymbol color="0xFFFF00" alpha="1"
@@ -263,7 +263,7 @@
 			</layer>
 			<layer label="土壤As" type="feature" visible="false" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
+				url="http://123.127.160.57:8399/arcgis/rest/services/samples_xt/FeatureServer/0">
 
 				<classbreaksrenderer field="tu_as">
 				<simplemarkersymbol color="0xFFFF00" alpha="1"
@@ -415,8 +415,8 @@
 		
 	   <widgetgroup label="系统管理" icon="assets/images/GeoprocessingTool32.png">
 			<widget label="用户管理"
-				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
-				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				config="widgets/UserManagement/UserManagementWidget.xml"
+				icon="assets/images/i_demographics.png" url="widgets/UserManagement/UserManagementWidget.swf" />
 			<widget label="系统配置"
 				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
 				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />	

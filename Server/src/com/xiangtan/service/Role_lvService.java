@@ -1,5 +1,7 @@
 package com.xiangtan.service;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -57,6 +59,21 @@ public interface Role_lvService {
 	 */
 	@WebMethod
 	public Role_lv updateRole_lv(int id, String roleName, String type, String desText);
+	
+	/***
+	 * 根据用户ID查询用户所属的角色
+	 * @param userid 用户id
+	 * @return
+	 */
+	@WebMethod
+	public List<Role_lv> getRole_lvsByUserid(int userid);
+	
+	/***
+	 * 查询所有角色
+	 * @return
+	 */
+	@WebMethod
+	public List<Role_lv> getAll();
 }
 
 /*

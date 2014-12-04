@@ -35,10 +35,9 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	}
 
 	@Override
-	public Userinfo_lv add(String name, String password, int role,
-			int groupid) {
-		String sql = "insert into Userinfo_lv (name, password, role ) values (?, ?, ?)";
-		int update = jdbcTemplate.update(sql, name, password, role);
+	public Userinfo_lv add(String name, String password, String email, String tel, String truename, String department, String note) {
+		String sql = "insert into Userinfo_lv (name, password, email, tel, truename, department, note ) values (?, ?, ?, ?, ?, ?, ?)";
+		int update = jdbcTemplate.update(sql, name, password, email, tel, truename,  department, note);
 		if (update > 0) {// 添加成功
 			return get(name, password);// 返回添加成功的对象
 		}
@@ -63,22 +62,26 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 		RowMapper<Userinfo_lv> rowMapper = new BeanPropertyRowMapper<Userinfo_lv>(
 				Userinfo_lv.class);
 		try {
-			return jdbcTemplate.queryForObject(sql, rowMapper, name);
+			Userinfo_lv userinfo_lv = jdbcTemplate.queryForObject(sql, rowMapper, name);
+			System.out.println(userinfo_lv);
+			return userinfo_lv;
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
+	/*
 	@Override
 	public List<Userinfo_lv> getByRole(int role) {
-		String sql = "select * from Userinfo_lv where role = ?";
+		String sql = "select * from Userinfo_lv where role = ? order by id";
 		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()), role);
 		return Userinfo_lvs;
 	}
+	*/
 
 	@Override
 	public List<Userinfo_lv> getByGroupid(int groupid) {
-		String sql = "select * from Userinfo_lv where groupid = ?";
+		String sql = "select * from Userinfo_lv where groupid = ? order by id";
 		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()), groupid);
 		return Userinfo_lvs;
 	}
@@ -87,11 +90,14 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 		@Override
 		public Object mapRow(ResultSet rs, int index) throws SQLException {
 			Userinfo_lv userinfo_lv = new Userinfo_lv();
-			userinfo_lv.setGroupid(rs.getInt("groupid"));
 			userinfo_lv.setId(rs.getInt("id"));
 			userinfo_lv.setName(rs.getString("name"));
 			userinfo_lv.setPassword(rs.getString("password"));
-			userinfo_lv.setRole(rs.getInt("role"));
+			userinfo_lv.setEmail(rs.getString("email"));
+			userinfo_lv.setTel(rs.getString("tel"));
+			userinfo_lv.setTruename(rs.getString("truename"));
+			userinfo_lv.setDepartment(rs.getString("department"));
+			userinfo_lv.setNote(rs.getString("note"));
 			return userinfo_lv;
 		}
 	}
@@ -107,14 +113,20 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	}
 
 	@Override
-	public Userinfo_lv update(int id, String name, int role,
-			String password, int groupid) {
-		String sql = "update Userinfo_lv set  name = ?, role = ?, password = ?, groupid = ? where id = ?";
-		int update = jdbcTemplate.update(sql, name, role, password, groupid, id);
+	public Userinfo_lv update(int id, String name, String password, String email, String tel, String truename, String department, String note) {
+		String sql = "update Userinfo_lv set  name = ?, password = ?, email = ?, tel = ?, truename = ?, department = ?, note = ?  where id = ?";
+		int update = jdbcTemplate.update(sql, name, password, email, tel, truename, department, note, id);
 		if (update > 0) {//执行成功
 			return get(id);
 		}
 		return null;
+	}
+
+	@Override
+	public List<Userinfo_lv> getAll() {
+		String sql = "select * from Userinfo_lv order by id";
+		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		return Userinfo_lvs;		
 	}
 
 }

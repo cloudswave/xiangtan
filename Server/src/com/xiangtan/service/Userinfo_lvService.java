@@ -32,8 +32,7 @@ public interface Userinfo_lvService {
 	 * @return 若添加成功，则返回成功添加的Userinfo_lv对象。否则返回null。
 	 */
 	@WebMethod
-	public Userinfo_lv user_add(String name, String password, int role, int groupid);
-	
+	public Userinfo_lv add(String name, String password, String email, String tel, String truename, String department, String note, String roleIds);
 	/**
 	 * 根据用户id查询Userinfo_lv对象
 	 * @param id 用户id
@@ -55,9 +54,10 @@ public interface Userinfo_lvService {
 	 * @param role 用户角色id
 	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
 	 */
+	/*
 	@WebMethod
 	public List<Userinfo_lv> getUserinfo_lvsByRole(int role);
-	
+	*/
 	/**
 	 * 根据用户组id查询装有Userinfo_lv的list
 	 * @param groupid 用户组id
@@ -73,12 +73,15 @@ public interface Userinfo_lvService {
 	 */
 	@WebMethod
 	public boolean deleteUserinfo_lv(int id);
+	
+	/**
+	 * 查询所有用户
+	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
+	 */
+	@WebMethod
+	public List<Userinfo_lv> getAll();
 }
 
 /**
-	private int id;
-	private String name;
-	private int role;
-	private String password;
-	private int groupid;
+
 */

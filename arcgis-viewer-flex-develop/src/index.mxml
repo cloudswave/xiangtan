@@ -78,7 +78,7 @@
 				var Userinfo_lv:Object;
 				Userinfo_lv = event.result;
 				if(Userinfo_lv!=null){
-					
+					Alert.show(Userinfo_lv.name + "登录成功！");
 					this.currentState = "index";
 					//ViewerContainer.configFile = "config-admin.xml"; 
 				}else{
@@ -197,7 +197,6 @@
 				try
 				{
 					//parse main configuration file to create config data object
-
 					var configXML:XML = XML(event.result);
 					_webService_wsdl = configXML.login_url;
 					webService.wsdl = _webService_wsdl;

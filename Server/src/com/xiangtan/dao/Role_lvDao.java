@@ -1,5 +1,7 @@
 package com.xiangtan.dao;
 
+import java.util.List;
+
 import com.xiangtan.beans.Role_lv;
 /**
  * @author Shangyidong
@@ -54,6 +56,19 @@ public interface Role_lvDao {
 	 * @return 返回成功更新的Role_lv对象。
 	 */
 	public Role_lv update(int id, String roleName, String type, String desText);
+	
+	/***
+	 * 根据用户ID查询用户所属的角色
+	 * @param userid 用户id
+	 * @return
+	 */
+	public List<Role_lv> getRole_lvsByUserid(int userid);
+	
+	/**
+	 * 查询所有角色
+	 * @return
+	 */
+	public List<Role_lv> getAll();
 }
 
 /*

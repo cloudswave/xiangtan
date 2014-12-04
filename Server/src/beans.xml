@@ -22,10 +22,12 @@
 		</property>
 	</bean>
 	
+	<bean id="role_user_mapDao" class="com.xiangtan.dao.impl.Role_user_mapDaoImpl"></bean>
+	
 	<bean id="userinfo_lvDao" class="com.xiangtan.dao.impl.Userinfo_lvDaoImpl"></bean>
 	<bean id="userinfo_lvService" class="com.xiangtan.service.impl.Userinfo_lvServiceImpl">
-		<property name="userinfo_lvDao" ref="userinfo_lvDao">
-		</property>
+		<property name="userinfo_lvDao" ref="userinfo_lvDao"/>
+		<property name="role_user_mapDao" ref="role_user_mapDao"/>
 	</bean>
 	
 	<bean id="role_lvDao" class="com.xiangtan.dao.impl.Role_lvDaoImpl"></bean>
@@ -33,5 +35,6 @@
 		<property name="role_lvDao" ref="role_lvDao">
 		</property>
 	</bean>
+
 	 
 </beans>

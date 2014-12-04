@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <configuration>
     <description/>
-    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/idw/GPServer/idw_v2</taskurl>
+    <taskurl>http://123.127.160.57:8399/arcgis/rest/services/idw/GPServer/idw_v2</taskurl>
     <helpurl>http://win-kul6xduo1pa/arcgisoutput/HMAnalysis/模型22.htm</helpurl>
     <autosubmit>false</autosubmit>
     <shareresults>false</shareresults>

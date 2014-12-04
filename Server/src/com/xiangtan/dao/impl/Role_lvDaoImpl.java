@@ -2,16 +2,20 @@ package com.xiangtan.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.apache.cxf.wsdl.TService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 
 import com.xiangtan.beans.Role_lv;
-import com.xiangtan.beans.Userinfo_lv;
+import com.xiangtan.beans.Role_user_map;
 import com.xiangtan.dao.Role_lvDao;
+import com.xiangtan.dao.Role_user_mapDao;
 /**
  * @author Shangyidong
  * @date 2014-11-21
@@ -21,6 +25,8 @@ public class Role_lvDaoImpl implements Role_lvDao{
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private Role_user_mapDao role_user_mapDao;
 	
 	@Override
 	public Role_lv add(String roleName, String type, String desText) {
@@ -98,6 +104,28 @@ public class Role_lvDaoImpl implements Role_lvDao{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Role_lv> getRole_lvsByUserid(int userid) {
+		//先查role_user_map表
+		List<Role_user_map> role_user_maps = role_user_mapDao.getRole_user_mapsByUserid(userid);
+		List<Role_lv>role_lvs = new ArrayList<>();
+		Role_user_map role_user_map = null;
+		for (Iterator iterator = role_user_maps.iterator(); iterator.hasNext();) {
+			role_user_map = (Role_user_map) iterator.next();
+			//根据role_user_map表中的roleid去role_lv表中查询
+			role_lvs.add(get(role_user_map.getRoleid()));
+		}
+		return role_lvs;
+	}
+
+	@Override
+	public List<Role_lv> getAll() {
+		String sql = "select * from Role_lv order by id";
+		List<Role_lv> role_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Role_lvRowMapper()));
+		System.out.println(role_lvs);
+		return role_lvs;
 	}
 
 }

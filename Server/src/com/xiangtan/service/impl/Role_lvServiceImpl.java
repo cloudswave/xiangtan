@@ -1,5 +1,7 @@
 package com.xiangtan.service.impl;
 
+import java.util.List;
+
 import com.xiangtan.beans.Role_lv;
 import com.xiangtan.dao.Role_lvDao;
 import com.xiangtan.service.Role_lvService;
@@ -46,5 +48,14 @@ public class Role_lvServiceImpl implements Role_lvService{
 		return role_lvDao.update(id, roleName, type, desText);
 	}
 
+	@Override
+	public List<Role_lv> getRole_lvsByUserid(int userid) {
+		return role_lvDao.getRole_lvsByUserid(userid);
+	}
 
+	@Override
+	public List<Role_lv> getAll() {
+		System.out.println("Role_lvServiceImpl.getAll()");
+		return role_lvDao.getAll();
+	}
 }
