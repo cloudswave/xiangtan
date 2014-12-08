@@ -5,4 +5,5 @@
 <configuration>
 	<login_url>http://localhost:8080/Xiangtan_server/userinfo_lvWS?wsdl</login_url>
 	<userinfo_lvWS>http://localhost:8080/Xiangtan_server/userinfo_lvWS?wsdl</userinfo_lvWS>
+	<role_lvWS>http://localhost:8080/Xiangtan_server/role_lvWS?wsdl</role_lvWS>
 </configuration>

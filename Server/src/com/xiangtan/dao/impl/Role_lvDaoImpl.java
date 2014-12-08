@@ -109,6 +109,7 @@ public class Role_lvDaoImpl implements Role_lvDao{
 	@Override
 	public List<Role_lv> getRole_lvsByUserid(int userid) {
 		//œ»≤Èrole_user_map±Ì
+		System.out.println("userid:" + userid);
 		List<Role_user_map> role_user_maps = role_user_mapDao.getRole_user_mapsByUserid(userid);
 		List<Role_lv>role_lvs = new ArrayList<>();
 		Role_user_map role_user_map = null;
