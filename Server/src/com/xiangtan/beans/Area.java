@@ -1,5 +1,9 @@
 package com.xiangtan.beans;
-
+/**
+ * @author Shangyidong
+ * @date 2014-11-21
+ * @version 1.0
+ */
 public class Area {
 	private String areaCode;
 	private int areaLevel;

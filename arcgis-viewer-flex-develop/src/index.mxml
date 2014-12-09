@@ -78,7 +78,7 @@
 				var Userinfo_lv:Object;
 				Userinfo_lv = event.result;
 				if(Userinfo_lv!=null){
-					
+					Alert.show(Userinfo_lv.name + "登录成功！");
 					this.currentState = "index";
 					//ViewerContainer.configFile = "config-admin.xml"; 
 				}else{
@@ -114,13 +114,11 @@
 						code=String.fromCharCode(65+(number));
 					checkcode+=code;
 				}
-				
 				return checkcode;
 			}
 			
 			protected function KEY_DOWN_handler(event:KeyboardEvent):void
 			{
-				// TODO Auto-generated method stub
 				if(event.keyCode==Keyboard.ENTER){
 					Submit_clickHandler(null);
 				}
@@ -128,13 +126,9 @@
 			
 			protected function application_creationCompleteHandler(event:FlexEvent):void
 			{
-				// TODO Auto-generated method stub
-				
-				
 				webService.loadWSDL();   
 				//this.currentState = "login";
 				//pnlLogin.addEventListener(KeyboardEvent.KEY_DOWN,KEY_DOWN_handler);
-				
 			}
 			
 			private function loadConfig():void
@@ -197,7 +191,6 @@
 				try
 				{
 					//parse main configuration file to create config data object
-
 					var configXML:XML = XML(event.result);
 					_webService_wsdl = configXML.login_url;
 					webService.wsdl = _webService_wsdl;
@@ -212,8 +205,7 @@
 	</fx:Script>
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
-		<mx:WebService 
-			id="webService" useProxy="false" showBusyCursor="true" wsdl="{_webService_wsdl}">
+		<mx:WebService 	id="webService" useProxy="false" showBusyCursor="true" wsdl="{_webService_wsdl}">
 			<mx:operation name="login" result="onResult(event)" />
 		</mx:WebService>
 	</fx:Declarations>	

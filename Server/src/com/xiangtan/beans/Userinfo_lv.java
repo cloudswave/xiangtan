@@ -1,11 +1,18 @@
 package com.xiangtan.beans;
-
+/**
+ * @author Shangyidong
+ * @date 2014-11-21
+ * @version 1.0
+ */
 public class Userinfo_lv {
 	private int id;
 	private String name;
-	private int role;
 	private String password;
-	private int groupid;
+	private String email;
+	private String tel;
+	private String truename;
+	private String department;
+	private String note;
 
 	public int getId() {
 		return id;
@@ -15,16 +22,8 @@ public class Userinfo_lv {
 		return name;
 	}
 
-	public int getRole() {
-		return role;
-	}
-
 	public String getPassword() {
 		return password;
-	}
-
-	public int getGroupid() {
-		return groupid;
 	}
 
 	public void setId(int id) {
@@ -35,36 +34,61 @@ public class Userinfo_lv {
 		this.name = name;
 	}
 
-	public void setRole(int role) {
-		this.role = role;
-	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public void setGroupid(int groupid) {
-		this.groupid = groupid;
-	}
-
-	public Userinfo_lv(int id, String name, int role, String password,
-			int groupid) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.role = role;
-		this.password = password;
-		this.groupid = groupid;
 	}
 
 	public Userinfo_lv() {
 		super();
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public String getTruename() {
+		return truename;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public void setTruename(String truename) {
+		this.truename = truename;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
 	@Override
 	public String toString() {
-		return "Userinfo_lv [id=" + id + ", name=" + name + ", role=" + role
-				+ ", password=" + password + ", groupid=" + groupid + "]";
+		return "Userinfo_lv [id=" + id + ", name=" + name + ", password="
+				+ password + ", email=" + email + ", tel=" + tel
+				+ ", truename=" + truename + ", department=" + department
+				+ ", note=" + note + "]";
 	}
 
 }
