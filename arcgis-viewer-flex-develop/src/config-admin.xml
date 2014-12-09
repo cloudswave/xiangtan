@@ -320,12 +320,12 @@
 	</map>
 
 	<widgetcontainer layout="float"> <!--horizontal(default)|float|vertical|fix -->
-		<widget label="书签" icon="assets/images/i_bookmark.png" config="widgets/Bookmark/BookmarkWidget.xml"
+<!-- 		<widget label="书签" icon="assets/images/i_bookmark.png" config="widgets/Bookmark/BookmarkWidget.xml"
 			url="widgets/Bookmark/BookmarkWidget.swf" />
 		<widget label="绘图" icon="assets/images/i_draw2.png" config="widgets/Draw/DrawWidget.xml"
 			url="widgets/Draw/DrawWidget.swf" />
-		<!-- <widget label="RSS" icon="assets/images/i_rss.png" config="widgets/GeoRSS/GeoRSSWidget.xml" 
-			url="widgets/GeoRSS/GeoRSSWidget.swf"/> -->
+		<widget label="RSS" icon="assets/images/i_rss.png" config="widgets/GeoRSS/GeoRSSWidget.xml" 
+			url="widgets/GeoRSS/GeoRSSWidget.swf"/>
 		<widget label="打印" icon="assets/images/i_print.png" config="widgets/Print/PrintWidget.xml"
 			url="widgets/Print/PrintWidget.swf" />
 
@@ -341,9 +341,9 @@
 		<widget label="图表" config="widgets/Chart/ChartWidget.xml" icon="assets/images/i_piechart.png"
 			url="widgets/Chart/ChartWidget.swf" left="80" bottom="80" />
 		<widget label="图层" icon="assets/images/i_layers.png"
-			config="widgets/HeavyMetal/LayerListWidget.xml" url="widgets/HeavyMetal/LayerListWidget.swf" />
+			config="widgets/HeavyMetal/LayerListWidget.xml" url="widgets/HeavyMetal/LayerListWidget.swf" /> -->
 			
-	   <widgetgroup label="采样点管理" >
+	   <widgetgroup label="采样点管理" icon="assets/images/i_piechart.png" >
 			<widget label="上传数据" config="widgets/HeavyMetal/UploadWidget.xml"
 				icon="assets/images/i_layers.png" url="widgets/HeavyMetal/UploadWidget.swf" />
 
@@ -360,25 +360,15 @@
 
 		</widgetgroup>	
 		
-		   <widgetgroup label="地块管理" >
+<!-- 		   <widgetgroup label="地块管理" icon="" >
 			    <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="污染源添加" icon="assets/images/i_edit.png"/>
 			    <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="污染源编辑" icon="assets/images/i_edit.png"/>
 				
                 <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="地块添加" icon="assets/images/i_edit.png"/>	
                 <widget url="widgets/Edit/EditWidget.swf" config="widgets/Edit/EditWidget_2.xml" label="地块编辑" icon="assets/images/i_edit.png"/>	
-		</widgetgroup>	
+		</widgetgroup>	 -->
 		
-	   <widgetgroup label="统计分析" >
-		   			<widget label="反距离插值"
-				    config="widgets/Geoprocessing/GeoprocessingWidget_test.xml"
-				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />   
-	   
-
-
-		   			<widget label="反距离插值-分级"
-				    config="widgets/Geoprocessing/GeoprocessingWidget_idw_class.xml"
-				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />   
-	   
+	   <widgetgroup label="统计分析" icon="assets/images/i_layers.png">
 			     <widget label="反距离插值分析"
 				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
 				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
@@ -389,13 +379,10 @@
 				    config="widgets/Geoprocessing/GeoprocessingWidget_king.xml"
 				    icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
 				 
-			    <widget label="范围分析"
-				 config="widgets/Geoprocessing/GeoprocessingWidget_CalculateViewshed_1.xml"
-				 icon="assets/images/i_options.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
 			
 		</widgetgroup>	
 
-		<widgetgroup label="产地安全" >
+<!-- 		<widgetgroup label="产地安全" icon="">
 			<widget label="污染评价" icon="assets/images/i_search.png" config="widgets/Search/SearchWidget_Pollution.xml"
 			url="widgets/Search/SearchWidget_Pollution.swf" />	
 			<widget label="污染溯源"
@@ -411,7 +398,7 @@
 			<widget label="农作物种植指导"
 				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
 				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />	
-		</widgetgroup>
+		</widgetgroup> -->
 		
 	   <widgetgroup label="系统管理" icon="assets/images/GeoprocessingTool32.png">
 			<widget label="用户管理"
