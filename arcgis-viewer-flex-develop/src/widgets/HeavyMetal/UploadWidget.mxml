@@ -19,6 +19,7 @@
 <viewer:BaseWidget xmlns:fx="http://ns.adobe.com/mxml/2009"
                    xmlns:s="library://ns.adobe.com/flex/spark"
                    xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:esri="http://www.esri.com/2008/ags"
                    xmlns:viewer="com.esri.viewer.*"
                    widgetConfigLoaded="init()">
     <fx:Script>
@@ -30,12 +31,23 @@
 			import flash.net.FileReference;    
 			import mx.controls.Alert;    
 			import mx.events.CloseEvent;    
-			import flash.events.*;    
+			import flash.events.*; 
+			
+			import com.esri.ags.geometry.MapPoint;
+			
+			import com.as3xls.xls.ExcelFile;
+			import com.as3xls.xls.Sheet;
 			
 			private var file:FileReference;    
 			
 			private var filePath:String="";  
+
+			private var feature:Object;
+			private var point:MapPoint;
+		
+			private var xls:Class;
 			
+			private var sheet:Sheet;
             private function init():void
             {
                 if (configXML) // checking for valid content in the configuration file
@@ -56,7 +68,10 @@
 			}   
 			
 			private function uploadfile():void   
-			{    
+			{
+
+
+				
 				var imageTypes:FileFilter=new FileFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg;*.jpeg;*.png");    
 				var docFilter:FileFilter = new FileFilter("Documents", "*.*;*.doc;*.txt"); 
 				//var viewFilter:FileFilter = new FileFilter("Views", "*.avi;*.flv;*.rmvb"); 
@@ -65,10 +80,33 @@
 				file.browse();    
 			}    
 			
+			private var fileName:String=null;
 			private function onSelect(e:Event):void   
-			{    
-				Alert.show("上传 " + file.name + " (共 " + Math.round(file.size) + " 字节)?", "确认上传", Alert.YES | Alert.NO, null, proceedWithUpload);    
+			{
+				fileName = e.target.name;
+				file.load();
+				file.addEventListener(Event.COMPLETE,getData);
+				
+				
+   
 			}    
+			
+			/**
+			 * 获取文件
+			 * */
+			protected function getData(e:Event):void{
+				var dataArr:ByteArray = file.data;
+				
+				var excelFile:ExcelFile = new ExcelFile();
+				excelFile.loadFromByteArray(dataArr);
+				sheet = excelFile.sheets[0];
+				
+				// Display the sheet in the grid
+				grid.dataProvider = sheet.values;				
+				// Initialize the text boxes with the appropriate values
+				Alert.show("选择了 " + file.name + " (共 " + Math.round(file.size) + " 字节)?", "确认上传到服务器上?", Alert.YES | Alert.NO, null, proceedWithUpload); 
+			}
+			
 			
 			private function onProgress(e:ProgressEvent):void   
 			{    
@@ -116,8 +154,14 @@
 							mode="manual"    
 							width="200"/>     
 			
-			<mx:Button label="上传文件"    
+			<mx:Button label="选择文件"    
 					   click="uploadfile();"/>     
-		</mx:VBox> 
+		</mx:VBox>
+		
+		<mx:DataGrid id="grid" 
+					 width="100%" 
+					 sortableColumns="false"
+					 draggableColumns="false" height="100%">
+		</mx:DataGrid>
     </viewer:WidgetTemplate>
 </viewer:BaseWidget>
