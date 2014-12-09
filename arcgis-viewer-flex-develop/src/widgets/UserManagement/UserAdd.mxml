@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				creationComplete="application_creationCompleteHandler(event)"
+				initialize="initializeHandler(event)"
+				width="500" height="700" alpha="1" close="close()" layout="absolute"
+				showCloseButton="true" title="添加用户">
+	<fx:Script>
+		
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.controls.CheckBox;
+			import mx.events.ResizeEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			private var _userinfo_lvWS_:String="";
+			private var _role_lvWS_:String="";
+			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
+			[Bindable]
+			public var myPopUpvar:Array = new Array();
+			public var logs:String = "";
+			public var userId:int = 0;
+			private function initializeHandler(event:FlexEvent):void
+			{
+				loadConfig();
+			}
+			
+			private function loadConfig():void
+			{
+				var configService:HTTPService = new HTTPService();
+				configService.url = DEFAULT_CONFIG_FILE;
+				configService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+				configService.addEventListener(ResultEvent.RESULT, configService_resultHandler);
+				configService.addEventListener(FaultEvent.FAULT, configService_faultHandler);
+				configService.send();
+			}
+			
+			private function configService_resultHandler(event:ResultEvent):void
+			{
+				try
+				{
+					var configXML:XML = XML(event.result);
+					_userinfo_lvWS_ = configXML.userinfo_lvWS;
+					_role_lvWS_ = configXML.role_lvWS;
+					userinfo_lvWS.wsdl = _userinfo_lvWS_;
+					role_lvWS.wsdl = _role_lvWS_;
+					
+					userinfo_lvWS.loadWSDL();   
+					role_lvWS.loadWSDL();   
+					
+					role_lvWS.getAll();
+				}catch (error:Error)
+				{
+					Alert.show(error.message);
+				}
+			}
+			
+			private function configService_faultHandler(event:FaultEvent):void{
+				Alert.show(event.fault.faultString);
+			}
+			
+			private function close():void
+			{
+				PopUpManager.removePopUp(this);    
+			}
+			
+			private function checkUsername():void{
+				if(username.text.toString() == ""){
+					usernameUsedLabel.text = "用户名不可为空";	
+					//sendButton.enabled = false;
+					return;
+				}
+				userinfo_lvWS.getUserinfo_lvByName(username.text.toString());
+				//Alert.show(username.text.toString());
+			//	username.setFocus();//获取焦点
+			}
+			
+			private function checkUsernameHandler(event:ResultEvent):void{
+				var result:Object=event.result;
+				if(result == null){
+					usernameUsedLabel.text = "用户名可用";
+					sendButton.enabled = true;
+				}else{
+					usernameUsedLabel.text = "用户名已经被使用";	
+					username.setFocus();//获取焦点
+					sendButton.enabled = false;
+				}
+				//Alert.show(result.password);
+				//Alert.show(username.text.toString());
+				//usernameUsedLabel.text = "用户名已经被使用";
+			}
+			
+			private function addHandler(event:ResultEvent){
+				var result:Object=event.result;
+				if(result == null){
+					Alert.show("添加失败");
+				}else{
+					Alert.show("添加成功");
+					userId = result.id;
+					var outgoingEvent:Event = new Event("pop", false);
+					//logs = labelPosition.selectedItem.toString();
+					dispatchEvent(outgoingEvent);
+					close();
+				}
+			}
+			
+			private function checkBox_change(e:Event):void
+			{
+				if(e.target.selected)
+				{
+					//lbItems.text = lbItems.text+e.target.label+" ";
+				}
+				else
+				{
+					//lbItems.text = lbItems.text.replace(e.target.label,"");
+				}
+			}
+			private function getAllRoleHandler(event:ResultEvent):void{
+				var rolesResult:ArrayCollection=event.result as ArrayCollection;
+				//Alert.show(result.length.toString());
+				for(var i:int=0;i<rolesResult.length;i++)
+				{
+					var checkBox:CheckBox = new CheckBox();
+					checkBox.id = rolesResult[i].id;;
+					checkBox.label = rolesResult[i].roleName;
+					checkBox.setStyle("fontSize",14);
+					checkBox.x = 100;
+					checkBox.y = (i + 1) * 25;
+					checkBox.addEventListener(Event.CHANGE,checkBox_change);
+					//this.addChild(checkBox);//也可是this.gridItem.addChild(checkBox)
+					if(rolesResult[i].type == "region"){
+						regionRoles.addChild(checkBox);
+					}else if(rolesResult[i].type == "command"){
+						commandRoles.addChild(checkBox);						
+					}
+				}    
+			}
+
+			protected function application_creationCompleteHandler(event:FlexEvent):void
+			{
+				//userinfo_lvWS.loadWSDL();   
+				//role_lvWS.loadWSDL();   
+			}
+			
+			private function faultHandler(event:FaultEvent):void{
+				//返回错误处理
+				//Alert.show("Request error!");
+				Alert.show(event.fault.faultString);
+			}
+			
+			private function submitButton():void
+			{
+				if(username.text.toString() == "" || password.text.toString() == "" || password1.text.toString() == ""){
+					message.text = "请将信息填写完整";
+					return;
+				}
+				if(password.text.toString() != password1.text.toString()){
+					message.text = "两次输入的密码不一致";
+					return;
+				}
+				var regionRolesCheckBoxs:Array = regionRoles.getChildren();
+				//var roleIds:Array = new Array();
+				var roleIds:String = "";
+				for(var i:int=0;i<regionRolesCheckBoxs.length;i++){
+					var c:CheckBox = regionRolesCheckBoxs[i];
+					if(c.selected){
+						//Alert.show(c.id.toString());
+						//roleIds.concat(c.id);
+						roleIds += c.id.toString() + ",";
+					}
+				}
+				var commandRolesCheckBoxs:Array = commandRoles.getChildren();
+				for(var i:int=0;i<commandRolesCheckBoxs.length;i++){
+					var c:CheckBox = commandRolesCheckBoxs[i];
+					if(c.selected){
+						//Alert.show(c.id.toString());
+						//roleIds.concat(c.id);
+						roleIds += c.id.toString() + ",";
+					}
+				}
+				//Alert.show(roleIds);
+				//add(String name, String password, String email, String tel, String truename, String department, String note, int[] roleIds)
+				userinfo_lvWS.add(username.text.toString(),password.text.toString(),email.text.toString(),tel.text.toString(),truename.text.toString(),department.text.toString(),note.text.toString(),roleIds);
+				//var outgoingEvent:Event = new Event("pop", false);
+				//logs = labelPosition.selectedItem.toString();
+				//dispatchEvent(outgoingEvent);
+				//close();
+			}
+			public function setData(str:Array):void
+			{
+				myPopUpvar = str;
+			}
+			
+			public function cancel(){
+				close();
+			}
+			
+			public var array:Array=new Array({"name":"语文","id":"chinese","x":"80"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"英语","id":"english","x":"240"}); 
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!--
+		<fx:WebService id="webService" showBusyCursor="true" useProxy="false"
+					   wsdl="{_webService_wsdl}">
+			<fx:operation name="getAll" result="onResult(event)"/>
+		</fx:WebService>
+		-->
+		<s:WebService id="userinfo_lvWS" showBusyCursor="true" useProxy="false" wsdl="{_userinfo_lvWS_}">
+			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
+			<s:operation fault="faultHandler(event)" name="getUserinfo_lvByName"	 result="checkUsernameHandler(event)"/>
+			<s:operation fault="faultHandler(event)" name="add" result="addHandler(event)"/>
+		</s:WebService>
+		<s:WebService id="role_lvWS" showBusyCursor="true" useProxy="false" wsdl="{_role_lvWS_}">
+			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
+			<s:operation fault="faultHandler(event)" name="getAll" result="getAllRoleHandler(event)"/>
+		</s:WebService>
+
+	</fx:Declarations>
+	<mx:Form id="basicPropertyPane" width="100%" label="添加用户" cornerRadius="5" indicatorGap="5"
+			 paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+		<!--<mx:Label text="Label Properties" fontStyle="italic" width="100%" fontWeight="bold"/>-->
+		<mx:FormItem label="用户名">
+			<mx:HBox>
+				<mx:TextInput id="username" width="90%" focusOut="checkUsername();"/>
+				<mx:Label text="*"/>
+				<mx:Label id="usernameUsedLabel" color="red" text=""/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="密码">
+			<mx:HBox>
+				<mx:TextInput id="password" width="90%" displayAsPassword="true"/>
+				<mx:Label text="*"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="重复密码">
+			<mx:HBox>
+				<mx:TextInput id="password1" width="90%" displayAsPassword="true"/>
+				<mx:Label text="*"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="E-mail">
+			<mx:HBox>
+				<mx:TextInput id="email" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="电话">
+			<mx:HBox>
+				<mx:TextInput id="tel" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="姓名">
+			<mx:HBox>
+				<mx:TextInput id="truename" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="部门">
+			<mx:HBox>
+				<mx:TextInput id="department" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="备注">
+			<mx:HBox>
+				<mx:TextInput id="note" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<!--
+		<mx:FormItem label="Color:">
+		<mx:ColorPicker id="labelColor"/>
+		</mx:FormItem>
+		<mx:FormItem id="locationForm" label="Location(X,Y):">
+		<mx:NumericStepper minimum="0" maximum="1000" id="locationX" />
+		<mx:NumericStepper minimum="0" maximum="1000" id="locationY"/>
+		</mx:FormItem>
+		<mx:FormItem label="Position:">
+		<mx:ComboBox id="labelPosition" dataProvider="{myPopUpvar}" />
+		</mx:FormItem>
+		<mx:FormItem label="Offset(X,Y):">
+		<mx:NumericStepper minimum="-200" maximum="200" id="labelOffsetX" />
+		<mx:NumericStepper minimum="-200" maximum="200" id="labelOffsetY"/>
+		</mx:FormItem>
+		-->
+		<mx:FormItem label="region角色">
+		<mx:VBox id="regionRoles"/>
+		</mx:FormItem>
+		<mx:FormItem label="command角色">
+			<mx:VBox id="commandRoles"/>
+		</mx:FormItem>
+		
+		<!--<s:FormItem>
+			<mx:HBox>
+				<MultipleComboBox width="200" id="myCombox2"  split=";" prompt="请选择" >    
+					<s:ArrayCollection list="{array}"/>
+				</MultipleComboBox>
+			</mx:HBox>
+		</s:FormItem>
+		-->
+		<!--
+		<mx:HBox>
+			<mx:Label id="lbItems" x="56" y="245" text="已选角色: " width="345" fontSize="14"/>
+		</mx:HBox>
+		-->
+		<mx:HBox>
+			<mx:Button id="sendButton" right="10" bottom="10" label="保存" click="submitButton()"
+					   enabled="false"/>
+			<mx:Button id="cancelButton" right="10" bottom="10" label="取消" click="cancel()"
+					   enabled="true"/>
+			<mx:Label id="message" color="red" text=""/>
+		</mx:HBox>
+	</mx:Form>
+</mx:TitleWindow>
