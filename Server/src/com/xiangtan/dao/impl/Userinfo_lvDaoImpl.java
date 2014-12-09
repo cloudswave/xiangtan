@@ -139,7 +139,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 
 	@Override
 	public List<Userinfo_lv> getUserinfo_lvsLikeName(String name) {
-		// TODO Auto-generated method stub
+		// select * from Userinfo_lv where name like '%w%' order by id
 		String sql = "select * from Userinfo_lv where name like '%"+name+"%' order by id";
 		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
 		return Userinfo_lvs;

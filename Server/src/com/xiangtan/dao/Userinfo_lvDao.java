@@ -78,7 +78,7 @@ public interface Userinfo_lvDao {
 	 * @param name
 	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
 	 */
-	public Userinfo_lv getUserinfo_lvsLikeName(String name);
+	public List<Userinfo_lv> getUserinfo_lvsLikeName(String name);
 	
 	//public Userinfo_lv update(int id, String name, String password,String email, String tel, String truename, String department,String note);
 }

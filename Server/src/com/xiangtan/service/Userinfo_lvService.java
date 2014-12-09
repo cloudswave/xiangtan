@@ -71,7 +71,7 @@ public interface Userinfo_lvService {
 	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
 	 */
 	@WebMethod
-	public Userinfo_lv getUserinfo_lvsLikeName(String name);
+	public List<Userinfo_lv> getUserinfo_lvsLikeName(String name);
 	
 	/**
 	 * 根据用户角色id查询装有Userinfo_lv的list
