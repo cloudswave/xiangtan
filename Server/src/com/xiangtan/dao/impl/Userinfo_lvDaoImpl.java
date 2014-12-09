@@ -105,6 +105,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	@Override
 	public boolean delete(int id) {
 		String sql = "delete from Userinfo_lv where id = ?";
+		System.out.println(sql);
 		int update = jdbcTemplate.update(sql, id);
 		if (update > 0) {//É¾³ý³É¹¦
 			return true;
@@ -128,5 +129,12 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
 		return Userinfo_lvs;		
 	}
-
+	//String sql = "select top 10 * from Userinfo_lv where id not in(select top 10 id from Userinfo_lv) order by id";
+	@Override
+	public List<Userinfo_lv> getUsersByPager(int pageSize, int currentPage) {
+		String sql = "select top " + pageSize + " * from Userinfo_lv where id not in(select top " + pageSize * (currentPage - 1) + " id from Userinfo_lv) order by id";
+		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		return Userinfo_lvs;		
+	}
+	
 }

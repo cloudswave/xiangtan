@@ -35,6 +35,12 @@
 		<property name="role_lvDao" ref="role_lvDao">
 		</property>
 	</bean>
+	
+	<bean id="pagerDao" class="com.xiangtan.dao.impl.PagerDaoImpl"></bean>
+	<bean id="pagerService" class="com.xiangtan.service.impl.PagerServiceImpl">
+		<property name="pagerDao" ref="pagerDao">
+		</property>
+	</bean>
 
 	 
 </beans>

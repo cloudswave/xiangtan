@@ -42,6 +42,22 @@ public interface Userinfo_lvService {
 	public Userinfo_lv getUserinfo_lv(int id);
 	
 	/**
+	 * 更新用户信息
+	 * @param id
+	 * @param name
+	 * @param password
+	 * @param email
+	 * @param tel
+	 * @param truename
+	 * @param department
+	 * @param note
+	 * @param roleIds
+	 * @return 更新成功的Userinfo_lv对象
+	 */
+	@WebMethod
+	public Userinfo_lv update(int id, String name, String password, String email, String tel, String truename, String department, String note, String roleIds);
+	
+	/**
 	 * 根据用户name查询Userinfo_lv对象
 	 * @param name 用户名
 	 * @return 若查询成功，则返回查询到的Userinfo_lv对象。否则返回null。
@@ -80,6 +96,15 @@ public interface Userinfo_lvService {
 	 */
 	@WebMethod
 	public List<Userinfo_lv> getAll();
+	
+	/**
+	 * 
+	 * @param pageSize 每页记录数
+	 * @param currentPage 当前页码
+	 * @return
+	 */
+	@WebMethod
+	public List<Userinfo_lv> getUsersByPager(int pageSize, int currentPage);
 }
 
 /**

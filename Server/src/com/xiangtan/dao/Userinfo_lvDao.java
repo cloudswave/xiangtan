@@ -64,6 +64,16 @@ public interface Userinfo_lvDao {
 	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
 	 */
 	public List<Userinfo_lv> getAll();
+	
+	/**
+	 * 
+	 * @param pageSize 每页的记录数
+	 * @param currentPage 当前页码
+	 * @return
+	 */
+	public List<Userinfo_lv> getUsersByPager(int pageSize, int currentPage);
+	
+	//public Userinfo_lv update(int id, String name, String password,String email, String tel, String truename, String department,String note);
 }
 
 /**

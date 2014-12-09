@@ -87,4 +87,21 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 		return userinfo_lvDao.getAll();
 	}
 
+	@Override
+	public List<Userinfo_lv> getUsersByPager(int pageSize, int currentPage) {
+		if (pageSize <= 0 || currentPage <= 0) {
+			return null;
+		}
+		return userinfo_lvDao.getUsersByPager(pageSize, currentPage);
+	}
+
+	@Override
+	public Userinfo_lv update(int id, String name, String password,
+			String email, String tel, String truename, String department,
+			String note, String roleIds) {
+		role_user_mapDao.update(id, roleIds);
+		Userinfo_lv userinfo_lv = userinfo_lvDao.update(id, name, password, email, tel, truename, department, note);
+		return userinfo_lv;
+	}
+
 }
