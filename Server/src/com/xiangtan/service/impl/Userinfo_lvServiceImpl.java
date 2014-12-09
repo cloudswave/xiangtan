@@ -104,4 +104,12 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 		return userinfo_lv;
 	}
 
+	@Override
+	public List<Userinfo_lv> getUserinfo_lvsLikeName(String name) {
+		if (name.trim().length() == 0) {
+			return null;
+		}
+		return userinfo_lvDao.getUserinfo_lvsLikeName(name.trim());
+	}
+
 }

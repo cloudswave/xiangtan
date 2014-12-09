@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+				width="400" height="300" alpha="1" close="close()" layout="absolute"
+				showCloseButton="true" title="添加用户">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;	
+			[Bindable]
+			public var myPopUpvar:Array = new Array();
+			public var logs:String = "";
+			private function close():void
+			{
+				PopUpManager.removePopUp(this);    
+			}
+			
+			private function checkUsername():void{
+				Alert.show(username.text.toString());
+				username.setFocus();//获取焦点
+			}
+			
+			private function checkUsernameHandler(event:ResultEvent):void{
+				Alert.show(username.text.toString());
+				username.setFocus();//获取焦点
+				usernameUsedLabel.text = "用户名已经被使用";
+			}
+			
+			private function sendMessage():void
+			{
+				var outgoingEvent:Event = new Event("pop", false);
+				//logs = labelPosition.selectedItem.toString();
+				dispatchEvent(outgoingEvent);
+				close();
+			}
+			public function setData(str:Array):void
+			{
+				myPopUpvar = str;
+			}
+		]]>
+		</mx:Script>
+	<mx:Form id="basicPropertyPane" width="100%" label="添加用户" cornerRadius="5" indicatorGap="5"
+			 paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+		<!--<mx:Label text="Label Properties" fontStyle="italic" width="100%" fontWeight="bold"/>-->
+		<mx:FormItem label="用户名">
+			<mx:HBox>
+				<mx:TextInput id="username" width="90%"  focusOut="checkUsername();"/>
+				<mx:Label text="*"/>
+				<mx:Label text="" id="usernameUsedLabel" color="red"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="密码">
+			<mx:HBox>
+			<mx:TextInput id="password" width="90%" displayAsPassword="true"/>
+				<mx:Label text="*"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="重复密码">
+			<mx:HBox>
+			<mx:TextInput id="password1" width="90%" displayAsPassword="true"/>
+				<mx:Label text="*"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="E-mail">
+			<mx:HBox>
+				<mx:TextInput id="email" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="电话">
+			<mx:HBox>
+				<mx:TextInput id="tel" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="姓名">
+			<mx:HBox>
+				<mx:TextInput id="truename" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="部门">
+			<mx:HBox>
+				<mx:TextInput id="department" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="备注">
+			<mx:HBox>
+				<mx:TextInput id="note" width="90%"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<!--
+		<mx:FormItem label="Color:">
+			<mx:ColorPicker id="labelColor"/>
+		</mx:FormItem>
+		<mx:FormItem id="locationForm" label="Location(X,Y):">
+			<mx:NumericStepper minimum="0" maximum="1000" id="locationX" />
+			<mx:NumericStepper minimum="0" maximum="1000" id="locationY"/>
+		</mx:FormItem>
+		<mx:FormItem label="Position:">
+			<mx:ComboBox id="labelPosition" dataProvider="{myPopUpvar}" />
+		</mx:FormItem>
+		<mx:FormItem label="Offset(X,Y):">
+			<mx:NumericStepper minimum="-200" maximum="200" id="labelOffsetX" />
+			<mx:NumericStepper minimum="-200" maximum="200" id="labelOffsetY"/>
+		</mx:FormItem>
+		-->
+		<mx:HBox>
+			<mx:Button right="10" bottom="10" label="保存" click="sendMessage()"/>
+			<mx:Button right="10" bottom="10" label="" click="sendMessage()"/>
+		</mx:HBox>
+	</mx:Form>
+</mx:TitleWindow>

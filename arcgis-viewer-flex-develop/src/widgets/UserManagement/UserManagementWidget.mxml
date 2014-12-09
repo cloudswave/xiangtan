@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+///////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2010-2011 Esri. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+///////////////////////////////////////////////////////////////////////////
+-->
+<viewer:BaseWidget xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:viewer="com.esri.viewer.*"
+				   creationComplete="application_creationCompleteHandler(event)"
+				   initialize="initializeHandler(event)" widgetConfigLoaded="init()">
+	
+    <fx:Script>
+        <![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.IFlexDisplayObject;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.Fault;
+			import mx.rpc.Responder;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.events.CloseEvent;
+			import mx.rpc.http.HTTPService;
+			
+			import widgets.UserManagement.UserAdd;
+			import widgets.UserManagement.UserView;
+			private var _webService_wsdl:String="";
+			private var _pagerWS_:String = "";
+			public var userAdd:Object ;
+			public var userView:Object ;
+			public var userEdit:Object ;
+			public var userSearch:Object ;
+			private var pager:Object;
+			
+			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
+			var users:ArrayCollection = new ArrayCollection();
+
+            //this function called when the widget's configuration is loaded
+            private function init():void
+            {
+				//webService.getAll();
+				
+				pagerWS.getPager("Userinfo_lv");
+                if (configXML) // checking for valid content in the configuration file
+                {
+                    //lbl.text = configXML.content || getDefaultString("helloContent");
+                }
+            }
+			
+			private function initializeHandler(event:FlexEvent):void
+			{
+				loadConfig();
+			}
+			
+			private function loadConfig():void
+			{
+				var configService:HTTPService = new HTTPService();
+				configService.url = DEFAULT_CONFIG_FILE;
+				configService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+				configService.addEventListener(ResultEvent.RESULT, configService_resultHandler);
+				configService.addEventListener(FaultEvent.FAULT, configService_faultHandler);
+				configService.send();
+			}
+			[Bindable]
+			public var myAC:ArrayCollection = new ArrayCollection([
+				{name:"Tom",username:"汤姆猫",join:"08/08/2008 11:07:23",login:"09/12/2012 09:34:21"},
+				{name:"Tim",username:"假正经",join:"01/08/2007 23:12:09",login:"09/01/2012 13:07:56"},
+				{name:"Lucy",username:"梦乡",join:"09/11/1998 12:05:12",login:"09/11/2012 17:09:22"},
+				{name:"Kity",username:"玉如意",join:"08/01/2000 02:29:31",login:"11/11/2001 09:29:17"},
+				{name:"kit",username:"烽火戏诸侯",join:"08/08/2001 11:07:23",login:"09/12/2012 09:34:21"},
+				{name:"John",username:"静静等待",join:"01/08/2007 23:12:09",login:"09/01/2012 13:07:56"},
+				{name:"VB",username:"梦里水乡",join:"09/11/1998 12:05:12",login:"09/11/2012 17:09:22"},
+				{name:"FX",username:"好乐买",join:"08/08/2000 02:23:31",login:"11/11/2011 04:29:17"}
+			]);
+		
+			public function formatDate(row:Object,col:DataGridColumn):String{
+				var retVal:String = "";
+				if(col.dataField == "join" ){
+					retVal = dfmt.format(row.join)
+				}
+				else if(col.dataField == "login"){
+					retVal = dfmt.format(row.login)
+				}
+				return retVal;
+			}
+			
+			public function onClick(event:Event ):void{
+				var name:String =userList.selectedItem.name;
+				//Alert.show(name);
+				//var users:ArrayCollection = 
+				//Alert.show(webService.wsdl);
+				//Alert.show(users.toString());
+			}
+			
+			private function addUser(event:MouseEvent):void
+			{
+				/*
+				PopUpManager.addPopUp(firstWindow, this, true);
+				PopUpManager.centerPopUp(firstWindow);
+				firstWindow.setData(new Array("bobo", "huhu", "coco"));
+				*/
+				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
+				userAdd = PopUpManager.createPopUp(this, UserAdd, true);
+				PopUpManager.centerPopUp(userAdd as IFlexDisplayObject);
+				//userAdd.setData(new Array("bobo", "huhu", "coco"));
+				userAdd.addEventListener("pop",getWindowData2);
+				//users.addItemAt({name:"a",email:"12",tel:"123",truename:"syd",department:"A",note:"4"}, 0); 
+			}
+			
+			private function searchUser(event:MouseEvent):void{
+				userSearch = PopUpManager.createPopUp(this, UserSearch, true);
+				PopUpManager.centerPopUp(userSearch as IFlexDisplayObject);
+			}
+			
+			private function viewUser(event:MouseEvent):void
+			{
+				var selectedIndices:Array = userList.selectedIndices;
+				if(selectedIndices.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
+				var userId:int = 0;
+				for each(var a:int in selectedIndices) {
+					//Alert.show(users.getItemAt(a).id);
+					userId = users.getItemAt(a).id;
+					break;//当选中多个的时候只显示第一个
+				}
+				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
+				userView = PopUpManager.createPopUp(this, UserView, true);
+				userView.setUserId(userId);
+				PopUpManager.centerPopUp(userView as IFlexDisplayObject);
+				//userAdd.setData(new Array("bobo", "huhu", "coco"));
+				//userAdd.addEventListener("pop",getWindowData2);
+			}
+			
+			private function firstPage(event:MouseEvent):void{
+				if(pager.currentPage == 1){
+					return;
+				}
+				//getUsersByPager(int pageSize, int currentPage) 
+				pager.currentPage = 1;
+				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				//...
+			}
+			
+			private function prePage(event:MouseEvent):void{
+				if(pager.currentPage == 1){
+					return;
+				}
+				pager.currentPage -= 1;
+				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				//...
+			}
+			
+			private function nextPage(event:MouseEvent):void{
+				if(pager.currentPage == pager.totalPage){
+					return;
+				}
+				pager.currentPage += 1;
+				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				//...
+			}
+			
+			private function lastPage(event:MouseEvent):void{
+				if(pager.currentPage == pager.totalPage){
+					return;
+				}
+				pager.currentPage = pager.totalPage;
+				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				//...
+			}
+			
+			private function getWindowData2(e:Event):void
+			{
+				users.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
+				//Alert.show(userAdd.logs);
+				//Alert.show(userAdd.labelPosition.selectedItem.toString());
+				//Alert.show("color:" + userAdd.labelColor.selectedColor);
+			}
+			
+			private function deleteUser(event:MouseEvent):void{//删除选中的用户，可以多选				
+				Alert.show("确认要删除吗？","删除提示",Alert.YES|Alert.NO,null,function(event:CloseEvent):void{
+					if(event.detail==Alert.YES){
+						var selectedIndices:Array = userList.selectedIndices;
+						for each(var a:int in selectedIndices) {
+						//Alert.show(users.getItemAt(a).name);
+						webService.deleteUserinfo_lv(users.getItemAt(a).id);
+						users.removeItemAt(a);
+						}
+					}else if(event.detail==Alert.NO){
+						
+					}
+					return;
+				},null,Alert.NO);
+			}
+			
+			private function editUser(event:MouseEvent):void{
+				var selectedIndices:Array = userList.selectedIndices;
+				if(selectedIndices.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
+				var userId:int = 0;
+				for each(var a:int in selectedIndices) {
+					//Alert.show(users.getItemAt(a).id);
+					userId = users.getItemAt(a).id;
+					break;//当选中多个的时候只显示第一个
+				}
+				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
+				userEdit = PopUpManager.createPopUp(this, UserEdit, true);
+				//Alert.show(userId.toString());
+				userEdit.setUserId(userId);
+				PopUpManager.centerPopUp(userEdit as IFlexDisplayObject);
+				userEdit.addEventListener("pop",userEditHandler);
+			}
+			
+			private function userEditHandler(e:Event):void
+			{
+				//users.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
+				var selectedIndices:Array = userList.selectedIndices;
+				if(selectedIndices.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
+				var userId:int = 0;
+				for each(var a:int in selectedIndices) {
+					users.getItemAt(a).email = userEdit.email.text;
+					users.getItemAt(a).tel = userEdit.tel.text;
+					users.getItemAt(a).truename = userEdit.truename.text;
+					users.getItemAt(a).department = userEdit.department.text;
+					users.getItemAt(a).note = userEdit.note.text;
+					break;//当选中多个的时候只显示第一个
+				}
+			}
+
+			private function onResult(event:ResultEvent):void{
+				users = event.result as ArrayCollection;
+				userList.dataProvider = users;
+			}
+			
+			private function deleteResult(event:ResultEvent):void{
+				var result:Object = event.result;
+				//Alert.show(result.toString());
+			}
+			
+			private function getUsersByPagerResult(event:ResultEvent):void{
+				users = event.result as ArrayCollection;
+				userList.dataProvider = users;
+			}
+			
+			private function getPagerResult(event:ResultEvent):void{
+				pager = event.result;
+				//当前第1页，每页显示15条。共10条记录，一共1页。
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				//int pageSize, int currentPage
+				//Alert.show(result.toString());
+			}
+			
+			protected function application_creationCompleteHandler(event:FlexEvent):void
+			{
+				webService.loadWSDL();   
+				pagerWS.loadWSDL();   
+			}
+			
+			private function configService_resultHandler(event:ResultEvent):void
+			{
+				try
+				{
+					//parse main configuration file to create config data object
+					var configXML:XML = XML(event.result);
+					_webService_wsdl = configXML.userinfo_lvWS;
+					_pagerWS_=configXML.pagerWS;
+					
+					webService.wsdl = _webService_wsdl;
+					pagerWS.wsdl = _pagerWS_;
+					//Alert.show(_webService_wsdl);
+				}catch (error:Error)
+				{
+					Alert.show(error.message);
+				}
+			}
+			
+			private function configService_faultHandler(event:FaultEvent):void
+			{
+				var sInfo:String = "";
+				
+				if (event.fault.rootCause is IOErrorEvent)
+				{
+					var ioe:IOErrorEvent = event.fault.rootCause as IOErrorEvent;
+					// Missing config file
+					if (ioe.errorID == 2032)
+					{
+						sInfo += 'missingConfigFileText' + "\n\n";
+					}
+					else
+					{
+						// some other IOError
+						sInfo += event.fault.rootCause + "\n\n";
+					}
+				}
+				
+				if (event.fault.rootCause is SecurityErrorEvent)
+				{
+					var sec:SecurityErrorEvent = event.fault.rootCause as SecurityErrorEvent;
+					// config file with crossdomain issue
+					if (sec.errorID == 2048)
+					{
+						sInfo += 'configFileCrossDomain'+ "\n\n";
+					}
+						// some other Security error
+					else
+					{
+						sInfo += event.fault.rootCause + "\n\n";
+					}
+				}
+				
+				if (event.statusCode) // e.g. 404 - Not Found - http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+				{
+					sInfo += 'httpResponseStatus'+ "\n\n";
+				}
+				
+				sInfo += event.fault.faultCode + "\n\n";
+				sInfo += event.fault.faultString + "\n\n";
+				sInfo += event.fault.faultDetail;
+				Alert.show(sInfo);
+			}
+        ]]>
+    </fx:Script>
+	<fx:Declarations>
+		<mx:DateFormatter id="dfmt" formatString="YYYY-MM-DD"/>
+		<mx:WebService id="webService" showBusyCursor="true" useProxy="false"
+					   wsdl="{_webService_wsdl}">
+			<mx:operation name="getAll" result="onResult(event)"/>
+			<mx:operation name="deleteUserinfo_lv" result="deleteResult(event)"/>
+			<mx:operation name="getUsersByPager" result="getUsersByPagerResult(event)"/>
+		</mx:WebService>
+		<mx:WebService id="pagerWS" showBusyCursor="true" useProxy="false"
+					   wsdl="{_pagerWS_}">
+			<mx:operation name="getPager" result="getPagerResult(event)"/>
+		</mx:WebService>
+	</fx:Declarations>
+
+    <viewer:WidgetTemplate id="helloWorld" width="1150" height="600">
+        <viewer:layout>
+            <s:VerticalLayout horizontalAlign="center" verticalAlign="middle">
+			</s:VerticalLayout>
+			
+        </viewer:layout>
+
+		<!--
+		
+        <s:Label id="lbl"
+                 width="100%"
+                 fontSize="18"
+                 fontStyle="italic"
+                 fontWeight="bold"/>
+		-->
+		<!-- http://blog.csdn.net/lihua2915/article/details/5856029 -->
+		<s:Panel width="100%" height="100%" chromeColor="#47698D" horizontalCenter="0" title="用户列表"
+				 verticalCenter="-14">
+			<mx:DataGrid id="userList" x="0" y="0" width="100%" height="100%"
+						 allowMultipleSelection="true" chromeColor="#47698D" dataProvider="{users}">
+				<mx:columns>
+					<mx:DataGridColumn width="50" dataField="id" headerText="ID"/>
+					<mx:DataGridColumn dataField="name" headerText="用户名"/>
+					<mx:DataGridColumn dataField="email" headerText="E-mail"/>
+					<mx:DataGridColumn dataField="tel" headerText="电话"/>
+					<mx:DataGridColumn dataField="truename" headerText="姓名"/>
+					<mx:DataGridColumn dataField="department" headerText="部门"/>
+					<mx:DataGridColumn dataField="note" headerText="备注"/>
+				</mx:columns>
+			</mx:DataGrid>
+
+		</s:Panel>
+		<mx:HBox>
+			<mx:Button id="addUserButton" label="添加用户" click="addUser(event)"/>
+			<mx:Button id="deleteUserButton" label="删除用户" click="deleteUser(event)"/>
+			<mx:Button id="updateUser" label="修改用户" click="editUser(event)"/>
+			<mx:Button id="view" label="查看详情" click="viewUser(event)"/>
+			<mx:Button id="search" label="查找用户" click="searchUser(event)"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Button id="firstPageButton" label="首页" click="firstPage(event)"/>
+			<mx:Button id="prePageButton" label="上一页" click="prePage(event)"/>
+			<mx:Button id="nextPageButton" label="下一页" click="nextPage(event)"/>
+			<mx:Button id="lastPageButton" label="尾页" click="lastPage(event)"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label id="pagerLabel"/>
+		</mx:HBox>
+    </viewer:WidgetTemplate>
+</viewer:BaseWidget>
