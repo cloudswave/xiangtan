@@ -48,7 +48,7 @@
 			private var pager:Object;
 			
 			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
-			var users:ArrayCollection = new ArrayCollection();
+			var users:Object = new Array();
 
             //this function called when the widget's configuration is loaded
             private function init():void
@@ -129,15 +129,16 @@
 			
 			private function viewUser(event:MouseEvent):void
 			{
-				var selectedIndices:Array = userList.selectedIndices;
-				if(selectedIndices.length == 0){
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
 					Alert.show("请先选中用户");
 					return;
 				}
 				var userId:int = 0;
-				for each(var a:int in selectedIndices) {
+				for each(var a:Object in selectedItems) {
 					//Alert.show(users.getItemAt(a).id);
-					userId = users.getItemAt(a).id;
+					//userList.getChildAt(
+					userId = a.id;
 					break;//当选中多个的时候只显示第一个
 				}
 				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
@@ -191,20 +192,29 @@
 			
 			private function getWindowData2(e:Event):void
 			{
-				users.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
+				userList.dataProvider.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
 				//Alert.show(userAdd.logs);
 				//Alert.show(userAdd.labelPosition.selectedItem.toString());
 				//Alert.show("color:" + userAdd.labelColor.selectedColor);
 			}
 			
-			private function deleteUser(event:MouseEvent):void{//删除选中的用户，可以多选				
+			private function deleteUser(event:MouseEvent):void{//删除选中的用户，可以多选		
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
 				Alert.show("确认要删除吗？","删除提示",Alert.YES|Alert.NO,null,function(event:CloseEvent):void{
 					if(event.detail==Alert.YES){
+						//var selectedItems:Array = userList.selectedItems;
 						var selectedIndices:Array = userList.selectedIndices;
+						var jj:int = users.length;
+						//Alert.show(users.length);
+						for(var a:int = selectedIndices.length - 1;a>=0;a--){
+							webService.deleteUserinfo_lv(userList.dataProvider.getItemAt(selectedIndices[a]).id);
+							userList.dataProvider.removeItemAt(selectedIndices[a]);
+						}
 						for each(var a:int in selectedIndices) {
-						//Alert.show(users.getItemAt(a).name);
-						webService.deleteUserinfo_lv(users.getItemAt(a).id);
-						users.removeItemAt(a);
 						}
 					}else if(event.detail==Alert.NO){
 						
@@ -214,17 +224,29 @@
 			}
 			
 			private function editUser(event:MouseEvent):void{
-				var selectedIndices:Array = userList.selectedIndices;
-				if(selectedIndices.length == 0){
+//				var selectedIndices:Array = userList.selectedIndices;
+//				if(selectedIndices.length == 0){
+//					Alert.show("请先选中用户");
+//					return;
+//				}
+				var userId:int = 0;
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
 					Alert.show("请先选中用户");
 					return;
 				}
-				var userId:int = 0;
+				for each(var aa:Object in selectedItems){
+					//Alert.show(aa.id.toString());
+					userId = aa.id;
+					break;//当选中多个的时候只显示第一个
+				}
+				/*
 				for each(var a:int in selectedIndices) {
 					//Alert.show(users.getItemAt(a).id);
 					userId = users.getItemAt(a).id;
 					break;//当选中多个的时候只显示第一个
 				}
+				*/
 				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
 				userEdit = PopUpManager.createPopUp(this, UserEdit, true);
 				//Alert.show(userId.toString());
@@ -236,24 +258,24 @@
 			private function userEditHandler(e:Event):void
 			{
 				//users.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
-				var selectedIndices:Array = userList.selectedIndices;
-				if(selectedIndices.length == 0){
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
 					Alert.show("请先选中用户");
 					return;
 				}
 				var userId:int = 0;
-				for each(var a:int in selectedIndices) {
-					users.getItemAt(a).email = userEdit.email.text;
-					users.getItemAt(a).tel = userEdit.tel.text;
-					users.getItemAt(a).truename = userEdit.truename.text;
-					users.getItemAt(a).department = userEdit.department.text;
-					users.getItemAt(a).note = userEdit.note.text;
+				for each(var a:Object in selectedItems) {
+					a.email = userEdit.email.text;
+					a.tel = userEdit.tel.text;
+					a.truename = userEdit.truename.text;
+					a.department = userEdit.department.text;
+					a.note = userEdit.note.text;
 					break;//当选中多个的时候只显示第一个
 				}
 			}
 
 			private function onResult(event:ResultEvent):void{
-				users = event.result as ArrayCollection;
+				users = event.result;
 				userList.dataProvider = users;
 			}
 			
@@ -263,7 +285,7 @@
 			}
 			
 			private function getUsersByPagerResult(event:ResultEvent):void{
-				users = event.result as ArrayCollection;
+				users = event.result;
 				userList.dataProvider = users;
 			}
 			
@@ -272,8 +294,6 @@
 				//当前第1页，每页显示15条。共10条记录，一共1页。
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				webService.getUsersByPager(pager.pageSize, pager.currentPage);
-				//int pageSize, int currentPage
-				//Alert.show(result.toString());
 			}
 			
 			protected function application_creationCompleteHandler(event:FlexEvent):void

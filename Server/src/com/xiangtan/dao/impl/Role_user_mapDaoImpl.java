@@ -60,7 +60,7 @@ public class Role_user_mapDaoImpl implements Role_user_mapDao{
 		int update = jdbcTemplate.update(sql, userId);
 		if (update > 0) {
 			System.out.println("删除原有映射关系");
-			add(userId, roleIds);
 		}
+		add(userId, roleIds);
 	}
 }

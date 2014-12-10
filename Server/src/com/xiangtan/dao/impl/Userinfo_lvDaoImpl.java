@@ -141,8 +141,26 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	public List<Userinfo_lv> getUserinfo_lvsLikeName(String name) {
 		// select * from Userinfo_lv where name like '%w%' order by id
 		String sql = "select * from Userinfo_lv where name like '%"+name+"%' order by id";
-		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
-		return Userinfo_lvs;
+		System.out.println(sql);
+		List<Userinfo_lv> userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		//System.out.println(userinfo_lvs.size());
+		return userinfo_lvs;
+	}
+
+	@Override
+	public List<Userinfo_lv> getUserinfo_lvsLikeDepartment(String department) {
+		String sql = "select * from Userinfo_lv where department like '%"+department+"%' order by id";
+		System.out.println(sql);
+		List<Userinfo_lv> userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		return userinfo_lvs;
+	}
+
+	@Override
+	public List<Userinfo_lv> getUserinfo_lvsLikeTruename(String truename) {
+		String sql = "select * from Userinfo_lv where truename like '%"+truename+"%' order by id";
+		System.out.println(sql);
+		List<Userinfo_lv> userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		return userinfo_lvs;
 	}
 	
 }
