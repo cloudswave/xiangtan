@@ -1,5 +1,8 @@
 <configuration>
-	<fileUploadPath>
-		http://210.42.41.30:8080/FileUpload/UploadHandler
-	</fileUploadPath>
+	<addFeatures>
+		http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0/addFeatures
+	</addFeatures>
+	<downloadUrl>
+		http://iclouds.qiniudn.com/xls监测数据上传格式模板.xls
+	</downloadUrl>
 </configuration>
