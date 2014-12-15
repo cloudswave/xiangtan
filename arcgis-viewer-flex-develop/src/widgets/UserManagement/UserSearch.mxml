@@ -203,11 +203,6 @@
 			
 			public var userArray:Array=new Array({"name":"语文","id":"chinese","x":"80"},
 				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
 				{"name":"数学","id":"12","email":"umgsai@126.com"}); 
 		]]>
 	</fx:Script>
