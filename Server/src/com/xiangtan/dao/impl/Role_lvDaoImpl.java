@@ -129,4 +129,11 @@ public class Role_lvDaoImpl implements Role_lvDao{
 		return role_lvs;
 	}
 
+	@Override
+	public List<Role_lv> getRolesByPager(int pageSize, int currentPage) {
+		String sql = "select top " + pageSize + " * from Role_lv where id not in(select top " + pageSize * (currentPage - 1) + " id from Role_lv) order by id";
+		List<Role_lv> role_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Role_lvRowMapper()));
+		return role_lvs;
+	}
+
 }

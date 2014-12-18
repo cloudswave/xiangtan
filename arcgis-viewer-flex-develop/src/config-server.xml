@@ -7,4 +7,5 @@
 	<userinfo_lvWS>http://localhost:8080/Xiangtan_server/userinfo_lvWS?wsdl</userinfo_lvWS>
 	<role_lvWS>http://localhost:8080/Xiangtan_server/role_lvWS?wsdl</role_lvWS>
 	<pagerWS>http://localhost:8080/Xiangtan_server/pagerWS?wsdl</pagerWS>
+	<areaWS>http://localhost:8080/Xiangtan_server/areaWS?wsdl</areaWS>
 </configuration>

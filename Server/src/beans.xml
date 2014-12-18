@@ -42,5 +42,8 @@
 		</property>
 	</bean>
 
+<bean id="areaUtil" class="com.xiangtan.utils.AreaUtil">
+	<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+</bean>
 	 
 </beans>

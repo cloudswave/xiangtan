@@ -58,4 +58,17 @@ public class Role_lvServiceImpl implements Role_lvService{
 		System.out.println("Role_lvServiceImpl.getAll()");
 		return role_lvDao.getAll();
 	}
+
+	@Override
+	public List<Role_lv> getRolesByPager(int pageSize, int currentPage) {
+		if (pageSize <= 0 || currentPage <= 0) {
+			return null;
+		}
+		return role_lvDao.getRolesByPager(pageSize, currentPage);
+	}
+
+	@Override
+	public boolean deleteByRoleId(int id) {
+		return role_lvDao.delete(id);
+	}
 }

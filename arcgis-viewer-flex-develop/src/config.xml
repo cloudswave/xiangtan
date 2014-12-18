@@ -407,6 +407,9 @@
 			<widget label="用户管理"
 				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
 				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				<widget label="用户管理"
+				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
+				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
 			<widget label="系统配置"
 				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
 				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />	

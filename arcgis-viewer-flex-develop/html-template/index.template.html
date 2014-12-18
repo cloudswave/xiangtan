@@ -41,7 +41,9 @@
             // To use express install, set to playerProductInstall.swf, otherwise the empty string. 
             var xiSwfUrlStr = "${expressInstallSwf}";
             var flashvars = {};
-            var params = {};
+            var params = {
+            		//params.wmode = "opaque";
+            };
             params.quality = "high";
             params.bgcolor = "${bgcolor}";
             params.allowscriptaccess = "sameDomain";
