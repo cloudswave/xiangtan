@@ -54,7 +54,9 @@ public class Role_lvDaoImpl implements Role_lvDao{
 		RowMapper<Role_lv> rowMapper = new BeanPropertyRowMapper<Role_lv>(
 				Role_lv.class);
 		try {
-			return jdbcTemplate.queryForObject(sql, rowMapper, id);
+			Role_lv role_lv = jdbcTemplate.queryForObject(sql, rowMapper, id);
+			System.out.println(role_lv);
+			return role_lv;
 		} catch (Exception e) {
 			return null;
 		}
@@ -66,6 +68,7 @@ public class Role_lvDaoImpl implements Role_lvDao{
 		String sql = "update Role_lv set roleName = ?, type = ?, desText = ? where id = ?";
 		int update = jdbcTemplate.update(sql, roleName, type, desText, id);
 		if (update > 0) {//更新成功
+			System.out.println(get(id));
 			return get(id);
 		}
 		//更新失败

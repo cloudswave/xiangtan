@@ -28,13 +28,13 @@
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.IFlexDisplayObject;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			import mx.rpc.Fault;
 			import mx.rpc.Responder;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-			import mx.events.CloseEvent;
 			import mx.rpc.http.HTTPService;
 			
 			import widgets.UserManagement.UserAdd;
@@ -121,10 +121,42 @@
 			}
 			
 			private function addRegionRole(event:MouseEvent):void{
+				var popup:RegionRoleAdd=new RegionRoleAdd();  
+				//popup.text=tInput.text;  
+//				popup.text = "123456789";
+				popup.callback=addRegionRoleHandler;  
+				PopUpManager.addPopUp(popup,this);  
+				PopUpManager.centerPopUp(popup);  
+				/*
 				regionRoleAdd = PopUpManager.createPopUp(this, RegionRoleAdd, true);
 				PopUpManager.centerPopUp(regionRoleAdd as IFlexDisplayObject);
 				//userAdd.setData(new Array("bobo", "huhu", "coco"));
 				regionRoleAdd.addEventListener("pop",addRegionRoleHandler);
+				*/
+			}
+			//关闭打开窗口时处理  
+			private function addRegionRoleHandler(obj:Object):void{  
+				//tInput.text=text;  
+//				pager.pageSize
+				pager.totalCount ++;
+				pager.totalPage = Math.ceil((Number)(pager.totalCount)/(Number)(pager.pageSize));
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				roleList.dataProvider.addItemAt({id:obj.id,roleName:obj.roleName,desText:obj.desText, type:'region'}, 0); 
+			}
+			
+			private function editRegionRoleHandler(obj:Object):void{  
+				var selectedItems:Array = roleList.selectedItems;
+				for each(var a:Object in selectedItems) {
+					a.id = obj.id;
+					a.roleName = obj.roleName;
+					a.type = obj.type;
+					a.desText = obj.desText;
+					break;//当选中多个的时候只显示第一个
+				}
+			}
+			
+			private function editCommandRoleHandler(obj:Object):void{  
+				
 			}
 			
 			private function searchRole(event:MouseEvent):void{
@@ -197,13 +229,16 @@
 			
 			private function addCommandRoleHandler(e:Event):void
 			{
+				pager.totalCount ++;
+				pager.totalPage = Math.ceil((Number)(pager.totalCount)/(Number)(pager.pageSize));
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				roleList.dataProvider.addItemAt({id:commandRoleAdd.roleId,roleName:commandRoleAdd.roleName.text.toString(),desText:commandRoleAdd.desText, type:'command'}, 0); 
 			}
 			
-			private function addRegionRoleHandler(e:Event):void
-			{
-				//roleList.dataProvider.addItemAt({id:commandRoleAdd.roleId,roleName:commandRoleAdd.roleName.text.toString(),desText:commandRoleAdd.desText, type:'command'}, 0); 
-			}
+//			private function addRegionRoleHandler(e:Event):void
+//			{
+//				//roleList.dataProvider.addItemAt({id:commandRoleAdd.roleId,roleName:commandRoleAdd.roleName.text.toString(),desText:commandRoleAdd.desText, type:'command'}, 0); 
+//			}
 			
 			private function deleteRole(event:MouseEvent):void{//删除选中的用户，可以多选		
 				var selectedItems:Array = roleList.selectedItems;
@@ -237,30 +272,32 @@
 //					Alert.show("请先选中用户");
 //					return;
 //				}
-				var userId:int = 0;
 				var selectedItems:Array = roleList.selectedItems;
 				if(selectedItems.length == 0){
 					Alert.show("请先选中用户");
 					return;
 				}
+				var roleId:int = 0;
+				var roleType:String = "";				
 				for each(var aa:Object in selectedItems){
 					//Alert.show(aa.id.toString());
-					userId = aa.id;
+					roleId = aa.id;
+					roleType = aa.type;
 					break;//当选中多个的时候只显示第一个
 				}
-				/*
-				for each(var a:int in selectedIndices) {
-					//Alert.show(users.getItemAt(a).id);
-					userId = users.getItemAt(a).id;
-					break;//当选中多个的时候只显示第一个
+				if(roleType == "region"){
+					var popup:RegionRoleEdit=new RegionRoleEdit();  
+					popup.setRoleId(roleId);
+					popup.callback=editRegionRoleHandler;  
+					PopUpManager.addPopUp(popup,this);  
+					PopUpManager.centerPopUp(popup);  
+				}else if(roleType == "command"){
+					var commandRoleEditPopup:CommandRoleEdit=new CommandRoleEdit();  
+					commandRoleEditPopup.setRoleId(roleId);
+					commandRoleEditPopup.callback=editRegionRoleHandler;  
+					PopUpManager.addPopUp(commandRoleEditPopup,this);  
+					PopUpManager.centerPopUp(commandRoleEditPopup);  
 				}
-				*/
-				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
-				//userEdit = PopUpManager.createPopUp(this, UserEdit, true);
-				//Alert.show(userId.toString());
-				//userEdit.setUserId(userId);
-				//PopUpManager.centerPopUp(userEdit as IFlexDisplayObject);
-				//userEdit.addEventListener("pop",userEditHandler);
 			}
 			
 			private function userEditHandler(e:Event):void
@@ -399,8 +436,10 @@
 			<mx:Button id="addRegionRoleButton" label="添加region角色" click="addRegionRole(event)"/>
 			<mx:Button id="deleteRoleButton" label="删除角色" click="deleteRole(event)"/>
 			<mx:Button id="updateRole" label="修改角色" click="editRole(event)"/>
+			<!--
 			<mx:Button id="view" label="查看详情" click="viewRole(event)"/>
 			<mx:Button id="search" label="查找角色" click="searchRole(event)"/>
+			-->
 		</mx:HBox>
 		<mx:HBox>
 			<mx:Button id="firstPageButton" label="首页" click="firstPage(event)"/>

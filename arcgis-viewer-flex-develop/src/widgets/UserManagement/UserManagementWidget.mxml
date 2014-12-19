@@ -192,6 +192,10 @@
 			
 			private function getWindowData2(e:Event):void
 			{
+				pager.totalCount ++;
+				pager.totalPage = Math.ceil((Number)(pager.totalCount)/(Number)(pager.pageSize));
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				
 				userList.dataProvider.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
 				//Alert.show(userAdd.logs);
 				//Alert.show(userAdd.labelPosition.selectedItem.toString());

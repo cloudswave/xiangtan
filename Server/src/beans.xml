@@ -32,8 +32,8 @@
 	
 	<bean id="role_lvDao" class="com.xiangtan.dao.impl.Role_lvDaoImpl"></bean>
 	<bean id="role_lvService" class="com.xiangtan.service.impl.Role_lvServiceImpl">
-		<property name="role_lvDao" ref="role_lvDao">
-		</property>
+		<property name="role_lvDao" ref="role_lvDao"/>
+		<property name="areaDao" ref="areaDao"/>
 	</bean>
 	
 	<bean id="pagerDao" class="com.xiangtan.dao.impl.PagerDaoImpl"></bean>

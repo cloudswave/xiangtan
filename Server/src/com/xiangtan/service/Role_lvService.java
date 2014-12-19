@@ -5,6 +5,7 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import com.xiangtan.beans.Area;
 import com.xiangtan.beans.Role_lv;
 import com.xiangtan.beans.Userinfo_lv;
 
@@ -91,6 +92,14 @@ public interface Role_lvService {
 	 */
 	@WebMethod
 	public List<Role_lv> getRolesByPager(int pageSize, int currentPage);
+	
+	/**
+	 * 
+	 * @param desText 地区权限描述字符串
+	 * @return
+	 */
+	@WebMethod
+	public List<Area> getAreasByDesText(String desText);
 }
 
 /*

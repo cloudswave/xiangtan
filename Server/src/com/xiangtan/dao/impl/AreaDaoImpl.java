@@ -26,6 +26,7 @@ public class AreaDaoImpl implements AreaDao{
 	private JdbcTemplate jdbcTemplate;
 	@Override
 	public Area get(String areaCode) {
+		System.err.println("areaCode:" + areaCode);
 		String sql = "select areaCode, areaLevel, areaName, subAreaNum from area where areaCode = ?";
         RowMapper<Area> rowMapper = new BeanPropertyRowMapper<Area>(Area.class);
         try {

@@ -6,25 +6,24 @@
 		   textAlign="center">  
 	<fx:Script>  
 		<![CDATA[  
-			import mx.controls.Alert;
-			import mx.controls.TextInput;  
-			import mx.managers.PopUpManager;  
+			import mx.collections.*;
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
-			import mx.collections.*;
-			import mx.core.FlexGlobals;
 			import mx.controls.CheckBox;
-			import mx.events.FlexEvent;
-			import widgets.RoleManagement.TreeRightClickManager
-			import mx.events.ResizeEvent;
-			import mx.events.MenuEvent;
 			import mx.controls.Menu;
+			import mx.controls.TextInput;
 			import mx.controls.listClasses.IListItemRenderer;
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.events.MenuEvent;
+			import mx.events.ResizeEvent;
 			import mx.managers.PopUpManager;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.http.HTTPService;
-			import mx.events.ListEvent;
+			
+			import widgets.RoleManagement.TreeRightClickManager;
 			
 			public var text:String;  
 			public var callback:Function;//定义关闭窗口后调用的函数  
@@ -34,6 +33,7 @@
 			private var _areaWS_:String="";
 			private var areaListCollection:XMLListCollection=new XMLListCollection(); 
 			private var areasdata: ArrayCollection; 
+			private var roleId:int = 0;
 			[Bindable]
 			private var tree1Xml:XML =
 				<node label="可选地区">
@@ -67,6 +67,10 @@
 				
 			}  
 			
+			public function setRoleId(id:int):void{
+				roleId = id;
+			}
+			
 			private function loadConfig():void
 			{
 				var configService:HTTPService = new HTTPService();
@@ -78,6 +82,38 @@
 			}
 			private function sayHello(e:ContextMenuEvent):void{
 				//Alert.show("点击了右键1");
+			}
+			
+			private function getAreasByDesTextHandler(event:ResultEvent):void{
+				
+				//Alert.show(event.result.toString())
+				var areas:ArrayCollection = event.result as ArrayCollection;
+				
+				if(areas == null){
+					return;
+				}
+//				Alert.show(areas.length.toString());
+				for(var i:int=0;i<areas.length;i++){  
+					var o:Object = areas[i];  
+					//Alert.show(o["areaName"]);
+					var child:XML=new XML("<node label='"+o["areaName"]+"' areaCode='"+o["areaCode"]+"' areaLevel='"+o["areaLevel"]+"' subAreaNum='"+o["subAreaNum"]+"' completeAddress='"+o["completeAddress"]+"'></node>");
+					tree2.selectedItem = root;
+//					tree2.selectedItem.appendChild(child);
+					tree2Xml.appendChild(child);
+					//将数据添加为tree2中选中节点的子节点
+					//tree2.selectedItem.appendChild("<node label='"+o["areaName"]+"' areaCode='"+o["areaCode"]+"' areaLevel='"+o["areaLevel"]+"' subAreaNum='"+o["subAreaNum"]+"' completeAddress='"+o["completeAddress"]+"'></node>");
+				} 
+			}
+			
+			private function getRole_lvHandler(event:ResultEvent):void{
+				//var result:Object=event.result;
+//				Alert.show("request finished");
+				if(event.result == null){
+					return;
+				}
+				roleName.text = event.result.roleName;
+//				desText = result.desText;
+				role_lvWS.getAreasByDesText(event.result.desText);
 			}
 			
 			public function tree1MenuHandler(event:Event):void//点击菜单执行函数，添加该地区到权限列表
@@ -200,7 +236,7 @@
 					
 					role_lvWS.loadWSDL();   
 					areaWS.loadWSDL();
-					
+					role_lvWS.getRole_lv(roleId);
 				}catch (error:Error)
 				{
 					Alert.show(error.message);
@@ -219,6 +255,7 @@
 				//Alert.show("Request error!");
 				Alert.show(event.fault.faultString);
 			}
+			/*
 			private function getByRoleNameHandler(event:ResultEvent):void{
 				var result:Object=event.result;
 				if(result == null){
@@ -229,7 +266,7 @@
 					roleNameUsedLabel.text = "角色名已经被使用";	
 					roleName.setFocus();//获取焦点
 				}
-			}
+			}*/
 			//* 点击tree1的节点时，要从服务器上读取该节点的子节点信息，并且把子节点添加到选中的节点下面
 			// * 每个节点的内容为<node label='中国' areaCode='000000000000' areaLevel='1' subAreaNum='34' completeAddress='中国'></node>
 			private function tree1_itemClick(event:ListEvent):void {
@@ -288,14 +325,6 @@
 					//tree1.selectedItem.appendChild("<node label='"+o["areaName"]+"' areaCode='"+o["areaCode"]+"' areaLevel='"+o["areaLevel"]+"' subAreaNum='"+o["subAreaNum"]+"' completeAddress='"+o["completeAddress"]+"'></node>");
 				} 
 			}
-			private function checkRoleName():void{
-				if(roleName.text.toString() == ""){
-					roleNameUsedLabel.text = "用户名不可为空";	
-					sendButton.enabled = false;
-					return;
-				}
-				role_lvWS.getByRoleName(roleName.text.toString());
-			}
 			
 			private function submit():void{
 				var RegionalRoleName:String = roleName.text;
@@ -318,7 +347,19 @@
 					return;
 				}
 //				Alert.show(rightString);
-				role_lvWS.addRole_lv(roleName.text.toString(), 'region', rightString);
+				//role_lvWS.addRole_lv(roleName.text.toString(), 'region', rightString);
+				role_lvWS.updateRole_lv(roleId, roleName.text.toString(), 'region', rightString);
+			}
+			
+			private function updateRole_lvHandler(event:ResultEvent):void{
+				var result:Object=event.result;
+				if(result != null){
+					Alert.show("修改角色信息成功");
+					if(callback!=null){  
+						callback(result);  
+					}
+					PopUpManager.removePopUp(this);  
+				}
 			}
 			
 			//点击确认，关闭弹出窗口，将弹出窗口参数传递给父窗窗口  
@@ -337,8 +378,11 @@
 	<fx:Declarations>
 		<s:WebService id="role_lvWS" showBusyCursor="true" useProxy="false" wsdl="{_role_lvWS_}">
 			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
-			<s:operation name="getByRoleName" fault="faultHandler(event)" result="getByRoleNameHandler(event)"/>
+			<s:operation name="updateRole_lv" fault="faultHandler(event)" result="updateRole_lvHandler(event)"/>
 			<s:operation name="addRole_lv" fault="faultHandler(event)" result="addRole_lvHandler(event)"/>
+			<s:operation name="getRole_lv" fault="faultHandler(event)" result="getRole_lvHandler(event)"/>
+			<s:operation name="getAreasByDesText" fault="faultHandler(event)" result="getAreasByDesTextHandler(event)"/>
+			
 		</s:WebService>
 		<s:WebService id="areaWS" showBusyCursor="true" useProxy="false" wsdl="{_areaWS_}">
 			<s:operation name="getSubAreasByCode" fault="faultHandler(event)" result="getSubAreasByCodeHandler(event)"/>
@@ -353,7 +397,7 @@
 		<!--<mx:Label text="Label Properties" fontStyle="italic" width="100%" fontWeight="bold"/>-->
 		<mx:FormItem label="角色名">
 			<mx:HBox>
-				<mx:TextInput id="roleName" width="90%" focusOut="checkRoleName();" textAlign="left"/>
+				<mx:TextInput id="roleName" width="90%" editable="false" textAlign="left"/>
 				<mx:Label text="*"/>
 				<mx:Label id="roleNameUsedLabel" color="red" text=""/>
 			</mx:HBox>
@@ -394,7 +438,7 @@
 				</mx:VBox>
 			</mx:HBox>
 		<mx:HBox width="207" horizontalAlign="right" textAlign="center">
-			<mx:Button id="sendButton" click="submit();"  width="99" label="提交" textAlign="center" enabled="false"/>
+			<mx:Button id="sendButton" click="submit();"  width="99" label="提交" textAlign="center" enabled="true"/>
 			<mx:Button width="99" label="取消" click="cancel();" textAlign="center"/>
 		</mx:HBox>
 		</mx:Panel>
