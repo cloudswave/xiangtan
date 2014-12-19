@@ -30,7 +30,7 @@ public class AreaDaoImpl implements AreaDao{
 		String sql = "select areaCode, areaLevel, areaName, subAreaNum from area where areaCode = ?";
         RowMapper<Area> rowMapper = new BeanPropertyRowMapper<Area>(Area.class);
         try {
-        	Area area = jdbcTemplate.queryForObject(sql, rowMapper, areaCode);
+        	Area area = (Area) jdbcTemplate.queryForObject(sql, rowMapper, areaCode);
         	//System.out.println(AreaUtil.getCompleteAddress(area.getAreaCode(), area.getAreaLevel()));
 //        	area.setCompleteAddress(AreaUtil.getCompleteAddress(area.getAreaCode(), area.getAreaLevel()));
         	return  area;
@@ -94,7 +94,7 @@ public class AreaDaoImpl implements AreaDao{
 		if (sql.length() == 0) {
 			return null;
 		}
-		areas = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new AreaRowMapper()));
+		areas = (List<Area>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new AreaRowMapper()));
 //		for (Area area : areas) {
 //			area.setCompleteAddress(AreaUtil.getCompleteAddress(area.getAreaCode(), area.getAreaLevel()));
 //		}

@@ -28,7 +28,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 		RowMapper<Userinfo_lv> rowMapper = new BeanPropertyRowMapper<Userinfo_lv>(
 				Userinfo_lv.class);
 		try {
-			return jdbcTemplate.queryForObject(sql, rowMapper, name, password);
+			return (Userinfo_lv)jdbcTemplate.queryForObject(sql, rowMapper, name, password);
 		} catch (Exception e) {
 			return null;
 		}
@@ -50,7 +50,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 		RowMapper<Userinfo_lv> rowMapper = new BeanPropertyRowMapper<Userinfo_lv>(
 				Userinfo_lv.class);
 		try {
-			return jdbcTemplate.queryForObject(sql, rowMapper, id);
+			return (Userinfo_lv)jdbcTemplate.queryForObject(sql, rowMapper, id);
 		} catch (Exception e) {
 			return null;
 		}
@@ -62,7 +62,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 		RowMapper<Userinfo_lv> rowMapper = new BeanPropertyRowMapper<Userinfo_lv>(
 				Userinfo_lv.class);
 		try {
-			Userinfo_lv userinfo_lv = jdbcTemplate.queryForObject(sql, rowMapper, name);
+			Userinfo_lv userinfo_lv = (Userinfo_lv)jdbcTemplate.queryForObject(sql, rowMapper, name);
 			System.out.println(userinfo_lv);
 			return userinfo_lv;
 		} catch (Exception e) {
@@ -82,7 +82,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	@Override
 	public List<Userinfo_lv> getByGroupid(int groupid) {
 		String sql = "select * from Userinfo_lv where groupid = ? order by id";
-		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()), groupid);
+		List<Userinfo_lv> Userinfo_lvs = (List<Userinfo_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()), groupid);
 		return Userinfo_lvs;
 	}
 	
@@ -126,14 +126,14 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	@Override
 	public List<Userinfo_lv> getAll() {
 		String sql = "select * from Userinfo_lv order by id";
-		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		List<Userinfo_lv> Userinfo_lvs = (List<Userinfo_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
 		return Userinfo_lvs;		
 	}
 	//String sql = "select top 10 * from Userinfo_lv where id not in(select top 10 id from Userinfo_lv) order by id";
 	@Override
 	public List<Userinfo_lv> getUsersByPager(int pageSize, int currentPage) {
 		String sql = "select top " + pageSize + " * from Userinfo_lv where id not in(select top " + pageSize * (currentPage - 1) + " id from Userinfo_lv) order by id";
-		List<Userinfo_lv> Userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		List<Userinfo_lv> Userinfo_lvs = (List<Userinfo_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
 		return Userinfo_lvs;		
 	}
 
@@ -142,7 +142,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 		// select * from Userinfo_lv where name like '%w%' order by id
 		String sql = "select * from Userinfo_lv where name like '%"+name+"%' order by id";
 		System.out.println(sql);
-		List<Userinfo_lv> userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		List<Userinfo_lv> userinfo_lvs = (List<Userinfo_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
 		//System.out.println(userinfo_lvs.size());
 		return userinfo_lvs;
 	}
@@ -151,7 +151,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	public List<Userinfo_lv> getUserinfo_lvsLikeDepartment(String department) {
 		String sql = "select * from Userinfo_lv where department like '%"+department+"%' order by id";
 		System.out.println(sql);
-		List<Userinfo_lv> userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		List<Userinfo_lv> userinfo_lvs = (List<Userinfo_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
 		return userinfo_lvs;
 	}
 
@@ -159,7 +159,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	public List<Userinfo_lv> getUserinfo_lvsLikeTruename(String truename) {
 		String sql = "select * from Userinfo_lv where truename like '%"+truename+"%' order by id";
 		System.out.println(sql);
-		List<Userinfo_lv> userinfo_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
+		List<Userinfo_lv> userinfo_lvs = (List<Userinfo_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Userinfo_lvRowMapper()));
 		return userinfo_lvs;
 	}
 	
