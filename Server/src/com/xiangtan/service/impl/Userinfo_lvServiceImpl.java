@@ -1,5 +1,7 @@
 package com.xiangtan.service.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.xiangtan.beans.Userinfo_lv;
@@ -105,11 +107,89 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 	}
 
 	@Override
-	public List<Userinfo_lv> getUserinfo_lvsLikeName(String name) {
-		if (name.trim().length() == 0) {
-			return null;
+	public List<Userinfo_lv> getUserinfo_lvsLikeSth(String name, String department, String truename) {
+		name = name.trim();
+		department = department.trim();
+		truename = truename.trim();
+		List<Userinfo_lv>result = new ArrayList<Userinfo_lv>();
+		if (name.trim().length() == 0) {//不查询name
+			if (department.trim().length() == 0) {//不查询name 不查询department
+				if (truename.trim().length() == 0) {//不查询name 不查询department 不查询truename
+					return null;
+				}else {//不查询name 不查询department 要查询truename
+					result =  userinfo_lvDao.getUserinfo_lvsLikeTruename(truename);
+					return result;
+				}
+			}else {//不查询name 要查询department
+				result = userinfo_lvDao.getUserinfo_lvsLikeDepartment(department);
+				if (truename.trim().length() == 0) {//不查询name 要查询department 不查询truename
+					return result;
+				}else {//不查询name 要查询department 要查询查询truename
+					List<Userinfo_lv>truenameResult = userinfo_lvDao.getUserinfo_lvsLikeTruename(truename);
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
+					//取result和truenameResult的交集
+					for (int i = 0; i < result.size(); i++) {
+						for (int j = 0; j < truenameResult.size(); j++) {
+							if (result.get(i).getId() == truenameResult.get(j).getId()) {
+								result1.add(truenameResult.get(i));
+							}
+						}
+					}
+					return result1;
+				}
+			}
+		}else {//要查询name
+			List<Userinfo_lv>nameResult = userinfo_lvDao.getUserinfo_lvsLikeName(name);
+			if (department.trim().length() == 0) {//要查询name 不查询department
+				if (truename.trim().length() == 0) {//要查询name 不查询department 不查询truename
+					return nameResult;
+				}else {//要查询name 不查询department 要查询truename
+					List<Userinfo_lv>truenameResult = userinfo_lvDao.getUserinfo_lvsLikeTruename(truename);
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
+					//取nameResult和truenameResult的交集
+					for (int i = 0; i < nameResult.size(); i++) {
+						for (int j = 0; j < truenameResult.size(); j++) {
+							if (nameResult.get(i).getId() == truenameResult.get(j).getId()) {
+								result1.add(nameResult.get(i));
+							}
+						}
+					}
+					return result1;
+				}
+			}else {//要查询name 要查询 department
+				List<Userinfo_lv>departmentResult = userinfo_lvDao.getUserinfo_lvsLikeDepartment(department);
+				if (truename.trim().length() == 0) {//要查询name 要查询 department 不查询truename
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
+					for (int i = 0; i < nameResult.size(); i++) {
+						for (int j = 0; j < departmentResult.size(); j++) {
+							if (nameResult.get(i).getId() == departmentResult.get(j).getId()) {
+								result1.add(nameResult.get(i));
+							}
+						}
+					}
+					return result1;
+				}else{//要查询name 要查询 department 要查询truename
+					List<Userinfo_lv>truenameResult = userinfo_lvDao.getUserinfo_lvsLikeTruename(truename);
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
+					for (int i = 0; i < nameResult.size(); i++) {
+						for (int j = 0; j < departmentResult.size(); j++) {
+							if (nameResult.get(i).getId() == departmentResult.get(j).getId()) {
+								result1.add(nameResult.get(i));
+							}
+						}
+					}
+					List<Userinfo_lv>result2 = new ArrayList<Userinfo_lv>();
+					for (int i = 0; i < truenameResult.size(); i++) {
+						for (int j = 0; j < result1.size(); j++) {
+							if (truenameResult.get(i).getId() == result1.get(j).getId()) {
+								result2.add(truenameResult.get(i));
+							}
+						}
+					}
+					return result2;
+				}
+			}
 		}
-		return userinfo_lvDao.getUserinfo_lvsLikeName(name.trim());
 	}
 
 }

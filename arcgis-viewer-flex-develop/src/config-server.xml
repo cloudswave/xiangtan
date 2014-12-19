@@ -7,4 +7,5 @@
 	<userinfo_lvWS>http://192.168.13.37:8080/Xiangtan_server/userinfo_lvWS?wsdl</userinfo_lvWS>
 	<role_lvWS>http://192.168.13.37:8080/Xiangtan_server/role_lvWS?wsdl</role_lvWS>
 	<pagerWS>http://192.168.13.37:8080/Xiangtan_server/pagerWS?wsdl</pagerWS>
+	<areaWS>http://192.168.13.37:8080/Xiangtan_server/areaWS?wsdl</areaWS>
 </configuration>

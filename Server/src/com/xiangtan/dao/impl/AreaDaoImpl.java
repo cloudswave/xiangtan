@@ -2,6 +2,7 @@ package com.xiangtan.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,14 @@ public class AreaDaoImpl implements AreaDao{
 	private JdbcTemplate jdbcTemplate;
 	@Override
 	public Area get(String areaCode) {
+		System.err.println("areaCode:" + areaCode);
 		String sql = "select areaCode, areaLevel, areaName, subAreaNum from area where areaCode = ?";
         RowMapper<Area> rowMapper = new BeanPropertyRowMapper<Area>(Area.class);
         try {
-        	return  jdbcTemplate.queryForObject(sql, rowMapper, areaCode);
+        	Area area = (Area) jdbcTemplate.queryForObject(sql, rowMapper, areaCode);
+        	//System.out.println(AreaUtil.getCompleteAddress(area.getAreaCode(), area.getAreaLevel()));
+//        	area.setCompleteAddress(AreaUtil.getCompleteAddress(area.getAreaCode(), area.getAreaLevel()));
+        	return  area;
 		} catch (Exception e) {
 			return null;
 		}
@@ -89,7 +94,12 @@ public class AreaDaoImpl implements AreaDao{
 		if (sql.length() == 0) {
 			return null;
 		}
-		areas = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new AreaRowMapper()));
+		areas = (List<Area>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new AreaRowMapper()));
+//		for (Area area : areas) {
+//			area.setCompleteAddress(AreaUtil.getCompleteAddress(area.getAreaCode(), area.getAreaLevel()));
+//		}
+		System.out.println(areas);
+//		System.out.println(AreaUtil.getCompleteAddress("420500000000", 3));
 		return areas;
 	}
 
@@ -101,6 +111,7 @@ public class AreaDaoImpl implements AreaDao{
 			area.setAreaLevel(rs.getInt("areaLevel"));
 			area.setAreaName(rs.getString("areaName"));
 			area.setSubAreaNum(rs.getInt("subAreaNum"));
+			//area.setCompleteAddress(AreaUtil.getCompleteAddress(area.getAreaCode(), area.getAreaLevel()));
 			return area;
 		}
 	}

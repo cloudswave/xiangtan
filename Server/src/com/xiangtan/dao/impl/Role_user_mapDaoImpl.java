@@ -22,7 +22,7 @@ public class Role_user_mapDaoImpl implements Role_user_mapDao{
 	
 	public List<Role_user_map> getRole_user_mapsByUserid(int userid) {
 		String sql = "select * from role_user_map_lv where userid = ?";
-		List<Role_user_map> role_user_maps = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Role_user_mapRowMapper()), userid);
+		List<Role_user_map> role_user_maps = (List<Role_user_map>) jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Role_user_mapRowMapper()), userid);
 		return role_user_maps;
 	}
 
@@ -60,7 +60,7 @@ public class Role_user_mapDaoImpl implements Role_user_mapDao{
 		int update = jdbcTemplate.update(sql, userId);
 		if (update > 0) {
 			System.out.println("删除原有映射关系");
-			add(userId, roleIds);
 		}
+		add(userId, roleIds);
 	}
 }

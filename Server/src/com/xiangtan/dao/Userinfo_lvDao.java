@@ -80,6 +80,20 @@ public interface Userinfo_lvDao {
 	 */
 	public List<Userinfo_lv> getUserinfo_lvsLikeName(String name);
 	
+	/**
+	 * 根据部门模糊查找
+	 * @param department
+	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
+	 */
+	public List<Userinfo_lv> getUserinfo_lvsLikeDepartment(String department);
+	
+	/**
+	 * 根据真实姓名模糊查找
+	 * @param truename
+	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
+	 */
+	public List<Userinfo_lv> getUserinfo_lvsLikeTruename(String truename);
+	
 	//public Userinfo_lv update(int id, String name, String password,String email, String tel, String truename, String department,String note);
 }
 

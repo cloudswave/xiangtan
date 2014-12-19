@@ -5,7 +5,9 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import com.xiangtan.beans.Area;
 import com.xiangtan.beans.Role_lv;
+import com.xiangtan.beans.Userinfo_lv;
 
 /**
  * @author Shangyidong
@@ -38,6 +40,14 @@ public interface Role_lvService {
 	 */
 	@WebMethod
 	public boolean deleteByRoleName(String roleName);
+	
+	/**
+	 * 根据角色id删除角色
+	 * @param id 角色id
+	 * @return 若删除成功则返回true，否则返回false
+	 */
+	@WebMethod
+	public boolean deleteByRoleId(int id);
 	
 	/**
 	 * 添加角色
@@ -74,6 +84,22 @@ public interface Role_lvService {
 	 */
 	@WebMethod
 	public List<Role_lv> getAll();
+	
+	/**
+	 * @param pageSize 每页记录数
+	 * @param currentPage 当前页码
+	 * @return
+	 */
+	@WebMethod
+	public List<Role_lv> getRolesByPager(int pageSize, int currentPage);
+	
+	/**
+	 * 
+	 * @param desText 地区权限描述字符串
+	 * @return
+	 */
+	@WebMethod
+	public List<Area> getAreasByDesText(String desText);
 }
 
 /*

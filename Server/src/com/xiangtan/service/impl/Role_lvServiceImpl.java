@@ -1,8 +1,11 @@
 package com.xiangtan.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.xiangtan.beans.Area;
 import com.xiangtan.beans.Role_lv;
+import com.xiangtan.dao.AreaDao;
 import com.xiangtan.dao.Role_lvDao;
 import com.xiangtan.service.Role_lvService;
 /**
@@ -13,8 +16,14 @@ import com.xiangtan.service.Role_lvService;
 public class Role_lvServiceImpl implements Role_lvService{
 
 	private static Role_lvDao role_lvDao;
+	private static AreaDao areaDao;
+	
 	public static void setRole_lvDao(Role_lvDao role_lvDao) {
 		Role_lvServiceImpl.role_lvDao = role_lvDao;
+	}
+	
+	public static void setAreaDao(AreaDao areaDao) {
+		Role_lvServiceImpl.areaDao = areaDao;
 	}
 	
 	@Override
@@ -57,5 +66,31 @@ public class Role_lvServiceImpl implements Role_lvService{
 	public List<Role_lv> getAll() {
 		System.out.println("Role_lvServiceImpl.getAll()");
 		return role_lvDao.getAll();
+	}
+
+	@Override
+	public List<Role_lv> getRolesByPager(int pageSize, int currentPage) {
+		if (pageSize <= 0 || currentPage <= 0) {
+			return null;
+		}
+		return role_lvDao.getRolesByPager(pageSize, currentPage);
+	}
+
+	@Override
+	public boolean deleteByRoleId(int id) {
+		return role_lvDao.delete(id);
+	}
+
+	@Override
+	public List<Area> getAreasByDesText(String desText) {
+		String areaCodes[] = desText.split("\\|\\|");
+		List<Area>areas = new ArrayList<Area>();
+		for (int i = 0; i < areaCodes.length; i++) {
+			if(areaCodes[i].length() != 0){
+				areas.add(areaDao.get(areaCodes[i]));
+			}
+		}
+		System.out.println(areas);
+		return areas;
 	}
 }

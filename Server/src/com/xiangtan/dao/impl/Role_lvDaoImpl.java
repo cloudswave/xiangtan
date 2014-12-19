@@ -54,7 +54,9 @@ public class Role_lvDaoImpl implements Role_lvDao{
 		RowMapper<Role_lv> rowMapper = new BeanPropertyRowMapper<Role_lv>(
 				Role_lv.class);
 		try {
-			return jdbcTemplate.queryForObject(sql, rowMapper, id);
+			Role_lv role_lv = (Role_lv)jdbcTemplate.queryForObject(sql, rowMapper, id);
+			System.out.println(role_lv);
+			return role_lv;
 		} catch (Exception e) {
 			return null;
 		}
@@ -66,6 +68,7 @@ public class Role_lvDaoImpl implements Role_lvDao{
 		String sql = "update Role_lv set roleName = ?, type = ?, desText = ? where id = ?";
 		int update = jdbcTemplate.update(sql, roleName, type, desText, id);
 		if (update > 0) {//更新成功
+			System.out.println(get(id));
 			return get(id);
 		}
 		//更新失败
@@ -111,7 +114,7 @@ public class Role_lvDaoImpl implements Role_lvDao{
 		//先查role_user_map表
 		System.out.println("userid:" + userid);
 		List<Role_user_map> role_user_maps = role_user_mapDao.getRole_user_mapsByUserid(userid);
-		List<Role_lv>role_lvs = new ArrayList<>();
+		List<Role_lv>role_lvs = new ArrayList<Role_lv>();
 		Role_user_map role_user_map = null;
 		for (Iterator iterator = role_user_maps.iterator(); iterator.hasNext();) {
 			role_user_map = (Role_user_map) iterator.next();
@@ -124,8 +127,15 @@ public class Role_lvDaoImpl implements Role_lvDao{
 	@Override
 	public List<Role_lv> getAll() {
 		String sql = "select * from Role_lv order by id";
-		List<Role_lv> role_lvs = jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Role_lvRowMapper()));
+		List<Role_lv> role_lvs = (List<Role_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Role_lvRowMapper()));
 		System.out.println(role_lvs);
+		return role_lvs;
+	}
+
+	@Override
+	public List<Role_lv> getRolesByPager(int pageSize, int currentPage) {
+		String sql = "select top " + pageSize + " * from Role_lv where id not in(select top " + pageSize * (currentPage - 1) + " id from Role_lv) order by id";
+		List<Role_lv> role_lvs = (List<Role_lv>)jdbcTemplate.query(sql, new RowMapperResultSetExtractor(new Role_lvRowMapper()));
 		return role_lvs;
 	}
 

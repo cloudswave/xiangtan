@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				creationComplete="application_creationCompleteHandler(event)"
+				initialize="initializeHandler(event)"
+				width="438" height="482" alpha="1" close="close()" layout="absolute"
+				showCloseButton="true" title="添加command角色">
+	<fx:Script>
+		
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.controls.CheckBox;
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			private var _userinfo_lvWS_:String="";
+			private var _role_lvWS_:String="";
+			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
+			[Bindable]
+			public var myPopUpvar:Array = new Array();
+			public var logs:String = "";
+			public var roleId:int = 0;
+			public var desText:String = "||";
+			private function initializeHandler(event:FlexEvent):void
+			{
+				loadConfig();
+			}
+			
+			private function loadConfig():void
+			{
+				var configService:HTTPService = new HTTPService();
+				configService.url = DEFAULT_CONFIG_FILE;
+				configService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+				configService.addEventListener(ResultEvent.RESULT, configService_resultHandler);
+				configService.addEventListener(FaultEvent.FAULT, configService_faultHandler);
+				configService.send();
+			}
+			
+			private function configService_resultHandler(event:ResultEvent):void
+			{
+				try
+				{
+					var configXML:XML = XML(event.result);
+					_userinfo_lvWS_ = configXML.userinfo_lvWS;
+					_role_lvWS_ = configXML.role_lvWS;
+					userinfo_lvWS.wsdl = _userinfo_lvWS_;
+					role_lvWS.wsdl = _role_lvWS_;
+					
+					userinfo_lvWS.loadWSDL();   
+					role_lvWS.loadWSDL();   
+					
+					//role_lvWS.getAll();
+				}catch (error:Error)
+				{
+					Alert.show(error.message);
+				}
+			}
+			
+			private function configService_faultHandler(event:FaultEvent):void{
+				Alert.show(event.fault.faultString);
+			}
+			
+			private function close():void
+			{
+				PopUpManager.removePopUp(this);    
+			}
+			
+			private function checkRoleName():void{
+				if(roleName.text.toString() == ""){
+					roleNameUsedLabel.text = "用户名不可为空";	
+					//sendButton.enabled = false;
+					return;
+				}
+				role_lvWS.getByRoleName(roleName.text.toString());
+			}
+			
+			private function getByRoleNameHandler(event:ResultEvent):void{
+				var result:Object=event.result;
+				if(result == null){
+					roleNameUsedLabel.text = "角色名可用";
+					sendButton.enabled = true;
+				}else{
+					roleNameUsedLabel.text = "角色名已经被使用";	
+					roleName.setFocus();//获取焦点
+					sendButton.enabled = false;
+				}
+			}
+			
+			private function addHandler(event:ResultEvent){
+				var result:Object=event.result;
+				if(result == null){
+					Alert.show("添加失败");
+				}else{
+					Alert.show("添加成功");
+					roleId = result.id;
+					var outgoingEvent:Event = new Event("pop", false);
+					//logs = labelPosition.selectedItem.toString();
+					dispatchEvent(outgoingEvent);
+					close();
+				}
+			}
+			
+			private function checkBox_change(e:Event):void
+			{
+				if(e.target.selected)
+				{
+					//lbItems.text = lbItems.text+e.target.label+" ";
+				}
+				else
+				{
+					//lbItems.text = lbItems.text.replace(e.target.label,"");
+				}
+			}
+			private function getAllRoleHandler(event:ResultEvent):void{
+				var rolesResult:ArrayCollection=event.result as ArrayCollection;
+				//Alert.show(result.length.toString());
+				for(var i:int=0;i<rolesResult.length;i++)
+				{
+					var checkBox:CheckBox = new CheckBox();
+					checkBox.id = rolesResult[i].id;;
+					checkBox.label = rolesResult[i].roleName;
+					checkBox.setStyle("fontSize",14);
+					checkBox.x = 100;
+					checkBox.y = (i + 1) * 25;
+					checkBox.addEventListener(Event.CHANGE,checkBox_change);
+					//this.addChild(checkBox);//也可是this.gridItem.addChild(checkBox)
+					if(rolesResult[i].type == "region"){
+						//regionRoles.addChild(checkBox);
+					}else if(rolesResult[i].type == "command"){
+						//commandRoles.addChild(checkBox);						
+					}
+				}    
+			}
+
+			protected function application_creationCompleteHandler(event:FlexEvent):void
+			{
+				//userinfo_lvWS.loadWSDL();   
+				//role_lvWS.loadWSDL();   
+			}
+			
+			private function faultHandler(event:FaultEvent):void{
+				//返回错误处理
+				//Alert.show("Request error!");
+				Alert.show(event.fault.faultString);
+			}
+			
+			private function submitButton():void
+			{
+				if(roleName.text.toString() == ""){
+					message.text = "请将信息填写完整";
+					return;
+				}
+				role_lvWS.addRole_lv(roleName.text.toString(), 'command', desText);
+			}
+			
+			private function addRole_lvHandler(event:ResultEvent):void{
+				var result:Object=event.result;
+				if(result == null){
+					Alert.show("添加失败");
+				}else{
+					Alert.show("添加成功");
+					roleId = result.id;
+					var outgoingEvent:Event = new Event("pop", false);
+					//logs = labelPosition.selectedItem.toString();
+					dispatchEvent(outgoingEvent);
+					close();
+				}
+			}
+			
+			public function setData(str:Array):void
+			{
+				myPopUpvar = str;
+			}
+			
+			public function cancel(){
+				close();
+			}
+			
+			private function check(event:MouseEvent):void{
+				var s:CheckBox=event.currentTarget as CheckBox;//获取点击的对象
+				if(s.selected){//选中
+					//Alert.show('选中');
+					//Alert.show(desText + "~~~" + s.id);
+					if(!desText.indexOf(s.id) >= 0){
+						desText += (s.id +'||');
+					}
+				}else{//取消选中
+					//Alert.show('取消选中');
+					//Alert.show(desText + "~~~" + s.id);
+					if(desText.indexOf(s.id)){
+						//把s.id换成英文""
+						desText = desText.split(s.id +'||').join("");
+					}
+				}
+				//把全角逗号换成英文逗号
+//				str = str.split("，").join(",");
+				//(a.indexOf("s")>=0
+				//Alert.show(desText);
+			}
+
+			
+			public var array:Array=new Array({"name":"语文","id":"chinese","x":"80"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"数学","id":"math","x":"160"},
+				{"name":"英语","id":"english","x":"240"}); 
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!--
+		<fx:WebService id="webService" showBusyCursor="true" useProxy="false"
+					   wsdl="{_webService_wsdl}">
+			<fx:operation name="getAll" result="onResult(event)"/>
+		</fx:WebService>
+		-->
+		<s:WebService id="userinfo_lvWS" showBusyCursor="true" useProxy="false" wsdl="{_userinfo_lvWS_}">
+			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
+			<!--
+			<s:operation fault="faultHandler(event)" name="getUserinfo_lvByName"	 result="checkUsernameHandler(event)"/>
+			-->
+			<s:operation fault="faultHandler(event)" name="add" result="addHandler(event)"/>
+		</s:WebService>
+		<s:WebService id="role_lvWS" showBusyCursor="true" useProxy="false" wsdl="{_role_lvWS_}">
+			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
+			<s:operation name="getByRoleName" fault="faultHandler(event)" result="getByRoleNameHandler(event)"/>
+			<s:operation name="addRole_lv" fault="faultHandler(event)" result="addRole_lvHandler(event)"/>
+			
+			<!--
+			<s:operation fault="faultHandler(event)" name="getAll" result="getAllRoleHandler(event)"/>
+			-->
+		</s:WebService>
+
+	</fx:Declarations>
+	<mx:Form id="basicPropertyPane" width="436" height="440" label="添加角色" cornerRadius="5"
+			 indicatorGap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+		<!--<mx:Label text="Label Properties" fontStyle="italic" width="100%" fontWeight="bold"/>-->
+		<mx:FormItem label="角色名">
+			<mx:HBox>
+				<mx:TextInput id="roleName" width="90%" focusOut="checkRoleName();"/>
+				<mx:Label text="*"/>
+				<mx:Label id="roleNameUsedLabel" color="red" text=""/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="农田环境采样点">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_SAMPLES" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_SAMPLES" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_SAMPLES" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_SAMPLES" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="农产品质量检测结果">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_RESIDUE" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_RESIDUE" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_RESIDUE" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_RESIDUE" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="基地信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_BASES" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_BASES" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_BASES" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_BASES" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="地块信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_PLOTS" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_PLOTS" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_PLOTS" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_PLOTS" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="生产组长信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_CHARGEMEN" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_CHARGEMEN" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_CHARGEMEN" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_CHARGEMEN" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="种植履历信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_RECORDS" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_RECORDS" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_RECORDS" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_RECORDS" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="农作物信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_CROPS" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_CROPS" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_CROPS" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_CROPS" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="用户信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_USER" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_USER" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_USER" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_USER" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="用户组信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_USERGROUP" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_USERGROUP" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_USERGROUP" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_USERGROUP" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="角色信息">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ADD_ROLE" label="添加" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="DELETE_ROLE" label="删除" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="UPDATE_ROLE" label="修改" click="check(event)" />
+				</mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="VIEW_ROLE" label="查看" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="信息统计分析">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="PRODUCT_STATISTICS" label="允许" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="农产品质量统计分析">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="QUALITY_STATISTICS" label="允许" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="产地环境质量统计分析">
+			<mx:HBox>
+				<mx:HBox  alpha="1" borderColor="#FF0000" borderStyle="solid">
+					<mx:CheckBox id="ENV_STATISTICS" label="允许" click="check(event)" />
+				</mx:HBox>
+			</mx:HBox>
+		</mx:FormItem>
+		
+		<mx:HBox>
+			<mx:Button id="sendButton" right="10" bottom="10" label="保存" click="submitButton()"
+					   enabled="false"/>
+			<mx:Button id="cancelButton" right="10" bottom="10" label="取消" click="cancel()"
+					   enabled="true"/>
+			<mx:Label id="message" color="red" text=""/>
+		</mx:HBox>
+	</mx:Form>
+</mx:TitleWindow>

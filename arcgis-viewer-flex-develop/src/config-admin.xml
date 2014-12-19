@@ -404,6 +404,9 @@
 			<widget label="用户管理"
 				config="widgets/UserManagement/UserManagementWidget.xml"
 				icon="assets/images/i_demographics.png" url="widgets/UserManagement/UserManagementWidget.swf" />
+			<widget label="角色管理"
+				config="widgets/RoleManagement/RoleManagementWidget.xml"
+				icon="assets/images/i_demographics.png" url="widgets/RoleManagement/RoleManagementWidget.swf" />
 			<widget label="系统配置"
 				config="widgets/Geoprocessing/GeoprocessingWidget_PopulationSummary.xml"
 				icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />	

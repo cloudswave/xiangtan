@@ -18,6 +18,8 @@
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.http.HTTPService;
+			import mx.events.CloseEvent;
+			import mx.core.IFlexDisplayObject;
 			private var _userinfo_lvWS_:String="";
 			private var _role_lvWS_:String="";
 			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
@@ -25,6 +27,9 @@
 			public var myPopUpvar:Array = new Array();
 			public var logs:String = "";
 			public var userId:int = 0;
+			public var users:ArrayCollection ;
+			public var userView:Object ;
+			public var userEdit:Object ;
 			private function initializeHandler(event:FlexEvent):void
 			{
 				loadConfig();
@@ -69,15 +74,18 @@
 				PopUpManager.removePopUp(this);    
 			}
 			
-			private function searchByName():void{
-				//Alert.show("key up");
-				if(userArray.length == 0){
-					//列表中无数据，查询webserver
-					
-				}else{
-					//列表中由数据，从已有的数据中继续查找
-				}
+			private function search():void{
+				userinfo_lvWS.getUserinfo_lvsLikeSth(username.text, department.text, truename.text);
 			}
+			
+			private function getUserinfo_lvsLikeSthHandler(event:ResultEvent){
+				userList.dataProvider = event.result;
+			}
+			
+			private function deleteUserinfo_lvHandler(event:ResultEvent){
+				//userList.dataProvider = event.result;
+			}
+			
 			
 			private function addHandler(event:ResultEvent){
 				var result:Object=event.result;
@@ -90,6 +98,81 @@
 					//logs = labelPosition.selectedItem.toString();
 					dispatchEvent(outgoingEvent);
 					close();
+				}
+			}
+			
+			private function deleteUser(event:MouseEvent):void{
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
+				Alert.show("确认要删除吗？","删除提示",Alert.YES|Alert.NO,null,function(event:CloseEvent):void{
+					if(event.detail==Alert.YES){
+						var selectedIndices:Array = userList.selectedIndices;
+						for(var a:int = selectedIndices.length - 1;a>=0;a--){
+							userinfo_lvWS.deleteUserinfo_lv(userList.dataProvider.getItemAt(selectedIndices[a]).id);
+							userList.dataProvider.removeItemAt(selectedIndices[a]);
+						}
+					}else if(event.detail==Alert.NO){
+						
+					}
+					return;
+				},null,Alert.NO);
+			}
+			
+			private function view(event:MouseEvent):void{
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
+				var userId:int = 0;
+				for each(var a:Object in selectedItems) {
+					userId = a.id;
+					break;//当选中多个的时候只显示第一个
+				}
+				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
+				userView = PopUpManager.createPopUp(this, UserView, true);
+				userView.setUserId(userId);
+				PopUpManager.centerPopUp(userView as IFlexDisplayObject);
+			}
+			
+			private function editUser(event:MouseEvent):void{
+				var userId:int = 0;
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
+				for each(var aa:Object in selectedItems){
+					userId = aa.id;
+					break;//当选中多个的时候只显示第一个
+				}
+				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
+				userEdit = PopUpManager.createPopUp(this, UserEdit, true);
+				//Alert.show(userId.toString());
+				userEdit.setUserId(userId);
+				PopUpManager.centerPopUp(userEdit as IFlexDisplayObject);
+				userEdit.addEventListener("pop",userEditHandler);
+			}
+			
+			private function userEditHandler(e:Event):void
+			{
+				//users.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
+				var selectedItems:Array = userList.selectedItems;
+				if(selectedItems.length == 0){
+					Alert.show("请先选中用户");
+					return;
+				}
+				var userId:int = 0;
+				for each(var a:Object in selectedItems) {
+					a.email = userEdit.email.text;
+					a.tel = userEdit.tel.text;
+					a.truename = userEdit.truename.text;
+					a.department = userEdit.department.text;
+					a.note = userEdit.note.text;
+					break;//当选中多个的时候只显示第一个
 				}
 			}
 			
@@ -120,28 +203,6 @@
 			
 			public var userArray:Array=new Array({"name":"语文","id":"chinese","x":"80"},
 				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
-				{"name":"数学","id":"12","email":"umgsai@126.com"},
 				{"name":"数学","id":"12","email":"umgsai@126.com"}); 
 		]]>
 	</fx:Script>
@@ -155,6 +216,8 @@
 		<s:WebService id="userinfo_lvWS" showBusyCursor="true" useProxy="false"
 					  wsdl="{_userinfo_lvWS_}">
 			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
+			<s:operation fault="faultHandler(event)" name="getUserinfo_lvsLikeSth" result="getUserinfo_lvsLikeSthHandler(event)"/>
+			<s:operation fault="faultHandler(event)" name="deleteUserinfo_lv" result="deleteUserinfo_lvHandler(event)"/>
 			<!--
 			<s:operation fault="faultHandler(event)" name="getUserinfo_lvByName"	 result="checkUsernameHandler(event)"/>
 			<s:operation fault="faultHandler(event)" name="add" result="addHandler(event)"/>
@@ -162,32 +225,32 @@
 		</s:WebService>
 		<s:WebService id="role_lvWS" showBusyCursor="true" useProxy="false" wsdl="{_role_lvWS_}">
 			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
-			<!--
+			<!---
 			<s:operation fault="faultHandler(event)" name="getAll" result="getAllRoleHandler(event)"/>
-			-->
+			 -->
+			
 		</s:WebService>
 
 	</fx:Declarations>
-	
-	<mx:VBox width="100%" height="100%">
+	<mx:VBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 		<mx:HBox verticalCenter="0" verticalAlign="top" horizontalAlign="center" horizontalCenter="0">
 			<mx:HBox alpha="1" borderColor="#FF0000" borderStyle="solid">
 				<mx:Label text="按用户名："/>
-				<mx:TextInput id="username" width="90%" keyUp="searchByName();"/>
+				<mx:TextInput id="username" width="90%" keyUp="search();"/>
 			</mx:HBox>
 			<mx:HBox alpha="1" borderColor="#FF0000" borderStyle="solid">
 				<mx:Label text="按部门："/>
-				<mx:TextInput id="department" width="90%"/>
+				<mx:TextInput id="department" width="90%" keyUp="search();"/>
 			</mx:HBox>
 			<mx:HBox alpha="1" borderColor="#FF0000" borderStyle="solid">
 				<mx:Label text="按真实姓名："/>
-				<mx:TextInput id="truename" width="90%"/>
+				<mx:TextInput id="truename" width="90%" keyUp="search();"/>
 			</mx:HBox>
 		</mx:HBox>
 		<s:Panel width="100%" height="100%" chromeColor="#47698D" horizontalCenter="0" title="用户列表"
 				 verticalCenter="-14">
 			<mx:DataGrid id="userList" x="0" y="0" width="100%" height="100%"
-						 allowMultipleSelection="true" chromeColor="#47698D" dataProvider="{userArray}">
+						 allowMultipleSelection="true" chromeColor="#47698D" dataProvider="{users}">
 				<mx:columns>
 					<mx:DataGridColumn width="50" dataField="id" headerText="ID"/>
 					<mx:DataGridColumn dataField="name" headerText="用户名"/>
@@ -200,5 +263,15 @@
 			</mx:DataGrid>
 			
 		</s:Panel>
+		<mx:HBox>
+			<mx:Button id="deleteUserButton" label="删除用户" click="deleteUser(event);"/>
+			<mx:Button id="updateUser" label="修改用户" click="editUser(event);"/>
+			<mx:Button id="viewUser" label="查看详情" click="view(event)"/>
+		</mx:HBox>
+		<!--
+		<mx:HBox>
+			<mx:Button id="search" label="查找用户" click="addUser(event);"/>
+		</mx:HBox>
+		-->
 	</mx:VBox>
 </mx:TitleWindow>

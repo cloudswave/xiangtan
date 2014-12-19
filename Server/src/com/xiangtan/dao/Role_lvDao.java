@@ -3,6 +3,7 @@ package com.xiangtan.dao;
 import java.util.List;
 
 import com.xiangtan.beans.Role_lv;
+import com.xiangtan.beans.Userinfo_lv;
 /**
  * @author Shangyidong
  * @date 2014-11-21
@@ -69,6 +70,13 @@ public interface Role_lvDao {
 	 * @return
 	 */
 	public List<Role_lv> getAll();
+	
+	/**
+	 * @param pageSize 每页的记录数
+	 * @param currentPage 当前页码
+	 * @return
+	 */
+	public List<Role_lv> getRolesByPager(int pageSize, int currentPage);
 }
 
 /*

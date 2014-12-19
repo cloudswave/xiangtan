@@ -9,6 +9,16 @@ public class Area {
 	private int areaLevel;
 	private String areaName;
 	private int subAreaNum;
+	private String completeAddress;
+	
+
+	public String getCompleteAddress() {
+		return completeAddress;
+	}
+
+	public void setCompleteAddress(String completeAddress) {
+		this.completeAddress = completeAddress;
+	}
 
 	public String getAreaCode() {
 		return areaCode;
@@ -57,8 +67,8 @@ public class Area {
 	@Override
 	public String toString() {
 		return "Area [areaCode=" + areaCode + ", areaLevel=" + areaLevel
-				+ ", areaName=" + areaName + ", subAreaNum=" + subAreaNum + "]";
+				+ ", areaName=" + areaName + ", subAreaNum=" + subAreaNum
+				+ ", completeAddress=" + completeAddress + "]";
 	}
-	
 
 }

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009"
+		   xmlns:s="library://ns.adobe.com/flex/spark"
+		   xmlns:mx="library://ns.adobe.com/flex/mx"
+		   width="822" height="786" alpha="1" backgroundColor="#355D89" initialize="init()"
+		   textAlign="center">  
+	<fx:Script>  
+		<![CDATA[  
+			import mx.controls.Alert;
+			import mx.controls.TextInput;  
+			import mx.managers.PopUpManager;  
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.collections.*;
+			import mx.core.FlexGlobals;
+			import mx.controls.CheckBox;
+			import mx.events.FlexEvent;
+			import widgets.RoleManagement.TreeRightClickManager
+			import mx.events.ResizeEvent;
+			import mx.events.MenuEvent;
+			import mx.controls.Menu;
+			import mx.controls.listClasses.IListItemRenderer;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			import mx.events.ListEvent;
+			
+			public var text:String;  
+			public var callback:Function;//定义关闭窗口后调用的函数  
+			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
+			private var _userinfo_lvWS_:String="";
+			private var _role_lvWS_:String="";
+			private var _areaWS_:String="";
+			private var areaListCollection:XMLListCollection=new XMLListCollection(); 
+			private var areasdata: ArrayCollection; 
+			[Bindable]
+			private var tree1Xml:XML =
+				<node label="可选地区">
+					<node label='中国' areaCode='000000000000' areaLevel='1' subAreaNum='34'>
+					</node>
+				</node>;
+			//private var menu:Menu;
+			[Bindable]
+			private var tree2Xml:XML=
+				<node label='已选地区'>
+				</node>;
+			//初始化函数  
+			private function init():void{  
+				loadConfig();
+				//textInput.text=text;   
+				var menu1:ContextMenu = new ContextMenu();
+				menu1.hideBuiltInItems();//隐藏默认菜单;
+				
+				var menuItem1:ContextMenuItem = new ContextMenuItem("添加到权限菜单");
+				menuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, tree1MenuHandler);
+				menu1.customItems.push(menuItem1);
+				tree1.contextMenu = menu1;
+				
+				var menu2:ContextMenu = new ContextMenu();
+				menu2.hideBuiltInItems();//隐藏默认菜单;
+				
+				var menuItem2:ContextMenuItem = new ContextMenuItem("从权限菜单中移除所选项");
+				menuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, tree2MenuHandler);
+				menu2.customItems.push(menuItem2);
+				tree2.contextMenu = menu2;
+				
+			}  
+			
+			private function loadConfig():void
+			{
+				var configService:HTTPService = new HTTPService();
+				configService.url = DEFAULT_CONFIG_FILE;
+				configService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+				configService.addEventListener(ResultEvent.RESULT, configService_resultHandler);
+				configService.addEventListener(FaultEvent.FAULT, configService_faultHandler);
+				configService.send();
+			}
+			private function sayHello(e:ContextMenuEvent):void{
+				//Alert.show("点击了右键1");
+			}
+			
+			public function tree1MenuHandler(event:Event):void//点击菜单执行函数，添加该地区到权限列表
+			{ 
+				//若tree2中已经存在将被添加的节点的父级地区，则不能添加。
+				if(!ancestorExsitedInTree2(tree1.selectedItem.@areaCode)){
+					//若tree2中已经存在将被添加的节点的子级地区，则不能添加。
+					if(!childrenExsitedInTree2(tree1.selectedItem.@areaCode)){
+						tree2Xml.appendChild(tree1.selectedItem);
+					}
+				}else{
+					Alert.show(tree1.selectedItem.@label+"已经存在或所在的上级地区已经存在","系统提示");
+				}
+				tree2.selectedIndex=0; 
+				tree2.expandItem(tree2.selectedItem,true); 
+			}
+			
+			public function tree2MenuHandler(event:Event):void{
+				if(tree2.selectedItem.@label=="已选地区"){
+					Alert.show("不能删除根节点","系统提示");
+					return ;
+				}
+				//数据库中只会存储tree2中根节点的数据，因此在移除tree2中的节点之前要判断被移除的节点是否是根节点。
+				if(exsitedInTree2(tree2.selectedItem.@areaCode)){
+					tree2.dataDescriptor.removeChildAt(tree2.selectedItem.parent(),tree2.selectedItem,tree2.selectedItem.childIndex(),tree2.dataProvider);
+				}else{
+					Alert.show("存在上级地区，不可删除","系统提示");
+				}
+			}
+			
+			//根据areaCode判断该节点是否存在于tree2中
+			public function exsitedInTree2(areaCode:String){
+				var result:XML=new XML(tree2Xml.toXMLString());			
+				areaListCollection.source = result.node;
+				areasdata = new ArrayCollection(areaListCollection.toArray()); 
+				//遍历tree2的根节点，若areaCode已经存在于tree2中，则说明已经存在
+				for(var i:int=0;i<areasdata.length;i++){  
+					var o:Object = areasdata.getItemAt(i);  
+					//Alert.show(o.@areaCode);//显示当前节点的areaCode
+					//Alert.show(o["node"].@label);//显示当前节点的子节点的label
+					if(o.@areaCode==areaCode){
+						//Alert.show(tree1.selectedItem.@label+"已经存在");
+						return true;
+					}
+				} 
+				return false;
+			}
+			
+			//根据areaCode判断父级地区是否存在于tree2中
+			public function ancestorExsitedInTree2(areaCode:String){
+				var result:XML=new XML(tree2Xml.toXMLString());			
+				areaListCollection.source = result.node;
+				areasdata = new ArrayCollection(areaListCollection.toArray()); 
+				//遍历tree2的根节点
+				for(var i:int=0;i<areasdata.length;i++){  
+					var o:Object = areasdata.getItemAt(i);  
+					//Alert.show(o.@areaCode);//显示当前节点的areaCode
+//					Alert.show(o["node"].@label);//显示当前节点的子节点的label
+					if(o.@areaCode==areaCode){
+//						Alert.show(tree1.selectedItem.@label+"已经存在");
+						return true;
+					}else if(o.@areaCode==areaCode.substring(0,9)+"000"){
+//						Alert.show(tree1.selectedItem.@label+"所在的镇级地区已经存在");
+						return true;
+					}else if(o.@areaCode==areaCode.substring(0,6)+"000000"){
+//						Alert.show(tree1.selectedItem.@label+"所在的县级地区已经存在");
+						return true;
+					}else if(o.@areaCode==areaCode.substring(0,4)+"00000000"){
+//						Alert.show(tree1.selectedItem.@label+"所在的市级地区已经存在");
+						return true;
+					}if(o.@areaCode==areaCode.substring(0,2)+"0000000000"){
+//						Alert.show(tree1.selectedItem.@label+"所在的省级地区已经存在");
+						return true;
+					}
+				} 
+				return false;
+			}
+			
+			//根据areaCode判断子级地区是否存在于tree2中
+			public function childrenExsitedInTree2(areaCode:String){
+				var result:XML=new XML(tree2Xml.toXMLString());			
+				areaListCollection.source = result.node;
+				areasdata = new ArrayCollection(areaListCollection.toArray()); 
+				//遍历tree2的根节点
+				for(var i:int=0;i<areasdata.length;i++){  
+					var o:Object = areasdata.getItemAt(i);  
+					//Alert.show(o.@areaCode);//显示当前节点的areaCode
+					//Alert.show(o["node"].@label);//显示当前节点的子节点的label
+					if(o.@areaCode.substring(0,9)+"000"==areaCode){
+						//Alert.show(tree1.selectedItem.@label+"所在的镇级地区已经存在");
+						Alert.show("已选列表中包含新添加地区的子级地区，请移除后再添加","系统提示");
+						return true;
+					}else if(o.@areaCode.substring(0,6)+"000000"==areaCode){
+						//Alert.show(tree1.selectedItem.@label+"所在的县级地区已经存在");
+						Alert.show("已选列表中包含新添加地区的子级地区，请移除后再添加","系统提示");
+						return true;
+					}else if(o.@areaCode.substring(0,4)+"00000000"==areaCode){
+						//Alert.show(tree1.selectedItem.@label+"所在的市级地区已经存在");
+						Alert.show("已选列表中包含新添加地区的子级地区，请移除后再添加","系统提示");
+						return true;
+					}if(o.@areaCode.substring(0,2)+"0000000000"==areaCode){
+						//Alert.show(tree1.selectedItem.@label+"所在的省级地区已经存在");
+						Alert.show("已选列表中包含新添加地区的子级地区，请移除后再添加","系统提示");
+						return true;
+					}
+				} 
+				return false;
+			}
+			private function configService_resultHandler(event:ResultEvent):void
+			{
+				try
+				{
+					var configXML:XML = XML(event.result);
+					_userinfo_lvWS_ = configXML.userinfo_lvWS;
+					_role_lvWS_ = configXML.role_lvWS;
+					_areaWS_ = configXML.areaWS;
+					
+					role_lvWS.wsdl = _role_lvWS_;
+					areaWS.wsdl = _areaWS_;
+					
+					role_lvWS.loadWSDL();   
+					areaWS.loadWSDL();
+					
+				}catch (error:Error)
+				{
+					Alert.show(error.message);
+				}
+			}
+			
+			private function configService_faultHandler(event:FaultEvent):void{
+				Alert.show(event.fault.faultString);
+			}
+			private function getToolTip(obj:Object):String{	
+				return obj.@areaName;//返回提示内容
+				//				return "鼠标提示";
+			}
+			private function faultHandler(event:FaultEvent):void{
+				//返回错误处理
+				//Alert.show("Request error!");
+				Alert.show(event.fault.faultString);
+			}
+			private function getByRoleNameHandler(event:ResultEvent):void{
+				var result:Object=event.result;
+				if(result == null){
+					roleNameUsedLabel.text = "角色名可用";
+					sendButton.enabled = true;
+					//sendButton.enabled = true;
+				}else{
+					roleNameUsedLabel.text = "角色名已经被使用";	
+					roleName.setFocus();//获取焦点
+				}
+			}
+			//* 点击tree1的节点时，要从服务器上读取该节点的子节点信息，并且把子节点添加到选中的节点下面
+			// * 每个节点的内容为<node label='中国' areaCode='000000000000' areaLevel='1' subAreaNum='34' completeAddress='中国'></node>
+			private function tree1_itemClick(event:ListEvent):void {
+				//Alert.show("123");
+				var item:Object = event.currentTarget.selectedItem;
+				var xml:XML=tree1.selectedItem as XML;
+				var areacode:String = tree1.selectedItem.@areaCode; 
+				//Alert.show(areacode);
+				if(!tree1.selectedItem.hasComplexContent()){//判断tree1选中的节点是否已经有子节点，若有子节点说明已经查询过
+					areaWS.getSubAreasByCode(areacode);
+				}
+			}
+			private function addHandler(event:ResultEvent){
+				var result:Object=event.result;
+				if(result == null){
+					Alert.show("添加失败");
+				}else{
+					Alert.show("添加成功");
+					//roleId = result.id;
+					var outgoingEvent:Event = new Event("pop", false);
+					//logs = labelPosition.selectedItem.toString();
+					dispatchEvent(outgoingEvent);
+					PopUpManager.removePopUp(this); 
+				}
+			}
+			private function addRole_lvHandler(event:ResultEvent):void{
+				var result:Object=event.result;
+				if(result == null){
+					Alert.show("添加失败");
+				}else{
+					Alert.show("添加成功");
+					//roleId = result.id;
+					//var outgoingEvent:Event = new Event("pop", false);
+					//logs = labelPosition.selectedItem.toString();
+					//dispatchEvent(outgoingEvent);
+					if(callback!=null){  
+						callback(result);  
+					}  
+					PopUpManager.removePopUp(this); 
+				}
+			}
+			private function getSubAreasByCodeHandler(event:ResultEvent):void{
+				//var result:XML=new XML(event.result.toString());			
+				var areas:Object = event.result;
+				//Alert.show(areas.toString());
+				//获取传回的数据
+				//areasdata = new ArrayCollection(areaListCollection.toArray()); 
+				if(areas == null){
+					return;
+				}
+				for(var i:int=0;i<areas.length;i++){  
+					var o:Object = areas.getItemAt(i);  
+					//将数据添加为tree1中选中节点的子节点
+					var child:XML=new XML("<node label='"+o["areaName"]+"' areaCode='"+o["areaCode"]+"' areaLevel='"+o["areaLevel"]+"' subAreaNum='"+o["subAreaNum"]+"' completeAddress='"+o["completeAddress"]+"'></node>");
+					tree1.selectedItem.appendChild(child);
+					//tree1.selectedItem.appendChild("<node label='"+o["areaName"]+"' areaCode='"+o["areaCode"]+"' areaLevel='"+o["areaLevel"]+"' subAreaNum='"+o["subAreaNum"]+"' completeAddress='"+o["completeAddress"]+"'></node>");
+				} 
+			}
+			private function checkRoleName():void{
+				if(roleName.text.toString() == ""){
+					roleNameUsedLabel.text = "用户名不可为空";	
+					sendButton.enabled = false;
+					return;
+				}
+				role_lvWS.getByRoleName(roleName.text.toString());
+			}
+			
+			private function submit():void{
+				var RegionalRoleName:String = roleName.text;
+				if(RegionalRoleName==""){
+					Alert.show("角色名称不可以为空","系统提示");
+					return;
+				}
+				
+				var result:XML=new XML(tree2Xml.toXMLString());			
+				areaListCollection.source = result.node;
+				areasdata = new ArrayCollection(areaListCollection.toArray()); 
+				var rightString:String = "";
+				//遍历tree2的根节点，取出其中的areaCode拼凑成指定格式的字符串
+				for(var i:int=0;i<areasdata.length;i++){  
+					var o:Object = areasdata.getItemAt(i);  
+					rightString+=(o.@areaCode+"||");
+				} 
+				if(rightString==""){
+					Alert.show("请选中地区后再提交","系统提示");
+					return;
+				}
+//				Alert.show(rightString);
+				role_lvWS.addRole_lv(roleName.text.toString(), 'region', rightString);
+			}
+			
+			//点击确认，关闭弹出窗口，将弹出窗口参数传递给父窗窗口  
+			private function cancel():void{                 
+				if(callback!=null){  
+					//callback(textInput.text);  
+				}  
+				PopUpManager.removePopUp(this);  
+			}   
+		]]>  
+	</fx:Script>  
+	<!--
+	<mx:TextInput id="textInput" x="92" y="51"/>  
+	<mx:Button x="187" y="171" label="关闭弹出窗口" click="onSubmit()"/>  
+	-->
+	<fx:Declarations>
+		<s:WebService id="role_lvWS" showBusyCursor="true" useProxy="false" wsdl="{_role_lvWS_}">
+			<!--name指的是Service中的方法名，必须和服务端方法名一致-->
+			<s:operation name="getByRoleName" fault="faultHandler(event)" result="getByRoleNameHandler(event)"/>
+			<s:operation name="addRole_lv" fault="faultHandler(event)" result="addRole_lvHandler(event)"/>
+		</s:WebService>
+		<s:WebService id="areaWS" showBusyCursor="true" useProxy="false" wsdl="{_areaWS_}">
+			<s:operation name="getSubAreasByCode" fault="faultHandler(event)" result="getSubAreasByCodeHandler(event)"/>
+		</s:WebService>
+		
+	</fx:Declarations>
+	
+	<mx:Form id="basicPropertyPane" left="0" right="0" top="0" bottom="43" label="添加角色"
+			 cornerRadius="5" dropShadowVisible="true" horizontalCenter="0" indicatorGap="5"
+			 paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" textAlign="center"
+			 verticalCenter="-22">
+		<!--<mx:Label text="Label Properties" fontStyle="italic" width="100%" fontWeight="bold"/>-->
+		<mx:FormItem label="角色名">
+			<mx:HBox>
+				<mx:TextInput id="roleName" width="90%" focusOut="checkRoleName();" textAlign="left"/>
+				<mx:Label text="*"/>
+				<mx:Label id="roleNameUsedLabel" color="red" text=""/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:Panel height="698" horizontalAlign="center" title="选择权限区域">
+			<mx:HBox width="100%" horizontalGap="5" verticalAlign="middle">
+				<mx:VBox mouseEnabled="true">
+					<mx:Label text='可选地区'/> <!--左边的树-->
+					<!--
+					<mx:Tree id="tree1" x="5" y="5" width="400" height="600"
+					dataTipFunction="getToolTip" showDataTips="true"
+					dataProvider="{tree1Xml}"
+					mouseEnabled="true"
+					change="tree1Changed(event)"
+					itemClick="tree1_itemClick(event);"
+					allowMultipleSelection ="false"
+					initialize="tree1_creationCompleteHandler(event)"  
+					labelField="@label" selectedItem="{}"
+					selectionColor="#3DDDDB" showRoot="false">
+					</mx:Tree>itemClick="tree1_itemClick(event);" 
+					itemClick="tree2_itemClick(event);" 
+					itemDoubleClick="tree1_itemDoubleClick(event);"
+					-->
+					<mx:Tree id="tree1" x="5" y="5" width="400" height="600"
+							 dataProvider="{tree1Xml}" doubleClickEnabled="true" labelField="@label"
+							 itemClick="tree1_itemClick(event);"
+							 selectedItem="{}" showRoot="false" textAlign="left">
+					</mx:Tree>
+				</mx:VBox>
+				<mx:VBox horizontalAlign="center">
+					<mx:Label text='已选地区'/>
+					<!--右边的树-->
+					<mx:Tree id="tree2" x="5" y="5" width="400" height="600"
+							 dataProvider="{tree2Xml}" dataTipFunction="getToolTip"
+							 labelField="@label" selectedItem="{}" selectionColor="#3DDDDB"
+							 showDataTips="true" showRoot="false" textAlign="left">
+					</mx:Tree>
+				</mx:VBox>
+			</mx:HBox>
+		<mx:HBox width="207" horizontalAlign="right" textAlign="center">
+			<mx:Button id="sendButton" click="submit();"  width="99" label="提交" textAlign="center" enabled="false"/>
+			<mx:Button width="99" label="取消" click="cancel();" textAlign="center"/>
+		</mx:HBox>
+		</mx:Panel>
+	</mx:Form>
+</mx:Canvas> 

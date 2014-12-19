@@ -28,34 +28,37 @@
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.IFlexDisplayObject;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			import mx.rpc.Fault;
 			import mx.rpc.Responder;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-			import mx.events.CloseEvent;
 			import mx.rpc.http.HTTPService;
 			
 			import widgets.UserManagement.UserAdd;
 			import widgets.UserManagement.UserView;
 			private var _webService_wsdl:String="";
 			private var _pagerWS_:String = "";
-			public var userAdd:Object ;
+			private var _role_lvWS_:String = "";
+			
+			public var commandRoleAdd:Object ;
+			public var regionRoleAdd:Object ;
 			public var userView:Object ;
 			public var userEdit:Object ;
 			public var userSearch:Object ;
 			private var pager:Object;
 			
 			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
-			var users:Object = new Array();
+			var roles:Object = new Array();
 
             //this function called when the widget's configuration is loaded
             private function init():void
             {
 				//webService.getAll();
 				
-				pagerWS.getPager("Userinfo_lv");
+				pagerWS.getPager("Role_lv");
                 if (configXML) // checking for valid content in the configuration file
                 {
                     //lbl.text = configXML.content || getDefaultString("helloContent");
@@ -100,36 +103,70 @@
 			}
 			
 			public function onClick(event:Event ):void{
-				var name:String =userList.selectedItem.name;
+				var name:String =roleList.selectedItem.name;
 				//Alert.show(name);
 				//var users:ArrayCollection = 
 				//Alert.show(webService.wsdl);
 				//Alert.show(users.toString());
 			}
 			
-			private function addUser(event:MouseEvent):void
+			private function addCommandRole(event:MouseEvent):void
 			{
-				/*
-				PopUpManager.addPopUp(firstWindow, this, true);
-				PopUpManager.centerPopUp(firstWindow);
-				firstWindow.setData(new Array("bobo", "huhu", "coco"));
-				*/
 				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
-				userAdd = PopUpManager.createPopUp(this, UserAdd, true);
-				PopUpManager.centerPopUp(userAdd as IFlexDisplayObject);
+				commandRoleAdd = PopUpManager.createPopUp(this, CommandRoleAdd, true);
+				PopUpManager.centerPopUp(commandRoleAdd as IFlexDisplayObject);
 				//userAdd.setData(new Array("bobo", "huhu", "coco"));
-				userAdd.addEventListener("pop",getWindowData2);
+				commandRoleAdd.addEventListener("pop",addCommandRoleHandler);
 				//users.addItemAt({name:"a",email:"12",tel:"123",truename:"syd",department:"A",note:"4"}, 0); 
 			}
 			
-			private function searchUser(event:MouseEvent):void{
-				userSearch = PopUpManager.createPopUp(this, UserSearch, true);
-				PopUpManager.centerPopUp(userSearch as IFlexDisplayObject);
+			private function addRegionRole(event:MouseEvent):void{
+				var popup:RegionRoleAdd=new RegionRoleAdd();  
+				//popup.text=tInput.text;  
+//				popup.text = "123456789";
+				popup.callback=addRegionRoleHandler;  
+				PopUpManager.addPopUp(popup,this);  
+				PopUpManager.centerPopUp(popup);  
+				/*
+				regionRoleAdd = PopUpManager.createPopUp(this, RegionRoleAdd, true);
+				PopUpManager.centerPopUp(regionRoleAdd as IFlexDisplayObject);
+				//userAdd.setData(new Array("bobo", "huhu", "coco"));
+				regionRoleAdd.addEventListener("pop",addRegionRoleHandler);
+				*/
+			}
+			//关闭打开窗口时处理  
+			private function addRegionRoleHandler(obj:Object):void{  
+				//tInput.text=text;  
+//				pager.pageSize
+				pager.totalCount ++;
+				pager.totalPage = Math.ceil((Number)(pager.totalCount)/(Number)(pager.pageSize));
+				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
+				roleList.dataProvider.addItemAt({id:obj.id,roleName:obj.roleName,desText:obj.desText, type:'region'}, 0); 
 			}
 			
-			private function viewUser(event:MouseEvent):void
+			private function editRegionRoleHandler(obj:Object):void{  
+				var selectedItems:Array = roleList.selectedItems;
+				for each(var a:Object in selectedItems) {
+					a.id = obj.id;
+					a.roleName = obj.roleName;
+					a.type = obj.type;
+					a.desText = obj.desText;
+					break;//当选中多个的时候只显示第一个
+				}
+			}
+			
+			private function editCommandRoleHandler(obj:Object):void{  
+				
+			}
+			
+			private function searchRole(event:MouseEvent):void{
+				//userSearch = PopUpManager.createPopUp(this, UserSearch, true);
+				//PopUpManager.centerPopUp(userSearch as IFlexDisplayObject);
+			}
+			
+			private function viewRole(event:MouseEvent):void
 			{
-				var selectedItems:Array = userList.selectedItems;
+				var selectedItems:Array = roleList.selectedItems;
 				if(selectedItems.length == 0){
 					Alert.show("请先选中用户");
 					return;
@@ -155,7 +192,7 @@
 				}
 				//getUsersByPager(int pageSize, int currentPage) 
 				pager.currentPage = 1;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -165,7 +202,7 @@
 					return;
 				}
 				pager.currentPage -= 1;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -175,7 +212,7 @@
 					return;
 				}
 				pager.currentPage += 1;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -185,38 +222,40 @@
 					return;
 				}
 				pager.currentPage = pager.totalPage;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
 			
-			private function getWindowData2(e:Event):void
+			private function addCommandRoleHandler(e:Event):void
 			{
 				pager.totalCount ++;
 				pager.totalPage = Math.ceil((Number)(pager.totalCount)/(Number)(pager.pageSize));
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
-				
-				userList.dataProvider.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
-				//Alert.show(userAdd.logs);
-				//Alert.show(userAdd.labelPosition.selectedItem.toString());
-				//Alert.show("color:" + userAdd.labelColor.selectedColor);
+				roleList.dataProvider.addItemAt({id:commandRoleAdd.roleId,roleName:commandRoleAdd.roleName.text.toString(),desText:commandRoleAdd.desText, type:'command'}, 0); 
 			}
 			
-			private function deleteUser(event:MouseEvent):void{//删除选中的用户，可以多选		
-				var selectedItems:Array = userList.selectedItems;
+//			private function addRegionRoleHandler(e:Event):void
+//			{
+//				//roleList.dataProvider.addItemAt({id:commandRoleAdd.roleId,roleName:commandRoleAdd.roleName.text.toString(),desText:commandRoleAdd.desText, type:'command'}, 0); 
+//			}
+			
+			private function deleteRole(event:MouseEvent):void{//删除选中的用户，可以多选		
+				var selectedItems:Array = roleList.selectedItems;
 				if(selectedItems.length == 0){
-					Alert.show("请先选中用户");
+					Alert.show("请先选中角色");
 					return;
 				}
 				Alert.show("确认要删除吗？","删除提示",Alert.YES|Alert.NO,null,function(event:CloseEvent):void{
 					if(event.detail==Alert.YES){
 						//var selectedItems:Array = userList.selectedItems;
-						var selectedIndices:Array = userList.selectedIndices;
-						var jj:int = users.length;
+						var selectedIndices:Array = roleList.selectedIndices;
+						var jj:int = roles.length;
 						//Alert.show(users.length);
 						for(var a:int = selectedIndices.length - 1;a>=0;a--){
-							webService.deleteUserinfo_lv(userList.dataProvider.getItemAt(selectedIndices[a]).id);
-							userList.dataProvider.removeItemAt(selectedIndices[a]);
+//							webService.deleteUserinfo_lv(roleList.dataProvider.getItemAt(selectedIndices[a]).id);
+							role_lvWS.deleteByRoleId(roleList.dataProvider.getItemAt(selectedIndices[a]).id);
+							roleList.dataProvider.removeItemAt(selectedIndices[a]);
 						}
 						for each(var a:int in selectedIndices) {
 						}
@@ -227,42 +266,44 @@
 				},null,Alert.NO);
 			}
 			
-			private function editUser(event:MouseEvent):void{
+			private function editRole(event:MouseEvent):void{
 //				var selectedIndices:Array = userList.selectedIndices;
 //				if(selectedIndices.length == 0){
 //					Alert.show("请先选中用户");
 //					return;
 //				}
-				var userId:int = 0;
-				var selectedItems:Array = userList.selectedItems;
+				var selectedItems:Array = roleList.selectedItems;
 				if(selectedItems.length == 0){
 					Alert.show("请先选中用户");
 					return;
 				}
+				var roleId:int = 0;
+				var roleType:String = "";				
 				for each(var aa:Object in selectedItems){
 					//Alert.show(aa.id.toString());
-					userId = aa.id;
+					roleId = aa.id;
+					roleType = aa.type;
 					break;//当选中多个的时候只显示第一个
 				}
-				/*
-				for each(var a:int in selectedIndices) {
-					//Alert.show(users.getItemAt(a).id);
-					userId = users.getItemAt(a).id;
-					break;//当选中多个的时候只显示第一个
+				if(roleType == "region"){
+					var popup:RegionRoleEdit=new RegionRoleEdit();  
+					popup.setRoleId(roleId);
+					popup.callback=editRegionRoleHandler;  
+					PopUpManager.addPopUp(popup,this);  
+					PopUpManager.centerPopUp(popup);  
+				}else if(roleType == "command"){
+					var commandRoleEditPopup:CommandRoleEdit=new CommandRoleEdit();  
+					commandRoleEditPopup.setRoleId(roleId);
+					commandRoleEditPopup.callback=editRegionRoleHandler;  
+					PopUpManager.addPopUp(commandRoleEditPopup,this);  
+					PopUpManager.centerPopUp(commandRoleEditPopup);  
 				}
-				*/
-				//不是通过组建对象生成窗口:每当窗口打开时,弹出式窗口都会重新创建并初始化.
-				userEdit = PopUpManager.createPopUp(this, UserEdit, true);
-				//Alert.show(userId.toString());
-				userEdit.setUserId(userId);
-				PopUpManager.centerPopUp(userEdit as IFlexDisplayObject);
-				userEdit.addEventListener("pop",userEditHandler);
 			}
 			
 			private function userEditHandler(e:Event):void
 			{
 				//users.addItemAt({id:userAdd.userId,name:userAdd.username.text.toString(),email:userAdd.email.text.toString(),tel:userAdd.email.text.toString(),truename:userAdd.truename.text.toString(),department:userAdd.department.text.toString(),note:userAdd.note.text.toString()}, 0); 
-				var selectedItems:Array = userList.selectedItems;
+				var selectedItems:Array = roleList.selectedItems;
 				if(selectedItems.length == 0){
 					Alert.show("请先选中用户");
 					return;
@@ -279,8 +320,8 @@
 			}
 
 			private function onResult(event:ResultEvent):void{
-				users = event.result;
-				userList.dataProvider = users;
+				roles = event.result;
+				roleList.dataProvider = roles;
 			}
 			
 			private function deleteResult(event:ResultEvent):void{
@@ -288,22 +329,33 @@
 				//Alert.show(result.toString());
 			}
 			
-			private function getUsersByPagerResult(event:ResultEvent):void{
-				users = event.result;
-				userList.dataProvider = users;
+			private function getRolesByPagerHandler(event:ResultEvent):void{
+				roles = event.result;
+				roleList.dataProvider = roles;
+			}
+			
+			private function deleteByRoleIdHandler(event:ResultEvent):void{
+				var result:Object = event.result;
+			}
+			
+			private function getAllRoleHandler(event:ResultEvent):void{
+				roles = event.result;
+				roleList.dataProvider = roles;
 			}
 			
 			private function getPagerResult(event:ResultEvent):void{
 				pager = event.result;
 				//当前第1页，每页显示15条。共10条记录，一共1页。
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				//Alert.show('当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页');
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
 			}
 			
 			protected function application_creationCompleteHandler(event:FlexEvent):void
 			{
 				webService.loadWSDL();   
 				pagerWS.loadWSDL();   
+				role_lvWS.loadWSDL();  
 			}
 			
 			private function configService_resultHandler(event:ResultEvent):void
@@ -314,9 +366,11 @@
 					var configXML:XML = XML(event.result);
 					_webService_wsdl = configXML.userinfo_lvWS;
 					_pagerWS_=configXML.pagerWS;
+					_role_lvWS_ = configXML.role_lvWS;
 					
 					webService.wsdl = _webService_wsdl;
 					pagerWS.wsdl = _pagerWS_;
+					role_lvWS.wsdl = _role_lvWS_;
 					//Alert.show(_webService_wsdl);
 				}catch (error:Error)
 				{
@@ -326,47 +380,7 @@
 			
 			private function configService_faultHandler(event:FaultEvent):void
 			{
-				var sInfo:String = "";
-				
-				if (event.fault.rootCause is IOErrorEvent)
-				{
-					var ioe:IOErrorEvent = event.fault.rootCause as IOErrorEvent;
-					// Missing config file
-					if (ioe.errorID == 2032)
-					{
-						sInfo += 'missingConfigFileText' + "\n\n";
-					}
-					else
-					{
-						// some other IOError
-						sInfo += event.fault.rootCause + "\n\n";
-					}
-				}
-				
-				if (event.fault.rootCause is SecurityErrorEvent)
-				{
-					var sec:SecurityErrorEvent = event.fault.rootCause as SecurityErrorEvent;
-					// config file with crossdomain issue
-					if (sec.errorID == 2048)
-					{
-						sInfo += 'configFileCrossDomain'+ "\n\n";
-					}
-						// some other Security error
-					else
-					{
-						sInfo += event.fault.rootCause + "\n\n";
-					}
-				}
-				
-				if (event.statusCode) // e.g. 404 - Not Found - http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
-				{
-					sInfo += 'httpResponseStatus'+ "\n\n";
-				}
-				
-				sInfo += event.fault.faultCode + "\n\n";
-				sInfo += event.fault.faultString + "\n\n";
-				sInfo += event.fault.faultDetail;
-				Alert.show(sInfo);
+				Alert.show(event.fault.faultString);
 			}
         ]]>
     </fx:Script>
@@ -376,11 +390,16 @@
 					   wsdl="{_webService_wsdl}">
 			<mx:operation name="getAll" result="onResult(event)"/>
 			<mx:operation name="deleteUserinfo_lv" result="deleteResult(event)"/>
-			<mx:operation name="getUsersByPager" result="getUsersByPagerResult(event)"/>
 		</mx:WebService>
 		<mx:WebService id="pagerWS" showBusyCursor="true" useProxy="false"
 					   wsdl="{_pagerWS_}">
 			<mx:operation name="getPager" result="getPagerResult(event)"/>
+		</mx:WebService>
+		<mx:WebService id="role_lvWS" showBusyCursor="true" useProxy="false"
+					   wsdl="{_role_lvWS_}">
+			<mx:operation name="getAll" result="getAllRoleHandler(event)"/>
+			<mx:operation name="getRolesByPager" result="getRolesByPagerHandler(event)"/>
+			<mx:operation name="deleteByRoleId" result="deleteByRoleIdHandler(event)"/>
 		</mx:WebService>
 	</fx:Declarations>
 
@@ -388,7 +407,6 @@
         <viewer:layout>
             <s:VerticalLayout horizontalAlign="center" verticalAlign="middle">
 			</s:VerticalLayout>
-			
         </viewer:layout>
 
 		<!--
@@ -402,26 +420,26 @@
 		<!-- http://blog.csdn.net/lihua2915/article/details/5856029 -->
 		<s:Panel width="100%" height="100%" chromeColor="#47698D" horizontalCenter="0" title="用户列表"
 				 verticalCenter="-14">
-			<mx:DataGrid id="userList" x="0" y="0" width="100%" height="100%"
-						 allowMultipleSelection="true" chromeColor="#47698D" dataProvider="{users}">
+			<mx:DataGrid id="roleList" x="0" y="0" width="100%" height="100%"
+						 allowMultipleSelection="true" chromeColor="#47698D" dataProvider="{roles}">
 				<mx:columns>
 					<mx:DataGridColumn width="50" dataField="id" headerText="ID"/>
-					<mx:DataGridColumn dataField="name" headerText="用户名"/>
-					<mx:DataGridColumn dataField="email" headerText="E-mail"/>
-					<mx:DataGridColumn dataField="tel" headerText="电话"/>
-					<mx:DataGridColumn dataField="truename" headerText="姓名"/>
-					<mx:DataGridColumn dataField="department" headerText="部门"/>
-					<mx:DataGridColumn dataField="note" headerText="备注"/>
+					<mx:DataGridColumn width="150" dataField="roleName" headerText="角色名"/>
+					<mx:DataGridColumn width="100" dataField="type" headerText="角色类型"/>
+					<mx:DataGridColumn dataField="desText" headerText="角色详情"/>
 				</mx:columns>
 			</mx:DataGrid>
 
 		</s:Panel>
 		<mx:HBox>
-			<mx:Button id="addUserButton" label="添加用户" click="addUser(event)"/>
-			<mx:Button id="deleteUserButton" label="删除用户" click="deleteUser(event)"/>
-			<mx:Button id="updateUser" label="修改用户" click="editUser(event)"/>
-			<mx:Button id="view" label="查看详情" click="viewUser(event)"/>
-			<mx:Button id="search" label="查找用户" click="searchUser(event)"/>
+			<mx:Button id="addCommandRoleButton" label="添加command角色" click="addCommandRole(event)"/>
+			<mx:Button id="addRegionRoleButton" label="添加region角色" click="addRegionRole(event)"/>
+			<mx:Button id="deleteRoleButton" label="删除角色" click="deleteRole(event)"/>
+			<mx:Button id="updateRole" label="修改角色" click="editRole(event)"/>
+			<!--
+			<mx:Button id="view" label="查看详情" click="viewRole(event)"/>
+			<mx:Button id="search" label="查找角色" click="searchRole(event)"/>
+			-->
 		</mx:HBox>
 		<mx:HBox>
 			<mx:Button id="firstPageButton" label="首页" click="firstPage(event)"/>
