@@ -52,6 +52,7 @@
     <module application="src/index.mxml" destPath="widgets/AttributeTable/AttributeTableWidget.swf" optimize="true" sourcePath="src/widgets/AttributeTable/AttributeTableWidget.mxml"/>
     <module application="src/index.mxml" destPath="widgets/Chart/ChartWidget.swf" optimize="true" sourcePath="src/widgets/Chart/ChartWidget.mxml"/>
     <module application="src/index.mxml" destPath="widgets/UserManagement/UserManagementWidget.swf" optimize="true" sourcePath="src/widgets/UserManagement/UserManagementWidget.mxml"/>
+    <module application="src/index.mxml" destPath="widgets/RoleManagement/RoleManagementWidget.swf" optimize="true" sourcePath="src/widgets/RoleManagement/RoleManagementWidget.mxml"/>
   </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
