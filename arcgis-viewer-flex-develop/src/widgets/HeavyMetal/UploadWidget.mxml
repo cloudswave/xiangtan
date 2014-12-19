@@ -65,10 +65,7 @@
 				
 				feature = new Object();
 				feature.geometry = new Object();
-				
-			
-				
-				
+
             }
 			
 			private function fileUploadCompleteHandler(e:Event):void{    
