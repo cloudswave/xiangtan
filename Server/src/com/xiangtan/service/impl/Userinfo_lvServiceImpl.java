@@ -111,7 +111,7 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 		name = name.trim();
 		department = department.trim();
 		truename = truename.trim();
-		List<Userinfo_lv>result = new ArrayList<>();
+		List<Userinfo_lv>result = new ArrayList<Userinfo_lv>();
 		if (name.trim().length() == 0) {//不查询name
 			if (department.trim().length() == 0) {//不查询name 不查询department
 				if (truename.trim().length() == 0) {//不查询name 不查询department 不查询truename
@@ -126,7 +126,7 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 					return result;
 				}else {//不查询name 要查询department 要查询查询truename
 					List<Userinfo_lv>truenameResult = userinfo_lvDao.getUserinfo_lvsLikeTruename(truename);
-					List<Userinfo_lv>result1 = new ArrayList<>();
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
 					//取result和truenameResult的交集
 					for (int i = 0; i < result.size(); i++) {
 						for (int j = 0; j < truenameResult.size(); j++) {
@@ -145,7 +145,7 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 					return nameResult;
 				}else {//要查询name 不查询department 要查询truename
 					List<Userinfo_lv>truenameResult = userinfo_lvDao.getUserinfo_lvsLikeTruename(truename);
-					List<Userinfo_lv>result1 = new ArrayList<>();
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
 					//取nameResult和truenameResult的交集
 					for (int i = 0; i < nameResult.size(); i++) {
 						for (int j = 0; j < truenameResult.size(); j++) {
@@ -159,7 +159,7 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 			}else {//要查询name 要查询 department
 				List<Userinfo_lv>departmentResult = userinfo_lvDao.getUserinfo_lvsLikeDepartment(department);
 				if (truename.trim().length() == 0) {//要查询name 要查询 department 不查询truename
-					List<Userinfo_lv>result1 = new ArrayList<>();
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
 					for (int i = 0; i < nameResult.size(); i++) {
 						for (int j = 0; j < departmentResult.size(); j++) {
 							if (nameResult.get(i).getId() == departmentResult.get(j).getId()) {
@@ -170,7 +170,7 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 					return result1;
 				}else{//要查询name 要查询 department 要查询truename
 					List<Userinfo_lv>truenameResult = userinfo_lvDao.getUserinfo_lvsLikeTruename(truename);
-					List<Userinfo_lv>result1 = new ArrayList<>();
+					List<Userinfo_lv>result1 = new ArrayList<Userinfo_lv>();
 					for (int i = 0; i < nameResult.size(); i++) {
 						for (int j = 0; j < departmentResult.size(); j++) {
 							if (nameResult.get(i).getId() == departmentResult.get(j).getId()) {
@@ -178,7 +178,7 @@ public class Userinfo_lvServiceImpl implements Userinfo_lvService {
 							}
 						}
 					}
-					List<Userinfo_lv>result2 = new ArrayList<>();
+					List<Userinfo_lv>result2 = new ArrayList<Userinfo_lv>();
 					for (int i = 0; i < truenameResult.size(); i++) {
 						for (int j = 0; j < result1.size(); j++) {
 							if (truenameResult.get(i).getId() == result1.get(j).getId()) {
