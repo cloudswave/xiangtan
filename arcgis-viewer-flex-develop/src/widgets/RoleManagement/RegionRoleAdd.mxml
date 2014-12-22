@@ -34,6 +34,8 @@
 			private var _areaWS_:String="";
 			private var areaListCollection:XMLListCollection=new XMLListCollection(); 
 			private var areasdata: ArrayCollection; 
+			private var downXY:Point=new Point();
+			private var upXY:Point=new Point();
 			[Bindable]
 			private var tree1Xml:XML =
 				<node label="可选地区">
@@ -47,6 +49,10 @@
 				</node>;
 			//初始化函数  
 			private function init():void{  
+				//添加拖拽事件
+				this.addEventListener(MouseEvent.MOUSE_UP,MouseEventFunc);     
+				this.addEventListener(MouseEvent.MOUSE_DOWN,MouseEventFunc);
+				
 				loadConfig();
 				//textInput.text=text;   
 				var menu1:ContextMenu = new ContextMenu();
@@ -66,6 +72,23 @@
 				tree2.contextMenu = menu2;
 				
 			}  
+			
+			public function MouseEventFunc(evt:MouseEvent):void
+			{
+				switch (evt.type)
+				{
+					case "mouseDown" :
+						downXY=new Point(mouseX,mouseY);                                              
+						evt.currentTarget.startDrag();                                                                         
+						break;
+					case "mouseUp" :
+						upXY=new Point(mouseX,mouseY);                                            
+						evt.currentTarget.stopDrag();                                                                    
+						break;
+					default:
+						break;                        
+				}
+			}
 			
 			private function loadConfig():void
 			{
