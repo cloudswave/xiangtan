@@ -260,7 +260,11 @@
 				var item:Object = event.currentTarget.selectedItem;
 				var xml:XML=tree1.selectedItem as XML;
 				var areacode:String = tree1.selectedItem.@areaCode; 
-				//Alert.show(areacode);
+				var areaLevel:int = tree1.selectedItem.@areaLevel; 
+				if(areaLevel == 5){
+					return;
+				}
+				//Alert.show(areaLevel);
 				if(!tree1.selectedItem.hasComplexContent()){//判断tree1选中的节点是否已经有子节点，若有子节点说明已经查询过
 					areaWS.getSubAreasByCode(areacode);
 				}

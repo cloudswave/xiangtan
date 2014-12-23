@@ -108,12 +108,21 @@
 			
 			private function getAreasByDesTextHandler(event:ResultEvent):void{
 				
-				//Alert.show(event.result.toString())
 				var areas:ArrayCollection = event.result as ArrayCollection;
-				
+				//Alert.show(areas1.toString());
 				if(areas == null){
+					//Alert.show(areas.toString())
+					var o:Object = event.result as Object;
+					if(o == null){
+						return;
+					}
+					var child:XML=new XML("<node label='"+o["areaName"]+"' areaCode='"+o["areaCode"]+"' areaLevel='"+o["areaLevel"]+"' subAreaNum='"+o["subAreaNum"]+"' completeAddress='"+o["completeAddress"]+"'></node>");
+					tree2.selectedItem = root;
+					//					tree2.selectedItem.appendChild(child);
+					tree2Xml.appendChild(child);
 					return;
 				}
+				
 //				Alert.show(areas.length.toString());
 				for(var i:int=0;i<areas.length;i++){  
 					var o:Object = areas[i];  
@@ -134,6 +143,7 @@
 					return;
 				}
 				roleName.text = event.result.roleName;
+//				Alert.show(event.result.desText);
 //				desText = result.desText;
 				role_lvWS.getAreasByDesText(event.result.desText);
 			}
@@ -297,6 +307,10 @@
 				var xml:XML=tree1.selectedItem as XML;
 				var areacode:String = tree1.selectedItem.@areaCode; 
 				//Alert.show(areacode);
+				var areaLevel:int = tree1.selectedItem.@areaLevel; 
+				if(areaLevel == 5){
+					return;
+				}
 				if(!tree1.selectedItem.hasComplexContent()){//判断tree1选中的节点是否已经有子节点，若有子节点说明已经查询过
 					areaWS.getSubAreasByCode(areacode);
 				}
