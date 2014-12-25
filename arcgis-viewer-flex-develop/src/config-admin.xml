@@ -31,8 +31,8 @@
 		config="widgets/Coordinate/CoordinateWidget.xml" url="widgets/Coordinate/CoordinateWidget.swf" />
 
 	<map wraparound180="true"
-		initialextent="676931.369244576 3018994.8542325394  710389.9886815157 3114388.2655324386"
-		fullextent="634564.4566226229 -20000000 20000000 20000000" top="40"
+		initialextent="1.2427179939463886E7 3188690.0408077454  1.266173353357107E7 3264890.193208049"
+		fullextent="1.2427179939463886E7 3188690.0408077454  1.266173353357107E7 3264890.193208049" top="40"
 		
 		addarcgisbasemaps="false">
 		<!-- 自定义图层 -->
@@ -40,7 +40,7 @@
 			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
 <!--              <layer label="地形图" type="googlemap" visible="true"
 				icon="assets/images/basemap_streets.jpg" /> -->
-			<layer label="影像" type="dynamic" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84/MapServer" 
+			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84/MapServer" 
 				icon="assets/images/basemap_imagery.jpg" />  
 
 			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
@@ -51,7 +51,7 @@
 		</basemaps>
 		<operationallayers>
 
-			<layer label="边界" type="feature" visible="true" alpha="1.0" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_map_wcs84/MapServer/0"/>
+			<layer label="边界" type="dynamic" visible="true" alpha="1.0" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_map_wgs84/MapServer"/>
 
 <!-- 			<layer label="时间演变" type="feature" visible="false" alpha="1.0"
 				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/Since_1970/MapServer/0" />
