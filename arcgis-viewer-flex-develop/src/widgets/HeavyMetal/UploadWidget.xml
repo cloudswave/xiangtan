@@ -1,6 +1,6 @@
 <configuration>
 	<addFeatures>
-		http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0/addFeatures
+		http://192.168.13.39:6080/arcgis/rest/services/samples_xt_wgs84/FeatureServer/0/addFeatures
 	</addFeatures>
 	<downloadUrl>
 		http://iclouds.qiniudn.com/xls监测数据上传格式模板.xls
