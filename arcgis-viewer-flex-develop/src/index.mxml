@@ -79,8 +79,9 @@
 				Userinfo_lv = event.result;
 				if(Userinfo_lv!=null){
 					Alert.show(Userinfo_lv.name + "登录成功！");
+					ViewerContainer.configFile = "config-admin.xml";
 					this.currentState = "index";
-					//ViewerContainer.configFile = "config-admin.xml"; 
+					 
 				}else{
 					Alert.show("账号或密码错误");
 				}
@@ -117,18 +118,28 @@
 				return checkcode;
 			}
 			
-			protected function KEY_DOWN_handler(event:KeyboardEvent):void
-			{
-				if(event.keyCode==Keyboard.ENTER){
-					Submit_clickHandler(null);
-				}
-			}
-			
 			protected function application_creationCompleteHandler(event:FlexEvent):void
 			{
-				webService.loadWSDL();   
-				//this.currentState = "login";
-				//pnlLogin.addEventListener(KeyboardEvent.KEY_DOWN,KEY_DOWN_handler);
+				webService.loadWSDL();
+				setTimeout(login, 2000);
+				
+				
+			
+				
+			}
+			function login(){
+				this.currentState = "login";
+				pnlLogin.addEventListener(KeyboardEvent.KEY_DOWN,function (event:KeyboardEvent){
+					if(event.keyCode == Keyboard.ENTER)//Enter键  
+					{  
+						Submit_clickHandler(null);
+					}  
+					if(event.keyCode==27)//Esc键  
+					{  
+						//ESC事件  
+					} 
+				
+				});
 			}
 			
 			private function loadConfig():void
@@ -211,6 +222,7 @@
 	</fx:Declarations>	
 	
 	<s:states>
+		
 		<s:State name="index" />
 		<s:State name="login" />
 		

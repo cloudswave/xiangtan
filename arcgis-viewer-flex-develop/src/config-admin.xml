@@ -40,7 +40,7 @@
 			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
 <!--              <layer label="地形图" type="googlemap" visible="true"
 				icon="assets/images/basemap_streets.jpg" /> -->
-			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image2/MapServer" 
+			<layer label="影像" type="dynamic" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84/MapServer" 
 				icon="assets/images/basemap_imagery.jpg" />  
 
 			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
@@ -51,7 +51,7 @@
 		</basemaps>
 		<operationallayers>
 
-			<layer label="边界" type="feature" visible="true" alpha="1.0" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_map/MapServer/0"/>
+			<layer label="边界" type="feature" visible="true" alpha="1.0" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_map_wcs84/MapServer/0"/>
 
 <!-- 			<layer label="时间演变" type="feature" visible="false" alpha="1.0"
 				url="http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Earthquakes/Since_1970/MapServer/0" />
@@ -67,226 +67,14 @@
             <layer type="feature" label="面污染源" url="http://192.168.24.210/arcgis/rest/services/HeavyMetal/FeatureServer/3" mode="onDemand" visible="true" popupconfig="popups/PopUp_p.xml"/>
  -->
 			
-			<layer label="土壤Hg" type="feature" visible="true" alpha="1.0"
+			<layer label="重金属" type="feature" visible="true" alpha="1.0"
 				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-<!-- 				<simplerenderer> 
-				<simplemarkersymbol color="0xFF0000" alpha="1" > 
-					<outline width="2" color="0x0000FF" style="dashdot" /> 
-				</simplemarkersymbol> 
-				</simplerenderer> -->
-				<classbreaksrenderer field="tu_hg">
-					<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
- 					<defaultlabel>0-0.15:1级</defaultlabel>
-					<classbreakinfo min="1.5" max="9999" label=">1.5:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="0.15" max="1.5" label="0.15-1.5:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol> 
-					</classbreakinfo>
-				</classbreaksrenderer>
+				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt_wgs84/FeatureServer/0">
+
+				
 			</layer>
 
-         <!-- <layer label="镍" type="feature" visible="false" alpha="1.0"
-				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
-				<classbreaksrenderer field="tu_ni">
-					<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
-					<defaultlabel>0-40:1级</defaultlabel>
-					<classbreakinfo min="200" max="9999" label=">200:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="40" max="200" label="40-200:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-				</classbreaksrenderer>
-			</layer> -->
-			
-			<layer label="土壤Cd" type="feature" visible="false" alpha="1.0"
-				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-				<classbreaksrenderer field="tu_cd">
-					<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
-					<defaultlabel>0-0.2:1级</defaultlabel>
-					<classbreakinfo min="1.0" max="99999" label=">1.0:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="0.2" max="1.0" label="0.2-1.0:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-				</classbreaksrenderer>
-			</layer>
-			
-			<!-- <layer label="锌" type="feature" visible="false" alpha="1.0"
-				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
-				<classbreaksrenderer field="ZN">
-					<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
-					<defaultlabel>0-100:1级</defaultlabel>
-					<classbreakinfo min="500" max="99999" label=">500:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="100" max="500" label="100-500:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-				</classbreaksrenderer>
-			</layer> -->
-			<layer label="土壤Cr" type="feature" visible="false" alpha="1.0"
-				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-
-				<classbreaksrenderer field="tu_cr">
-					<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
-					<defaultlabel>0-90:1级</defaultlabel>
-					<classbreakinfo min="300" max="9999" label=">300:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="90" max="300" label="90-300:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-				</classbreaksrenderer>
-			</layer>
-			<!-- <layer label="铜" type="feature" visible="false" alpha="1.0"
-				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-				<simplerenderer> <simplemarkersymbol color="0xFF0000" alpha="1" 
-					> <outline width="2" color="0x0000FF" style="dashdot" /> </simplemarkersymbol> 
-					</simplerenderer>
-				<classbreaksrenderer field="CU">
-					<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
-					<defaultlabel>0-35:1级</defaultlabel>
-					<classbreakinfo min="400" max="9999" label=">400:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="35" max="400" label="35-400:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-				</classbreaksrenderer>
-			</layer> -->
-			<layer label="土壤Pb" type="feature" visible="false" alpha="1.0"
-				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-
-				<classbreaksrenderer field="tu_pb">
-					<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
-					<defaultlabel>0-35:1级</defaultlabel>
-					<classbreakinfo min="500" max="9999" label=">500:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="35" max="500" label="35-500:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-				</classbreaksrenderer>
-			</layer>
-			<layer label="土壤As" type="feature" visible="false" alpha="1.0"
-				popupconfig="popups/PopUp_1.xml"
-				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt/FeatureServer/0">
-
-				<classbreaksrenderer field="tu_as">
-				<simplemarkersymbol color="0xFFFF00" alpha="1"
-						style="triangle">
-						<outline width="0"></outline>
-					</simplemarkersymbol>
-					<defaultlabel>0-15:1级</defaultlabel>
-					<classbreakinfo min="30" max="9999" label=">30:3级">
-						<simplemarkersymbol color="0xFF0000" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-					<classbreakinfo min="15" max="30" label="15-30:2级">
-						<simplemarkersymbol color="0xFF8C00" alpha="1"
-							style="triangle">
-							<outline width="0">
-							</outline>
-						</simplemarkersymbol>
-					</classbreakinfo>
-				</classbreaksrenderer>
-			</layer>
+         
 
 			<!-- <layer label="重金属镍" type="feature" visible="true" alpha="1.0" popupconfig="popups/PopUp_1.xml" 
 				url="http://192.168.24.210/ArcGIS/rest/services/HeavyMetal/FeatureServer/0"> 
