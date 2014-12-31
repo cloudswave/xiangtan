@@ -1,0 +1,7 @@
+com.xiangtan.beans
+com.xiangtan.dao
+com.xiangtan.dao.impl
+com.xiangtan.service
+com.xiangtan.service.impl
+com.xiangtan.test
+com.xiangtan.utils

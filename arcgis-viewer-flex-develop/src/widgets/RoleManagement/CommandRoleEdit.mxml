@@ -36,6 +36,8 @@
 			private var areasdata: ArrayCollection; 
 			public var desText:String = "";
 			private var roleId:int = 0;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
 			[Bindable]
 			private var tree1Xml:XML =
 				<node label="可选地区">
@@ -49,6 +51,8 @@
 				</node>;
 			//初始化函数  
 			private function init():void{  
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				loadConfig();
 			}  
 			
@@ -78,7 +82,7 @@
 					role_lvWS.wsdl = _role_lvWS_;
 					
 					role_lvWS.loadWSDL();   
-					role_lvWS.getRole_lv(roleId);
+					role_lvWS.getRole_lv(roleId, key);
 				}catch (error:Error)
 				{
 					Alert.show(error.message);
@@ -144,7 +148,7 @@
 					return;
 				}
 //				Alert.show(desText);
-				role_lvWS.updateRole_lv(roleId, roleName.text.toString(), 'command', desText);
+				role_lvWS.updateRole_lv(roleId, roleName.text.toString(), 'command', desText, key);
 			}
 			
 			//点击确认，关闭弹出窗口，将弹出窗口参数传递给父窗窗口  

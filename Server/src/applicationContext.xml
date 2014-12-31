@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
     http://www.springframework.org/schema/context 
     http://www.springframework.org/schema/context/spring-context-4.1.xsd
     http://www.springframework.org/schema/tx 
     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-	
+
 	<!-- 引入CXF的核心配置 -->
-    <import resource="classpath:META-INF/cxf/cxf.xml" /> 
-    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" /> 
-    <bean id="webServicesAgent" class="org.apache.cxf.spring.remoting.Jsr181HandlerMapping">  
-	    <property name="urlPrefix"><value>/</value></property>  
-	</bean>  
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<bean id="webServicesAgent" class="org.apache.cxf.spring.remoting.Jsr181HandlerMapping">
+		<property name="urlPrefix">
+			<value>/</value>
+		</property>
+	</bean>
 	<import resource="classpath:webservice.xml" />
-	
+
 	<!-- <bean id="person" class="com.spring.beans.Person"> <property name="username" 
 		value="spring"></property> </bean> <bean id="personService" class="com.spring.services.PersonService"> 
 		</bean> -->
 	<!-- 注意：在配置IOC容器中配置Struts2的Action时需要配置scope属性，其值必须为prototype -->
-	<!-- <bean id="personAction" class="com.spring.actions.PersonAction" scope="prototype"> 
-	
-	<property name="personService" ref="personService"></property> </bean> -->
+	<!-- 
+	<bean id="personAction" class="com.spring.actions.PersonAction" scope="prototype"> 
+		<property name="personService" ref="personService"></property> 
+	</bean>
+	 -->
 	<!-- 启用注解注入 -->
 	<context:annotation-config />
 	<!-- 组件扫描 -->
@@ -46,7 +48,6 @@
 		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
 		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.24.212:1521:orcl"></property> -->
 		<property name="jdbcUrl" value="jdbc:sqlserver://192.168.24.216:1433;DatabaseName=xiangtan2"></property>
-
 		<property name="initialPoolSize" value="5"></property>
 		<property name="maxPoolSize" value="10"></property>
 	</bean>
@@ -61,7 +62,21 @@
 		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg ref="dataSource"></constructor-arg>
 	</bean>
-	
+
 	<import resource="classpath:beans.xml" />
-	 
+	<import resource="classpath:ws-beans.xml" />
+	<aop:config>
+		<!-- 配置切点表达式 -->
+		<aop:pointcut expression="execution(* com.xiangtan.service.*.*(..)) and !execution(* login*(..))"
+			id="pointcut" />
+		<aop:aspect ref="authorizeAspect" order="1">
+			<!-- 前置通知 -->
+			<aop:before method="beforeMethod" pointcut-ref="pointcut" />
+			<!-- 后置通知 -->
+			<!-- 
+            <aop:after method="afterMethod" pointcut-ref="pointcut"/>
+			 -->
+		</aop:aspect>
+	</aop:config>
+
 </beans>

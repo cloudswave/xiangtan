@@ -25,6 +25,8 @@
 			public var myPopUpvar:Array = new Array();
 			public var logs:String = "";
 			public var userId:int = 0;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
 			
 			public function setUserId(id:int):void{
 				this.userId = id;
@@ -32,6 +34,8 @@
 			
 			private function initializeHandler(event:FlexEvent):void
 			{
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				loadConfig();
 			}
 			
@@ -58,8 +62,8 @@
 					userinfo_lvWS.loadWSDL();   
 					role_lvWS.loadWSDL();   
 					
-					role_lvWS.getAll();
-					userinfo_lvWS.getUserinfo_lv(userId);
+					role_lvWS.getAll(key);
+					userinfo_lvWS.getUserinfo_lv(userId, key);
 				}catch (error:Error)
 				{
 					Alert.show(error.message);
@@ -85,7 +89,7 @@
 				truename.text = userinfo_lv.truename;
 				department.text = userinfo_lv.department;
 				note.text = userinfo_lv.note;		
-				role_lvWS.getRole_lvsByUserid(userId);
+				role_lvWS.getRole_lvsByUserid(userId, key);
 			}
 			
 			private function updateHandler(event:ResultEvent){
@@ -210,9 +214,10 @@
 						roleIds += c.id.toString() + ",";
 					}
 				}
+//				Alert.show(key);
 				//Alert.show(roleIds);
 				//add(String name, String password, String email, String tel, String truename, String department, String note, int[] roleIds)
-				userinfo_lvWS.update(userId, username.text.toString(),password.text.toString(),email.text.toString(),tel.text.toString(),truename.text.toString(),department.text.toString(),note.text.toString(),roleIds);
+				userinfo_lvWS.update(userId, username.text.toString(),password.text.toString(),email.text.toString(),tel.text.toString(),truename.text.toString(),department.text.toString(),note.text.toString(),roleIds, key);
 				//var outgoingEvent:Event = new Event("pop", false);
 				//logs = labelPosition.selectedItem.toString();
 				//dispatchEvent(outgoingEvent);

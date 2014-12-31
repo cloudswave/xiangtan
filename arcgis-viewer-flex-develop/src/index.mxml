@@ -48,6 +48,7 @@
 
 			private function initializeHandler(event:FlexEvent):void
 			{
+				
 				loadConfig();
 			}
 			
@@ -79,7 +80,15 @@
 				Userinfo_lv = event.result;
 				if(Userinfo_lv!=null){
 					Alert.show(Userinfo_lv.name + "登录成功！");
+					// 创建一个本地保存数据的对象s     
+					var cookie:SharedObject = SharedObject.getLocal("xiangtan","/");  
+					cookie.data.user = Userinfo_lv.name;  
+					//Alert.show(Userinfo_lv.key);
+					cookie.data.key = Userinfo_lv.key;  
+					cookie.data.userId = Userinfo_lv.id;  
+					cookie.flush(); //提交保存  
 					this.currentState = "index";
+					
 					//ViewerContainer.configFile = "config-admin.xml"; 
 				}else{
 					Alert.show("账号或密码错误");

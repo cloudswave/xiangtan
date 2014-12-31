@@ -13,6 +13,7 @@ public class Userinfo_lv {
 	private String truename;
 	private String department;
 	private String note;
+	private String key;
 
 	public int getId() {
 		return id;
@@ -82,13 +83,21 @@ public class Userinfo_lv {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	
+	public void setKey(String key) {
+		this.key = key;
+	}
+	
+	public String getKey() {
+		return key;
+	}
 
 	@Override
 	public String toString() {
 		return "Userinfo_lv [id=" + id + ", name=" + name + ", password="
 				+ password + ", email=" + email + ", tel=" + tel
 				+ ", truename=" + truename + ", department=" + department
-				+ ", note=" + note + "]";
+				+ ", note=" + note + ", key=" + key + "]";
 	}
 
 }
