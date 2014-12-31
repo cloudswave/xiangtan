@@ -85,8 +85,10 @@
 			
 			private function download(){
 				var downloadURL = new URLRequest(downloadUrl);
-				var file = new FileReference();
-				file.download(downloadURL);
+				//var file = new FileReference();
+				//file.download(downloadURL);
+				
+				navigateToURL(downloadURL, "_blank");
 			}
 			
 			

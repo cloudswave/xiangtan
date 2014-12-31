@@ -421,7 +421,7 @@
     </fx:Script>
 
     <s:Group id="headerGroup"
-             width="100%" height="85">
+             width="100%" height="95">
         <s:Group id="headerContent"
                  width="100%" height="{headerGroup.height - 45}">
             <s:Rect width="100%" height="100%"
@@ -447,7 +447,7 @@
                           verticalAlign="middle">
                     <s:VGroup id="headingGroup"
                               height="{headerContent.height}"
-                              gap="0"
+                              gap="2"
                               minWidth="100"
                               verticalAlign="middle">
                         <components:AutoFontLabel id="bannerTitle"

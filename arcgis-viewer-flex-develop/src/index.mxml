@@ -45,9 +45,11 @@
 			private var mInfo:IModuleInfo=null;
 			private var _webService_wsdl:String="";
 			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
-
+			public  var cookie:SharedObject;
+			
 			private function initializeHandler(event:FlexEvent):void
 			{
+				cookie= SharedObject.getLocal("cookie");
 				loadConfig();
 			}
 			
@@ -79,6 +81,9 @@
 				Userinfo_lv = event.result;
 				if(Userinfo_lv!=null){
 					Alert.show(Userinfo_lv.name + "登录成功！");
+					cookie.data.user = "admin";
+					cookie.flush(); //提交保存
+					
 					ViewerContainer.configFile = "config-admin.xml";
 					this.currentState = "index";
 					 
@@ -121,7 +126,9 @@
 			protected function application_creationCompleteHandler(event:FlexEvent):void
 			{
 				webService.loadWSDL();
-				setTimeout(login, 2000);
+				if(cookie.data.user == ""||!cookie.data.hasOwnProperty("user")){
+				  setTimeout(login, 2000);
+				}
 				
 				
 			

@@ -5,12 +5,12 @@
 <configuration>
 	<title>产地安全等级评价与禁产区边界确认分析平台</title>
 	<logo>assets/images/earth.jpg</logo>
-	<subtitle></subtitle>
+	<subtitle>北京农业质量标准与检测技术研究中心</subtitle>
 	<style>
 		<!-- Black Gold -->
 <!--  Cobalt Blue  -->
 <colors>0xCEE7F4,0x39628C,0x355D89,0x294867,0xCEE7F4</colors>
-<alpha>0.6</alpha>
+<alpha>1</alpha>
 	</style>
 	<!-- replace the following url with your own geometryservice -->
 	<geometryservice
@@ -31,8 +31,8 @@
 		config="widgets/Coordinate/CoordinateWidget.xml" url="widgets/Coordinate/CoordinateWidget.swf" />
 
 	<map wraparound180="true"
-		initialextent="1.2427179939463886E7 3188690.0408077454  1.266173353357107E7 3264890.193208049"
-		fullextent="1.2427179939463886E7 3188690.0408077454  1.266173353357107E7 3264890.193208049" top="40"
+		initialextent="676931.369244576 3018994.8542325394  710389.9886815157 3114388.2655324386"
+		fullextent="634564.4566226229 -20000000 20000000 20000000" top="40"
 		
 		addarcgisbasemaps="false">
 		<!-- 自定义图层 -->
@@ -40,7 +40,7 @@
 			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
 <!--              <layer label="地形图" type="googlemap" visible="true"
 				icon="assets/images/basemap_streets.jpg" /> -->
-			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84/MapServer" 
+			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84_16/MapServer" 
 				icon="assets/images/basemap_imagery.jpg" />  
 
 			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
@@ -140,8 +140,8 @@
 				config="widgets/DataExtract/DataExtractWidget_1.xml" label="数据提取"
 				icon="assets/images/i_scissors.png" />
 				
-			<widget label="采样点添加" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
-				url="widgets/Edit/EditWidget.swf" />		
+<!-- 			<widget label="采样点添加" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
+				url="widgets/Edit/EditWidget.swf" />	 -->	
 			<widget label="采样点编辑" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
 				url="widgets/Edit/EditWidget.swf" />		
 

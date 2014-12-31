@@ -9,7 +9,7 @@
     <toolbarmergevisible>true</toolbarmergevisible>
     <toolbarreshapevisible>true</toolbarreshapevisible>
     <layersettings>
-        <layer name="土壤Hg">
+        <layer name="重金属">
             <fields>
 		        <field name="bh" alias="编号" />
 		        <field name="wz" alias="地点" />

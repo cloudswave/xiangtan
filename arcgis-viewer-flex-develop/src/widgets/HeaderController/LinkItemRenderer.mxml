@@ -66,10 +66,14 @@
                 return (link && link.url) ? 'urlLink' : 'contentLink';
             }
 			
+			import mx.controls.Alert;
 			protected function exit_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
+				this.parentApplication.cookie.data.user="";
+				this.parentApplication.cookie.flush();
 				this.parentApplication.currentState="login";
+
 			}
 			
 		]]>
