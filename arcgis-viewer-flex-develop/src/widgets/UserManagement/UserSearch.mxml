@@ -30,8 +30,13 @@
 			public var users:ArrayCollection ;
 			public var userView:Object ;
 			public var userEdit:Object ;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
+			
 			private function initializeHandler(event:FlexEvent):void
 			{
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				loadConfig();
 			}
 			
@@ -75,7 +80,7 @@
 			}
 			
 			private function search():void{
-				userinfo_lvWS.getUserinfo_lvsLikeSth(username.text, department.text, truename.text);
+				userinfo_lvWS.getUserinfo_lvsLikeSth(username.text, department.text, truename.text, key);
 			}
 			
 			private function getUserinfo_lvsLikeSthHandler(event:ResultEvent){
@@ -111,7 +116,7 @@
 					if(event.detail==Alert.YES){
 						var selectedIndices:Array = userList.selectedIndices;
 						for(var a:int = selectedIndices.length - 1;a>=0;a--){
-							userinfo_lvWS.deleteUserinfo_lv(userList.dataProvider.getItemAt(selectedIndices[a]).id);
+							userinfo_lvWS.deleteUserinfo_lv(userList.dataProvider.getItemAt(selectedIndices[a]).id, key);
 							userList.dataProvider.removeItemAt(selectedIndices[a]);
 						}
 					}else if(event.detail==Alert.NO){

@@ -6,12 +6,8 @@
 http://www.springframework.org/schema/beans 
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
-    
-   <jaxws:endpoint id="areaWS" implementor="com.xiangtan.service.impl.AreaServiceImpl" address="/areaWS" />
-   <jaxws:endpoint id="userinfo_lvWS" implementor="com.xiangtan.service.impl.Userinfo_lvServiceImpl" address="/userinfo_lvWS" />
-   <jaxws:endpoint id="role_lvWS" implementor="com.xiangtan.service.impl.Role_lvServiceImpl" address="/role_lvWS" />
-   <jaxws:endpoint id="pagerWS" implementor="com.xiangtan.service.impl.PagerServiceImpl" address="/pagerWS" />
-   
-   <!-- <jaxws:endpoint id="role_user_mapWS" implementor="com.xiangtan.service.impl.Role_user_mapServiceImpl" address="role_user_mapWS" />
-    -->
+   <jaxws:endpoint id="roleWSID" implementor="com.xiangtan.ws.impl.Role_lvWSImpl" address="/roleWS" />
+   <jaxws:endpoint id="pagerWSID" implementor="com.xiangtan.ws.impl.PagerWSImpl" address="/pagerWS" />
+   <jaxws:endpoint id="areaWSID" implementor="com.xiangtan.ws.impl.AreaWSImpl" address="/areaWS" />
+   <jaxws:endpoint id="userWSID" implementor="com.xiangtan.ws.impl.Userinfo_lvWSImpl" address="/userWS" />
 </beans>

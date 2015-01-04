@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 
 import com.xiangtan.beans.Userinfo_lv;
 import com.xiangtan.dao.Userinfo_lvDao;
+import com.xiangtan.utils.EncryptUtil;
 /**
  * @author Shangyidong
  * @date 2014-11-21
@@ -22,6 +23,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	/*
 	@Override
 	public Userinfo_lv get(String name, String password) {
 		String sql = "select * from Userinfo_lv where name = ? and password = ?";
@@ -33,13 +35,14 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 			return null;
 		}
 	}
+	*/
 
 	@Override
 	public Userinfo_lv add(String name, String password, String email, String tel, String truename, String department, String note) {
 		String sql = "insert into Userinfo_lv (name, password, email, tel, truename, department, note ) values (?, ?, ?, ?, ?, ?, ?)";
 		int update = jdbcTemplate.update(sql, name, password, email, tel, truename,  department, note);
 		if (update > 0) {// 添加成功
-			return get(name, password);// 返回添加成功的对象
+			return get(name);// 返回添加成功的对象
 		}
 		return null;
 	}
@@ -63,6 +66,7 @@ public class Userinfo_lvDaoImpl implements Userinfo_lvDao {
 				Userinfo_lv.class);
 		try {
 			Userinfo_lv userinfo_lv = (Userinfo_lv)jdbcTemplate.queryForObject(sql, rowMapper, name);
+			userinfo_lv.setKey(EncryptUtil.encrypt(userinfo_lv.getName()));
 			System.out.println(userinfo_lv);
 			return userinfo_lv;
 		} catch (Exception e) {

@@ -2,16 +2,13 @@ package com.xiangtan.service;
 
 import java.util.List;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-
 import com.xiangtan.beans.Userinfo_lv;
 /**
  * @author Shangyidong
  * @date 2014-11-21
  * @version 1.0
  */
-@WebService
+//@WebService
 public interface Userinfo_lvService {
 	
 	/**
@@ -20,7 +17,7 @@ public interface Userinfo_lvService {
 	 * @param password 密码
 	 * @return 若登录成功，则返回用户名和密码对应的Userinfo_lv对象。否则返回null。
 	 */
-	@WebMethod
+//	@WebMethod
 	public Userinfo_lv login(String name, String password);
 	
 	/**
@@ -31,15 +28,15 @@ public interface Userinfo_lvService {
 	 * @param groupid 组id
 	 * @return 若添加成功，则返回成功添加的Userinfo_lv对象。否则返回null。
 	 */
-	@WebMethod
-	public Userinfo_lv add(String name, String password, String email, String tel, String truename, String department, String note, String roleIds);
+//	@WebMethod
+	public Userinfo_lv add(String name, String password, String email, String tel, String truename, String department, String note, String roleIds, String key);
 	/**
 	 * 根据用户id查询Userinfo_lv对象
 	 * @param id 用户id
 	 * @return 若查询成功，则返回查询到的Userinfo_lv对象。否则返回null。
 	 */
-	@WebMethod
-	public Userinfo_lv getUserinfo_lv(int id);
+//	@WebMethod
+	public Userinfo_lv getUserinfo_lv(int id, String key);
 	
 	/**
 	 * 更新用户信息
@@ -54,24 +51,24 @@ public interface Userinfo_lvService {
 	 * @param roleIds
 	 * @return 更新成功的Userinfo_lv对象
 	 */
-	@WebMethod
-	public Userinfo_lv update(int id, String name, String password, String email, String tel, String truename, String department, String note, String roleIds);
+//	@WebMethod
+	public Userinfo_lv update(int id, String name, String password, String email, String tel, String truename, String department, String note, String roleIds, String key);
 	
 	/**
 	 * 根据用户name查询Userinfo_lv对象
 	 * @param name 用户名
 	 * @return 若查询成功，则返回查询到的Userinfo_lv对象。否则返回null。
 	 */
-	@WebMethod
-	public Userinfo_lv getUserinfo_lvByName(String name);
+//	@WebMethod
+	public Userinfo_lv getUserinfo_lvByName(String name, String key);
 	
 	/**
 	 * 根据用户名模糊查找
 	 * @param name
 	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
 	 */
-	@WebMethod
-	public List<Userinfo_lv> getUserinfo_lvsLikeSth(String name, String department, String truename);
+//	@WebMethod
+	public List<Userinfo_lv> getUserinfo_lvsLikeSth(String name, String department, String truename, String key);
 	
 	/**
 	 * 根据用户角色id查询装有Userinfo_lv的list
@@ -87,23 +84,23 @@ public interface Userinfo_lvService {
 	 * @param groupid 用户组id
 	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
 	 */
-	@WebMethod
-	public List<Userinfo_lv> getUserinfo_lvsByGroupid(int groupid);
+//	@WebMethod
+	public List<Userinfo_lv> getUserinfo_lvsByGroupid(int groupid, String key);
 	
 	/**
 	 * 根据id删除用户
 	 * @param id 用户id
 	 * @return 若删除成功则返回true，若删除失败则返回false
 	 */
-	@WebMethod
-	public boolean deleteUserinfo_lv(int id);
+//	@WebMethod
+	public boolean deleteUserinfo_lv(int id, String key);
 	
 	/**
 	 * 查询所有用户
 	 * @return 若查询成功，则返回查询到的装有Userinfo_lv的list。否则返回null。
 	 */
-	@WebMethod
-	public List<Userinfo_lv> getAll();
+//	@WebMethod
+	public List<Userinfo_lv> getAll(String key);
 	
 	/**
 	 * 
@@ -111,8 +108,8 @@ public interface Userinfo_lvService {
 	 * @param currentPage 当前页码
 	 * @return
 	 */
-	@WebMethod
-	public List<Userinfo_lv> getUsersByPager(int pageSize, int currentPage);
+//	@WebMethod
+	public List<Userinfo_lv> getUsersByPager(int pageSize, int currentPage, String key);
 }
 
 /**

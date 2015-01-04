@@ -9,7 +9,9 @@ import com.xiangtan.beans.Userinfo_lv;
  * @version 1.0
  */
 public interface Userinfo_lvDao {
+	/*
 	public Userinfo_lv get(String name, String password);
+	*/
 	
 	public Userinfo_lv add(String name, String password, String email, String tel, String truename, String department, String note);
 	

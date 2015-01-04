@@ -25,8 +25,12 @@
 			public var myPopUpvar:Array = new Array();
 			public var logs:String = "";
 			public var userId:int = 0;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
 			private function initializeHandler(event:FlexEvent):void
 			{
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				loadConfig();
 			}
 			
@@ -53,7 +57,7 @@
 					userinfo_lvWS.loadWSDL();   
 					role_lvWS.loadWSDL();   
 					
-					role_lvWS.getAll();
+					role_lvWS.getAll(key);
 				}catch (error:Error)
 				{
 					Alert.show(error.message);
@@ -75,7 +79,7 @@
 					//sendButton.enabled = false;
 					return;
 				}
-				userinfo_lvWS.getUserinfo_lvByName(username.text.toString());
+				userinfo_lvWS.getUserinfo_lvByName(username.text.toString(), key);
 				//Alert.show(username.text.toString());
 			//	username.setFocus();//获取焦点
 			}
@@ -185,7 +189,7 @@
 				}
 				//Alert.show(roleIds);
 				//add(String name, String password, String email, String tel, String truename, String department, String note, int[] roleIds)
-				userinfo_lvWS.add(username.text.toString(),password.text.toString(),email.text.toString(),tel.text.toString(),truename.text.toString(),department.text.toString(),note.text.toString(),roleIds);
+				userinfo_lvWS.add(username.text.toString(),password.text.toString(),email.text.toString(),tel.text.toString(),truename.text.toString(),department.text.toString(),note.text.toString(),roleIds, key);
 				//var outgoingEvent:Event = new Event("pop", false);
 				//logs = labelPosition.selectedItem.toString();
 				//dispatchEvent(outgoingEvent);

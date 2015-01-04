@@ -26,8 +26,13 @@
 			public var logs:String = "";
 			public var roleId:int = 0;
 			public var desText:String = "||";
+			private var cookie: SharedObject;//cookie
+			private var key:String;
+			
 			private function initializeHandler(event:FlexEvent):void
 			{
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				loadConfig();
 			}
 			
@@ -76,7 +81,7 @@
 					//sendButton.enabled = false;
 					return;
 				}
-				role_lvWS.getByRoleName(roleName.text.toString());
+				role_lvWS.getByRoleName(roleName.text.toString(), key);
 			}
 			
 			private function getByRoleNameHandler(event:ResultEvent):void{
@@ -155,7 +160,7 @@
 					message.text = "请将信息填写完整";
 					return;
 				}
-				role_lvWS.addRole_lv(roleName.text.toString(), 'command', desText);
+				role_lvWS.addRole_lv(roleName.text.toString(), 'command', desText, key);
 			}
 			
 			private function addRole_lvHandler(event:ResultEvent):void{

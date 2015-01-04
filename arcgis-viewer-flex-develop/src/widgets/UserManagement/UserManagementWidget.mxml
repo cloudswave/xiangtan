@@ -46,6 +46,8 @@
 			public var userEdit:Object ;
 			public var userSearch:Object ;
 			private var pager:Object;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
 			
 			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
 			var users:Object = new Array();
@@ -54,8 +56,11 @@
             private function init():void
             {
 				//webService.getAll();
-				
-				pagerWS.getPager("Userinfo_lv");
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
+//				Alert.show(cookie.data.user);  
+//				Alert.show(cookie.data.key); 
+				pagerWS.getPager("Userinfo_lv" , key);
                 if (configXML) // checking for valid content in the configuration file
                 {
                     //lbl.text = configXML.content || getDefaultString("helloContent");
@@ -155,7 +160,7 @@
 				}
 				//getUsersByPager(int pageSize, int currentPage) 
 				pager.currentPage = 1;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				webService.getUsersByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -165,7 +170,7 @@
 					return;
 				}
 				pager.currentPage -= 1;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				webService.getUsersByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -175,7 +180,7 @@
 					return;
 				}
 				pager.currentPage += 1;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				webService.getUsersByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -185,7 +190,7 @@
 					return;
 				}
 				pager.currentPage = pager.totalPage;
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				webService.getUsersByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -215,7 +220,7 @@
 						var jj:int = users.length;
 						//Alert.show(users.length);
 						for(var a:int = selectedIndices.length - 1;a>=0;a--){
-							webService.deleteUserinfo_lv(userList.dataProvider.getItemAt(selectedIndices[a]).id);
+							webService.deleteUserinfo_lv(userList.dataProvider.getItemAt(selectedIndices[a]).id, key);
 							userList.dataProvider.removeItemAt(selectedIndices[a]);
 						}
 						for each(var a:int in selectedIndices) {
@@ -297,7 +302,7 @@
 				pager = event.result;
 				//当前第1页，每页显示15条。共10条记录，一共1页。
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
-				webService.getUsersByPager(pager.pageSize, pager.currentPage);
+				webService.getUsersByPager(pager.pageSize, pager.currentPage, key);
 			}
 			
 			protected function application_creationCompleteHandler(event:FlexEvent):void
@@ -368,17 +373,25 @@
 				sInfo += event.fault.faultDetail;
 				Alert.show(sInfo);
 			}
+			
+			private function wsfault(event:FaultEvent)
+			{
+				var str:String = event.fault.faultCode;
+//				Alert.show(str);//server
+				Alert.show(event.fault.faultString, "错误");
+				//根据str来判断错误类型，如果是WSDLError，表明是unexpectedException，以此类推
+			}
         ]]>
     </fx:Script>
 	<fx:Declarations>
 		<mx:DateFormatter id="dfmt" formatString="YYYY-MM-DD"/>
-		<mx:WebService id="webService" showBusyCursor="true" useProxy="false"
+		<mx:WebService id="webService" showBusyCursor="true" useProxy="false" fault="wsfault(event)"
 					   wsdl="{_webService_wsdl}">
 			<mx:operation name="getAll" result="onResult(event)"/>
 			<mx:operation name="deleteUserinfo_lv" result="deleteResult(event)"/>
 			<mx:operation name="getUsersByPager" result="getUsersByPagerResult(event)"/>
 		</mx:WebService>
-		<mx:WebService id="pagerWS" showBusyCursor="true" useProxy="false"
+		<mx:WebService id="pagerWS" showBusyCursor="true" useProxy="false" fault="wsfault(event)"
 					   wsdl="{_pagerWS_}">
 			<mx:operation name="getPager" result="getPagerResult(event)"/>
 		</mx:WebService>

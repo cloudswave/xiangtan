@@ -10,7 +10,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
  * @version 1.0
  */
 public class AreaUtil {
-	@Autowired
 	private static JdbcTemplate jdbcTemplate;
 	public static void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		if (AreaUtil.jdbcTemplate == null) {
