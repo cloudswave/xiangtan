@@ -25,7 +25,7 @@ public class AreaServiceImpl implements AreaService{
 	}
 
 	@Override
-	public Area getAreaByCode(String areaCode) {
+	public Area getAreaByCode(String areaCode, String key) {
 		//如果areaCode为null或""或长度不合法则返回null
 		if (areaCode == null || areaCode.equals("") || areaCode.length() != 12) {
 			return null;
@@ -37,7 +37,7 @@ public class AreaServiceImpl implements AreaService{
 	}
 
 	@Override
-	public List<Area> getSubAreasByCode(String areaCode) {
+	public List<Area> getSubAreasByCode(String areaCode, String key) {
 		return areaDao.getSubAreasByCode(areaCode);
 	}
 }

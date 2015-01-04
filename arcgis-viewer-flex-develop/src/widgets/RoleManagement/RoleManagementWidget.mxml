@@ -49,6 +49,8 @@
 			public var userEdit:Object ;
 			public var userSearch:Object ;
 			private var pager:Object;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
 			
 			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
 			var roles:Object = new Array();
@@ -56,9 +58,11 @@
             //this function called when the widget's configuration is loaded
             private function init():void
             {
-				//webService.getAll();
 				
-				pagerWS.getPager("Role_lv");
+				//webService.getAll();
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
+				pagerWS.getPager("Role_lv", key);
                 if (configXML) // checking for valid content in the configuration file
                 {
                     //lbl.text = configXML.content || getDefaultString("helloContent");
@@ -192,7 +196,7 @@
 				}
 				//getUsersByPager(int pageSize, int currentPage) 
 				pager.currentPage = 1;
-				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -202,7 +206,7 @@
 					return;
 				}
 				pager.currentPage -= 1;
-				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -212,7 +216,7 @@
 					return;
 				}
 				pager.currentPage += 1;
-				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -222,7 +226,7 @@
 					return;
 				}
 				pager.currentPage = pager.totalPage;
-				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage, key);
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//...
 			}
@@ -254,7 +258,7 @@
 						//Alert.show(users.length);
 						for(var a:int = selectedIndices.length - 1;a>=0;a--){
 //							webService.deleteUserinfo_lv(roleList.dataProvider.getItemAt(selectedIndices[a]).id);
-							role_lvWS.deleteByRoleId(roleList.dataProvider.getItemAt(selectedIndices[a]).id);
+							role_lvWS.deleteByRoleId(roleList.dataProvider.getItemAt(selectedIndices[a]).id, key);
 							roleList.dataProvider.removeItemAt(selectedIndices[a]);
 						}
 						for each(var a:int in selectedIndices) {
@@ -348,7 +352,7 @@
 				//当前第1页，每页显示15条。共10条记录，一共1页。
 				pagerLabel.text = '当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页';
 				//Alert.show('当前第'+pager.currentPage+'页，每页显示'+pager.pageSize+'条。共'+pager.totalCount+'条记录，一共'+pager.totalPage+'页');
-				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage);
+				role_lvWS.getRolesByPager(pager.pageSize, pager.currentPage, key);
 			}
 			
 			protected function application_creationCompleteHandler(event:FlexEvent):void
@@ -382,24 +386,29 @@
 			{
 				Alert.show(event.fault.faultString);
 			}
+			
+			private function faultHandler(event:FaultEvent):void{
+				//返回错误处理
+				Alert.show(event.fault.faultString);
+			}
         ]]>
     </fx:Script>
 	<fx:Declarations>
 		<mx:DateFormatter id="dfmt" formatString="YYYY-MM-DD"/>
 		<mx:WebService id="webService" showBusyCursor="true" useProxy="false"
 					   wsdl="{_webService_wsdl}">
-			<mx:operation name="getAll" result="onResult(event)"/>
-			<mx:operation name="deleteUserinfo_lv" result="deleteResult(event)"/>
+			<mx:operation name="getAll" result="onResult(event)" fault="faultHandler(event)"/>
+			<mx:operation name="deleteUserinfo_lv" result="deleteResult(event)" fault="faultHandler(event)"/>
 		</mx:WebService>
 		<mx:WebService id="pagerWS" showBusyCursor="true" useProxy="false"
 					   wsdl="{_pagerWS_}">
-			<mx:operation name="getPager" result="getPagerResult(event)"/>
+			<mx:operation name="getPager" result="getPagerResult(event)" fault="faultHandler(event)"/>
 		</mx:WebService>
 		<mx:WebService id="role_lvWS" showBusyCursor="true" useProxy="false"
 					   wsdl="{_role_lvWS_}">
-			<mx:operation name="getAll" result="getAllRoleHandler(event)"/>
-			<mx:operation name="getRolesByPager" result="getRolesByPagerHandler(event)"/>
-			<mx:operation name="deleteByRoleId" result="deleteByRoleIdHandler(event)"/>
+			<mx:operation name="getAll" result="getAllRoleHandler(event)" fault="faultHandler(event)"/>
+			<mx:operation name="getRolesByPager" result="getRolesByPagerHandler(event)" fault="faultHandler(event)"/>
+			<mx:operation name="deleteByRoleId" result="deleteByRoleIdHandler(event)" fault="faultHandler(event)"/>
 		</mx:WebService>
 	</fx:Declarations>
 

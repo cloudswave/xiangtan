@@ -5,9 +5,9 @@ import javax.jws.WebService;
 
 import com.xiangtan.beans.Pager;
 
-@WebService
+//@WebService
 public interface PagerService {
 
-	@WebMethod
-	public Pager getPager(String tableName);
+//	@WebMethod
+	public Pager getPager(String tableName, String key);
 }

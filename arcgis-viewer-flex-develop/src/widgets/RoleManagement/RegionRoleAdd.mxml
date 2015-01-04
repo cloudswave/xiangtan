@@ -25,6 +25,8 @@
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.http.HTTPService;
 			import mx.events.ListEvent;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
 			
 			public var text:String;  
 			public var callback:Function;//定义关闭窗口后调用的函数  
@@ -49,9 +51,17 @@
 				</node>;
 			//初始化函数  
 			private function init():void{  
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				//添加拖拽事件
 				this.addEventListener(MouseEvent.MOUSE_UP,MouseEventFunc);     
 				this.addEventListener(MouseEvent.MOUSE_DOWN,MouseEventFunc);
+				
+				
+				
+				var cookie: SharedObject = SharedObject.getLocal("xiangtan","/");  
+//				Alert.show(cookie.data.user);  
+//				Alert.show(cookie.data.key); 
 				
 				loadConfig();
 				//textInput.text=text;   
@@ -261,12 +271,12 @@
 				var xml:XML=tree1.selectedItem as XML;
 				var areacode:String = tree1.selectedItem.@areaCode; 
 				var areaLevel:int = tree1.selectedItem.@areaLevel; 
-				if(areaLevel == 5){
+				if(areaLevel == 6){
 					return;
 				}
 				//Alert.show(areaLevel);
 				if(!tree1.selectedItem.hasComplexContent()){//判断tree1选中的节点是否已经有子节点，若有子节点说明已经查询过
-					areaWS.getSubAreasByCode(areacode);
+					areaWS.getSubAreasByCode(areacode, key);
 				}
 			}
 			private function addHandler(event:ResultEvent){
@@ -321,7 +331,8 @@
 					sendButton.enabled = false;
 					return;
 				}
-				role_lvWS.getByRoleName(roleName.text.toString());
+//				role_lvWS.setRemoteCredentials(
+				role_lvWS.getByRoleName(roleName.text.toString(), key);
 			}
 			
 			private function submit():void{
@@ -345,7 +356,7 @@
 					return;
 				}
 //				Alert.show(rightString);
-				role_lvWS.addRole_lv(roleName.text.toString(), 'region', rightString);
+				role_lvWS.addRole_lv(roleName.text.toString(), 'region', rightString, key);
 			}
 			
 			//点击确认，关闭弹出窗口，将弹出窗口参数传递给父窗窗口  

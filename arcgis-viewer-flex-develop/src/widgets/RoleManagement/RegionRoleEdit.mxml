@@ -22,6 +22,8 @@
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.http.HTTPService;
+			private var cookie: SharedObject;//cookie
+			private var key:String;
 			
 			import widgets.RoleManagement.TreeRightClickManager;
 			
@@ -49,6 +51,8 @@
 				</node>;
 			//初始化函数  
 			private function init():void{  
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				//添加拖拽事件
 				this.addEventListener(MouseEvent.MOUSE_UP,MouseEventFunc);     
 				this.addEventListener(MouseEvent.MOUSE_DOWN,MouseEventFunc);
@@ -145,7 +149,7 @@
 				roleName.text = event.result.roleName;
 //				Alert.show(event.result.desText);
 //				desText = result.desText;
-				role_lvWS.getAreasByDesText(event.result.desText);
+				role_lvWS.getAreasByDesText(event.result.desText, key);
 			}
 			
 			public function tree1MenuHandler(event:Event):void//点击菜单执行函数，添加该地区到权限列表
@@ -268,7 +272,7 @@
 					
 					role_lvWS.loadWSDL();   
 					areaWS.loadWSDL();
-					role_lvWS.getRole_lv(roleId);
+					role_lvWS.getRole_lv(roleId, key);
 				}catch (error:Error)
 				{
 					Alert.show(error.message);
@@ -308,11 +312,11 @@
 				var areacode:String = tree1.selectedItem.@areaCode; 
 				//Alert.show(areacode);
 				var areaLevel:int = tree1.selectedItem.@areaLevel; 
-				if(areaLevel == 5){
+				if(areaLevel == 6){
 					return;
 				}
 				if(!tree1.selectedItem.hasComplexContent()){//判断tree1选中的节点是否已经有子节点，若有子节点说明已经查询过
-					areaWS.getSubAreasByCode(areacode);
+					areaWS.getSubAreasByCode(areacode, key);
 				}
 			}
 			private function addHandler(event:ResultEvent){
@@ -384,7 +388,7 @@
 				}
 //				Alert.show(rightString);
 				//role_lvWS.addRole_lv(roleName.text.toString(), 'region', rightString);
-				role_lvWS.updateRole_lv(roleId, roleName.text.toString(), 'region', rightString);
+				role_lvWS.updateRole_lv(roleId, roleName.text.toString(), 'region', rightString, key);
 			}
 			
 			private function updateRole_lvHandler(event:ResultEvent):void{

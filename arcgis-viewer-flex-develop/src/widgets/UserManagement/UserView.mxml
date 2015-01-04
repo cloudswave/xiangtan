@@ -25,8 +25,13 @@
 			[Bindable]
 			public var myPopUpvar:Array = new Array();
 			public var logs:String = "";
+			private var cookie: SharedObject;//cookie
+			private var key:String;
+			
 			private function initializeHandler(event:FlexEvent):void
 			{
+				cookie = SharedObject.getLocal("xiangtan","/");  
+				key = cookie.data.user + "||" + cookie.data.key;
 				loadConfig();
 			}
 			
@@ -53,8 +58,8 @@
 					userinfo_lvWS.loadWSDL();   
 					role_lvWS.loadWSDL();   
 					
-					userinfo_lvWS.getUserinfo_lv(userId);
-					role_lvWS.getRole_lvsByUserid(userId);
+					userinfo_lvWS.getUserinfo_lv(userId, key);
+					role_lvWS.getRole_lvsByUserid(userId, key);
 				}catch (error:Error)
 				{
 					Alert.show(error.message);
@@ -83,7 +88,7 @@
 					//sendButton.enabled = false;
 					return;
 				}
-				userinfo_lvWS.getUserinfo_lvByName(username.text.toString());
+				userinfo_lvWS.getUserinfo_lvByName(username.text.toString(), key);
 				//Alert.show(username.text.toString());
 			//	username.setFocus();//获取焦点
 			}
