@@ -1351,6 +1351,13 @@
                         }
                         editor.attributeInspector.fieldInspectors = attributeInspectorFieldInspectors;
                         editor.attributeInspector.formFieldsOrder = AttributeInspector.FIELD_INSPECTOR_ORDER;
+						
+						//设置经纬度
+						//editor.attributeInspector.activeFeature.attributes.jd=1;
+						//editor.attributeInspector.activeFeature.attributes.wd=1;
+						
+						
+						
                     }
                     else
                     {

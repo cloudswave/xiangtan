@@ -53,3 +53,6 @@ mx|HScrollBar
     thumbOverSkin: Embed(source="assets/images/thumb.png");
     trackSkin: Embed(source="assets/images/track.png");
 }
+global
+{
+}

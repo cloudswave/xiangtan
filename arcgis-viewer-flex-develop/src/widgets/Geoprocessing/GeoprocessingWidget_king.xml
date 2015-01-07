@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <configuration>
     <description/>
-    <taskurl>http://123.127.160.57:8399/arcgis/rest/services/Kring/GPServer/Kring</taskurl>
-    <helpurl>http://123.127.160.57:8399/arcgis/rest/directories/arcgisoutput/Kring_GPServer/Kring/Kring.htm</helpurl>
+    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/Kring/GPServer/Kring</taskurl>
+    <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/Kring_GPServer/Kring/Kring.htm</helpurl>
     <autosubmit>false</autosubmit>
     <shareresults>true</shareresults>
     <inputparams>

@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
-<configuration label="三峡大学">
+<configuration label="北京农业质量标准与检测技术研究中心">
     <imageurl>assets/images/globe.png</imageurl>
-    <linkurl>http://it.ctgu.edu.cn</linkurl>
-    <tooltip>三峡大学计算机与信息学院</tooltip>
+    <linkurl>#</linkurl>
+    <tooltip>北京农业质量标准与检测技术研究中心</tooltip>
 </configuration>
 
 <!--

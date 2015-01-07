@@ -140,7 +140,7 @@
               horizontalAlign="center"
               verticalAlign="middle">
         <s:Image id="icon"
-                 width="25" height="25"
+                 width="30" height="30"
                  buttonMode="true"
                  mouseOut="mouseOutHandler(event)"
                  mouseOver="mouseOverHandler(event)"

@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <configuration>
     <description/>
-    <taskurl>http://123.127.160.57:8399/arcgis/rest/services/idw_all/GPServer/idw</taskurl>
-    <helpurl>http://123.127.160.57:8399/arcgis/rest/directories/arcgisoutput/idw_all_GPServer/idw_all/idw.htm</helpurl>
+    <taskurl>http://192.168.13.39:6080/arcgis/rest/services/idw_all/GPServer/idw</taskurl>
+    <helpurl>http://192.168.13.39:6080/arcgis/rest/directories/arcgisoutput/idw_all_GPServer/idw_all/idw.htm</helpurl>
     <autosubmit>false</autosubmit>
     <shareresults>true</shareresults>
     <inputparams>
@@ -35,6 +35,10 @@
          <param type="rasterdatalayer" name="ClassifiedLayer" required="true" visible="true" label="ClassifiedLayer"/>
 <!--          <param type="rasterdatalayer" name="StretchedLayer" required="true" visible="false" label="StretchedLayer"/>
          <param type="rasterdatalayer" name="DiscreteColorLayer" required="true" visible="false" label="DiscreteColorLayer"/> -->
+    
+         <param type="recordset" name="CrossValidationOutput_View" required="true" visible="true" label="交叉验证结果"/>
+        <!-- <param type="datafile" name="ClassifiedLayer_SaveToLayerF_lyr" required="true" visible="true" label="ClassifiedLayer_SaveToLayerF.lyr" defaultvalue="url:"/>  -->
+        <param type="string" name="output_value" required="false" visible="true" label="交叉验证综合结果 " defaultvalue=""/>
     </outputparams>
     <layerorder>ClassifiedLayer,StretchedLayer,DiscreteColorLayer</layerorder>
 </configuration>

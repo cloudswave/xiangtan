@@ -114,7 +114,7 @@ public class Role_lvDaoImpl implements Role_lvDao{
 		//œ»≤Èrole_user_map±Ì
 		System.out.println("userid:" + userid);
 		List<Role_user_map> role_user_maps = role_user_mapDao.getRole_user_mapsByUserid(userid);
-		List<Role_lv>role_lvs = new ArrayList<>();
+		List<Role_lv>role_lvs = new ArrayList<Role_lv>();
 		Role_user_map role_user_map = null;
 		for (Iterator iterator = role_user_maps.iterator(); iterator.hasNext();) {
 			role_user_map = (Role_user_map) iterator.next();

@@ -45,6 +45,7 @@
                 widgetItem = data as WidgetItem;
 
                 icon.source = widgetItem.icon;
+				label1.text = widgetItem.label;
             }
 
             private function mouseOutHandler(event:MouseEvent):void
@@ -114,7 +115,7 @@
         ]]>
     </fx:Script>
 
-    <s:VGroup width="30" height="30"
+    <s:VGroup width="70" height="30"
               gap="2"
               horizontalAlign="center"
               rollOut="mouseOutHandler(event)"
@@ -125,7 +126,8 @@
                  buttonMode="true"
                  smooth="true"
                  useHandCursor="true"/>
-        <s:Graphic>
+		<s:Label id="label1" text=""/>
+<!--        <s:Graphic>
             <s:Group>
                 <s:Path data="m 3 0 l -6 0 l 3 7 z">
                     <s:fill>
@@ -133,7 +135,7 @@
                     </s:fill>
                 </s:Path>
             </s:Group>
-        </s:Graphic>
+        </s:Graphic>-->
     </s:VGroup>
 
 </s:ItemRenderer>

@@ -4,7 +4,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx"
 				creationComplete="application_creationCompleteHandler(event)"
 				initialize="initializeHandler(event)"
-				width="500" height="700" alpha="1" close="close()" layout="absolute"
+				width="500" height="538" alpha="1" close="close()" layout="absolute"
 				showCloseButton="true" title="添加用户">
 	<fx:Script>
 		
@@ -230,8 +230,9 @@
 		</s:WebService>
 
 	</fx:Declarations>
-	<mx:Form id="basicPropertyPane" width="100%" label="添加用户" cornerRadius="5" indicatorGap="5"
-			 paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+	<mx:Form id="basicPropertyPane" width="100%" height="418" label="添加用户" cornerRadius="5"
+			 indicatorGap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+		<s:Label width="138" height="32" color="#E71919" text="基本信息" verticalAlign="middle"/>
 		<!--<mx:Label text="Label Properties" fontStyle="italic" width="100%" fontWeight="bold"/>-->
 		<mx:FormItem label="用户名">
 			<mx:HBox>
@@ -253,30 +254,31 @@
 			</mx:HBox>
 		</mx:FormItem>
 		<mx:FormItem label="E-mail">
-			<mx:HBox>
+			<mx:HBox width="179">
 				<mx:TextInput id="email" width="90%"/>
 			</mx:HBox>
 		</mx:FormItem>
 		<mx:FormItem label="电话">
-			<mx:HBox>
+			<mx:HBox width="180">
 				<mx:TextInput id="tel" width="90%"/>
 			</mx:HBox>
 		</mx:FormItem>
 		<mx:FormItem label="姓名">
-			<mx:HBox>
+			<mx:HBox width="180">
 				<mx:TextInput id="truename" width="90%"/>
 			</mx:HBox>
 		</mx:FormItem>
 		<mx:FormItem label="部门">
-			<mx:HBox>
+			<mx:HBox width="180">
 				<mx:TextInput id="department" width="90%"/>
 			</mx:HBox>
 		</mx:FormItem>
 		<mx:FormItem label="备注">
-			<mx:HBox>
+			<mx:HBox width="178">
 				<mx:TextInput id="note" width="90%"/>
 			</mx:HBox>
 		</mx:FormItem>
+		<s:Label width="138" height="32" color="#E41515" text="角色配置" verticalAlign="middle"/>
 		<!--
 		<mx:FormItem label="Color:">
 		<mx:ColorPicker id="labelColor"/>
@@ -293,11 +295,11 @@
 		<mx:NumericStepper minimum="-200" maximum="200" id="labelOffsetY"/>
 		</mx:FormItem>
 		-->
-		<mx:FormItem label="region角色">
-		<mx:VBox id="regionRoles"/>
+		<mx:FormItem label="区域角色">
+		<mx:VBox id="regionRoles" width="352"/>
 		</mx:FormItem>
-		<mx:FormItem label="command角色">
-			<mx:VBox id="commandRoles"/>
+		<mx:FormItem label="命令角色">
+			<mx:VBox id="commandRoles" width="351"/>
 		</mx:FormItem>
 		
 		<!--<s:FormItem>
@@ -313,12 +315,8 @@
 			<mx:Label id="lbItems" x="56" y="245" text="已选角色: " width="345" fontSize="14"/>
 		</mx:HBox>
 		-->
-		<mx:HBox>
-			<mx:Button id="sendButton" right="10" bottom="10" label="保存" click="submitButton()"
-					   enabled="false"/>
-			<mx:Button id="cancelButton" right="10" bottom="10" label="取消" click="cancel()"
-					   enabled="true"/>
-			<mx:Label id="message" color="red" text=""/>
-		</mx:HBox>
 	</mx:Form>
+	<mx:Button id="sendButton" x="151" y="447" label="保存" click="submitButton()" enabled="false"/>
+	<mx:Button id="cancelButton" x="239" y="447" label="取消" click="cancel()" enabled="true"/>
+	<mx:Label id="message" x="317" y="448" color="red" text=""/>
 </mx:TitleWindow>

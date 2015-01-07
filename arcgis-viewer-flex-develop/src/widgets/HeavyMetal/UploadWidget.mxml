@@ -19,35 +19,53 @@
 <viewer:BaseWidget xmlns:fx="http://ns.adobe.com/mxml/2009"
                    xmlns:s="library://ns.adobe.com/flex/spark"
                    xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:esri="http://www.esri.com/2008/ags"
                    xmlns:viewer="com.esri.viewer.*"
                    widgetConfigLoaded="init()">
     <fx:Script>
         <![CDATA[
             //this function called when the widget's configuration is loaded
 			
-			import mx.rpc.events.FaultEvent;    
-			import mx.rpc.events.ResultEvent;    
-			import flash.net.FileReference;    
-			import mx.controls.Alert;    
-			import mx.events.CloseEvent;    
-			import flash.events.*;    
+			import com.as3xls.xls.ExcelFile;
+			import com.as3xls.xls.Sheet;
+			import com.esri.ags.SpatialReference;
+			import com.esri.ags.geometry.MapPoint;
+			
+			import flash.events.*;
+			import flash.net.FileReference;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
 			
 			private var file:FileReference;    
 			
-			private var filePath:String="";  
+			private var addFeaturesUrl:String="";  
+			private var downloadUrl:String="";  
+
+			private var feature:Object;
+			private var point:MapPoint;
+		
+			private var xls:Class;
 			
+			private var sheet:Sheet;
             private function init():void
             {
                 if (configXML) // checking for valid content in the configuration file
                 {
-                    filePath = configXML.fileUploadPath;
+                    addFeaturesUrl = configXML.addFeatures;
+					downloadUrl=configXML.downloadUrl;
                 }
 				
 				Security.allowDomain("*");    
 				file=new FileReference();    
 				file.addEventListener(ProgressEvent.PROGRESS, onProgress);    
 				file.addEventListener(Event.SELECT, onSelect);    
-				file.addEventListener(Event.COMPLETE,fileUploadCompleteHandler); 
+				
+				feature = new Object();
+				feature.geometry = new Object();
+
             }
 			
 			private function fileUploadCompleteHandler(e:Event):void{    
@@ -56,19 +74,48 @@
 			}   
 			
 			private function uploadfile():void   
-			{    
+			{
 				var imageTypes:FileFilter=new FileFilter("Images (*.jpg, *.jpeg, *.png)", "*.jpg;*.jpeg;*.png");    
 				var docFilter:FileFilter = new FileFilter("Documents", "*.*;*.doc;*.txt"); 
 				//var viewFilter:FileFilter = new FileFilter("Views", "*.avi;*.flv;*.rmvb"); 
 				var allTypes:Array=new Array(imageTypes,docFilter);    
 				//              file.browse(allTypes);    
 				file.browse();    
+			}
+			
+			private function download(){
+				var downloadURL = new URLRequest(downloadUrl);
+				//var file = new FileReference();
+				//file.download(downloadURL);
+				
+				navigateToURL(downloadURL, "_blank");
+			}
+			
+			
+			private var fileName:String=null;
+			private function onSelect(e:Event):void   
+			{
+				fileName = e.target.name;
+				file.load();
+				file.addEventListener(Event.COMPLETE,getData);
 			}    
 			
-			private function onSelect(e:Event):void   
-			{    
-				Alert.show("上传 " + file.name + " (共 " + Math.round(file.size) + " 字节)?", "确认上传", Alert.YES | Alert.NO, null, proceedWithUpload);    
-			}    
+			/**
+			 * 获取文件
+			 * */
+			protected function getData(e:Event):void{
+				var dataArr:ByteArray = file.data;
+				
+				var excelFile:ExcelFile = new ExcelFile();
+				excelFile.loadFromByteArray(dataArr);
+				sheet = excelFile.sheets[0];
+				
+				// Display the sheet in the grid
+				grid.dataProvider = sheet.values;
+				// Initialize the text boxes with the appropriate values
+				Alert.show("选择了 " + file.name + " (共 " + Math.round(file.size) + " 字节)?", "确认上传到服务器上?", Alert.YES | Alert.NO, null, proceedWithUpload); 
+			}
+			
 			
 			private function onProgress(e:ProgressEvent):void   
 			{    
@@ -81,20 +128,89 @@
 			private function proceedWithUpload(e:CloseEvent):void   
 			{    
 				if (e.detail == Alert.YES)    
-				{    
-					var request:URLRequest=new URLRequest(filePath);    
-					try   
-					{    
-						file.upload(request);    
-					}    
-					catch (error:Error)    
-					{    
-						trace("上传失败");    
-					}    
+				{ 
+					var i=1;
+					var arr:Array = new Array();
+					while(sheet.getCell(i, 2).value!=""){
+						feature = new Object();
+						feature.geometry = new Object();
+						feature.geometry=new MapPoint(Number(sheet.getCell(i, 2).value),Number(sheet.getCell(i, 3).value),
+							new SpatialReference(4326));
+						//feature.geometry=WebMercatorUtil.geographicToWebMercator(point);
+						//设置属性信息
+						feature.attributes=new Object();
+						feature.attributes["bh"]=sheet.getCell(i, 0).value;
+						feature.attributes["wz"]=sheet.getCell(i, 1).value;
+						feature.attributes["jd"]=Number(sheet.getCell(i, 2).value);
+						feature.attributes["wd"]=Number(sheet.getCell(i, 3).value);
+						feature.attributes["tu_pb"]=Number(sheet.getCell(i, 4).value);
+						feature.attributes["tu_cd"]=Number(sheet.getCell(i, 5).value);
+						feature.attributes["tu_as"]=Number(sheet.getCell(i, 6).value);
+						feature.attributes["tu_cr"]=Number(sheet.getCell(i, 7).value);
+						feature.attributes["tu_hg"]=Number(sheet.getCell(i, 8).value);
+						feature.attributes["ph"]=Number(sheet.getCell(i, 9).value);
+						feature.attributes["nong_pb"]=Number(sheet.getCell(i, 10).value);
+						feature.attributes["nong_cd"]=Number(sheet.getCell(i, 11).value);
+						feature.attributes["nong_as"]=Number(sheet.getCell(i, 12).value);
+						feature.attributes["nong_cr"]=Number(sheet.getCell(i, 13).value);
+						feature.attributes["nong_hg"]=Number(sheet.getCell(i, 14).value);
+						feature.attributes["type"]=sheet.getCell(i, 15).value;
+						feature.attributes["isok"]=sheet.getCell(i, 16).value;
+						
+						
+					//feature.attributes = new Attributes(1, Number(this.cd.text),  Number(this.hg.text), Number(this.dp_As.text), Number(this.cu.text), Number(this.pb.text), Number(this.cr.text),Number(this.zn.text), Number(this.ni.text), new Date().time, this.hm_name.text);  
+					//把对象转成JSON，备注：此处使用的是Flash Builder的JSON类，需要SDK4.5及其以上版本的支持。
+					//当然也可以使用ArcGIS Flex API带的JSON类，在3.0版本中JSON类该层了JSONUtil。                
 					
-				}    
+						
+						arr.push(feature);
+						i++;
+					
+					}
+					var features:String = JSON.stringify(arr);
+					
+					
+					
+					//调用FeatureServer支持的addFeature操作，添加元素;
+					var loader:URLLoader = new URLLoader();
+					var request:URLRequest = new URLRequest(addFeaturesUrl);
+					request.method = URLRequestMethod.POST;
+					var data:URLVariables = new URLVariables();
+					data.f = "json";
+					data.features = features;
+					request.data = data;
+					//最后需要对返回的结果进行处理，这里尤其要强调的是，执行后有正确和错误两种返回结果。需要对返回的内容进行判断，才能最终确定是否能正确执行。
+					
+					loader.addEventListener(Event.COMPLETE, result_COMPLETE);             
+					loader.addEventListener(IOErrorEvent.IO_ERROR,function(event:Event):void{
+						//执行失败
+						Alert.show("提示失败");
+					});             
+					loader.load(request); 
+				} 
+				
+				function result_COMPLETE(event:Event):void{
+					//对结果进行处理，分成功和失败两种
+					var loader:URLLoader = URLLoader(event.target);  
+					var object:Object=JSON.parse(loader.data) as Object; 
+					//var re=object["addResults"][0]["success"] as Boolean;
+					if(object["addResults"]!=null){
+						//(event.target).removeEventListener(Event.COMPLETE,arguments.callee);
+						//tips.text="cc";
+						//var v=tips.text;
+						Alert.show("success：objectId="+ object["addResults"][0]["objectId"].toString());
+						
+					}else{
+						Alert.show("error:"+object["error"]["message"].toString());
+						//Alert.show("提示","失败",this.parent,2);
+					}
+					//this.totalPage=object["totalPage"]; 
+					
+				}
 			} 
-        ]]>
+			
+			
+		]]>
     </fx:Script>
     <viewer:WidgetTemplate id="upload"
                            width="300" height="300">
@@ -115,9 +231,17 @@
 							direction="right"    
 							mode="manual"    
 							width="200"/>     
-			
-			<mx:Button label="上传文件"    
-					   click="uploadfile();"/>     
-		</mx:VBox> 
+			<s:HGroup x="20" width="260" height="26" horizontalAlign="center" verticalAlign="middle">
+				<mx:Button label="选择文件"    
+						   click="uploadfile();"/>
+				<mx:LinkButton x="130" width="77" label="下载模板" click="download()"/>
+			</s:HGroup>
+		</mx:VBox>
+		
+		<mx:DataGrid id="grid" 
+					 width="100%" 
+					 sortableColumns="false"
+					 draggableColumns="false" height="100%">
+		</mx:DataGrid>
     </viewer:WidgetTemplate>
 </viewer:BaseWidget>

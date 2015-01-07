@@ -45,10 +45,11 @@
 			private var mInfo:IModuleInfo=null;
 			private var _webService_wsdl:String="";
 			public static const DEFAULT_CONFIG_FILE:String = "config-server.xml";
-
+			public  var cookie:SharedObject;
+			
 			private function initializeHandler(event:FlexEvent):void
 			{
-				
+				cookie= SharedObject.getLocal("xiangtan","/");  
 				loadConfig();
 			}
 			
@@ -81,15 +82,12 @@
 				if(Userinfo_lv!=null){
 					Alert.show(Userinfo_lv.name + "登录成功！");
 					// 创建一个本地保存数据的对象s     
-					var cookie:SharedObject = SharedObject.getLocal("xiangtan","/");  
 					cookie.data.user = Userinfo_lv.name;  
 					//Alert.show(Userinfo_lv.key);
 					cookie.data.key = Userinfo_lv.key;  
 					cookie.data.userId = Userinfo_lv.id;  
 					cookie.flush(); //提交保存  
 					this.currentState = "index";
-					
-					//ViewerContainer.configFile = "config-admin.xml"; 
 				}else{
 					Alert.show("账号或密码错误");
 				}
@@ -126,18 +124,30 @@
 				return checkcode;
 			}
 			
-			protected function KEY_DOWN_handler(event:KeyboardEvent):void
-			{
-				if(event.keyCode==Keyboard.ENTER){
-					Submit_clickHandler(null);
-				}
-			}
-			
 			protected function application_creationCompleteHandler(event:FlexEvent):void
 			{
-				webService.loadWSDL();   
-				//this.currentState = "login";
-				//pnlLogin.addEventListener(KeyboardEvent.KEY_DOWN,KEY_DOWN_handler);
+				webService.loadWSDL();
+				if(cookie.data.user == ""||!cookie.data.hasOwnProperty("user")){
+				  setTimeout(login, 2000);
+				}
+				
+				
+			
+				
+			}
+			function login(){
+				this.currentState = "login";
+				pnlLogin.addEventListener(KeyboardEvent.KEY_DOWN,function (event:KeyboardEvent){
+					if(event.keyCode == Keyboard.ENTER)//Enter键  
+					{  
+						Submit_clickHandler(null);
+					}  
+					if(event.keyCode==27)//Esc键  
+					{  
+						//ESC事件  
+					} 
+				
+				});
 			}
 			
 			private function loadConfig():void
@@ -220,6 +230,7 @@
 	</fx:Declarations>	
 	
 	<s:states>
+		
 		<s:State name="index" />
 		<s:State name="login" />
 		

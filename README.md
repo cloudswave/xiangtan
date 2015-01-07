@@ -59,12 +59,4 @@ xiangtan_server配置
 
 ![发布服务](http://git.oschina.net/uploads/images/2014/1121/141509_5ac94da0_77541.png)
 
-<<<<<<< HEAD
-![客户端截图](http://git.oschina.net/uploads/images/2014/1121/142406_2279119f_77541.png)
-
-![客户端截图](http://t1.qpic.cn/mblogpic/362dfd44ead16f0ec0d4/2000)
-
-
-=======
->>>>>>> remotes/origin/master
 待加
