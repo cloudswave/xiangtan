@@ -3,9 +3,9 @@
 	// // 服务器接口配置
 	// //////////////////////////////////////////////////////////////////////////////// -->
 <configuration>
-	<login_url>http://192.168.13.37:8080/Xiangtan_server/userWS?wsdl</login_url>
-	<userinfo_lvWS>http://192.168.13.37:8080/Xiangtan_server/userWS?wsdl</userinfo_lvWS>
-	<role_lvWS>http://192.168.13.37:8080/Xiangtan_server/roleWS?wsdl</role_lvWS>
-	<pagerWS>http://192.168.13.37:8080/Xiangtan_server/pagerWS?wsdl</pagerWS>
-	<areaWS>http://192.168.13.37:8080/Xiangtan_server/areaWS?wsdl</areaWS>
+	<login_url>http://localhost:8080/Xiangtan_server/userWS?wsdl</login_url>
+	<userinfo_lvWS>http://localhost:8080/Xiangtan_server/userWS?wsdl</userinfo_lvWS>
+	<role_lvWS>http://localhost:8080/Xiangtan_server/roleWS?wsdl</role_lvWS>
+	<pagerWS>http://localhost:8080/Xiangtan_server/pagerWS?wsdl</pagerWS>
+	<areaWS>http://localhost:8080/Xiangtan_server/areaWS?wsdl</areaWS>
 </configuration>

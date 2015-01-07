@@ -83,11 +83,12 @@ public class Role_lvServiceImpl implements Role_lvService{
 
 	@Override
 	public List<Role_lv> getRole_lvsByUserid(int userid, String key) {
-		
+		/*
 		if (!AuthorizeUtil.commandOperationAuthorize("VIEW_ROLE", key)) {
 			throw new com.xiangtan.exception.PermissonDeniedException("当前用户没有VIEW_ROLE权限！");
 		}
-		
+		*/
+//		System.err.println(role_lvDao.getRole_lvsByUserid(userid));
 		return role_lvDao.getRole_lvsByUserid(userid);
 	}
 
