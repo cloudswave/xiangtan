@@ -1,38 +1,9 @@
 <?xml version="1.0" ?>
 <configuration>
 <layersettings>
-		<layer name="土壤Pb"> <!-- Overwriting layer settings for a feature layer -->
-			<fields>
-				<field name="wz" alias="位置" />
-				<field name="tu_pb" alias="土壤Pb含量" />
-			</fields>
-		</layer>
-		<layer name="土壤Cd"> <!-- Overwriting layer settings for a feature layer -->
-			<fields>
-				<field name="wz" alias="位置" />
-				<field name="tu_Cd" alias="含量" />
-			</fields>
-		</layer>
-		<layer name="土壤As"> <!-- Overwriting layer settings for a feature layer -->
-			<fields>
-				<field name="wz" alias="位置" />
-				<field name="tu_as" alias="土壤As含量" />
-			</fields>
-		</layer>
-		<layer name="土壤Cr"> <!-- Overwriting layer settings for a feature layer -->
-			<fields>
-				<field name="wz" alias="位置" />
-				<field name="tu_cr" alias="土壤Cr含量" />
-			</fields>
-		</layer>
-		<layer name="土壤Hg"> <!-- Overwriting layer settings for a feature layer -->
-			<fields>
-				<field name="wz" alias="位置" />
-				<field name="tu_hg" alias="土壤Hg含量" />
-			</fields>
-		</layer>
+
 		
-		<layer name="编辑"> <!-- Overwriting layer settings for a feature layer -->
+		<layer name="重金属"> <!-- Overwriting layer settings for a feature layer -->
 			<fields>
 		        <field name="bh" alias="编号" />
 		        <field name="wz" alias="地点" />
