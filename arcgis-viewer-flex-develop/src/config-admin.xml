@@ -31,7 +31,7 @@
 		config="widgets/Coordinate/CoordinateWidget.xml" url="widgets/Coordinate/CoordinateWidget.swf" />
 
 	<map wraparound180="true"
-		initialextent="676931.369244576 3018994.8542325394  710389.9886815157 3114388.2655324386"
+		initialextent="12514782.27601305 3228129.019108134 12588043.32125778 3194884.911988617"
 		fullextent="634564.4566226229 -20000000 20000000 20000000" top="40"
 		
 		addarcgisbasemaps="false">
@@ -40,8 +40,7 @@
 			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
 <!--              <layer label="地形图" type="googlemap" visible="true"
 				icon="assets/images/basemap_streets.jpg" /> -->
-			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84_16/MapServer" 
-				icon="assets/images/basemap_imagery.jpg" />  
+			<layer label="影像" type="dynamic" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84_clip2/MapServer" icon="assets/images/basemap_imagery.jpg" />  
 
 			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
 				<layer label="航空图" type="tiled" visible="false" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"/> 
@@ -136,14 +135,14 @@
 				icon="assets/images/i_layers.png" url="widgets/HeavyMetal/UploadWidget.swf" />
 
 
-	      <widget url="widgets/DataExtract/DataExtractWidget.swf"
+<!-- 	      <widget url="widgets/DataExtract/DataExtractWidget.swf"
 				config="widgets/DataExtract/DataExtractWidget_1.xml" label="数据提取"
-				icon="assets/images/i_scissors.png" />
+				icon="assets/images/i_scissors.png" /> -->
 				
 <!-- 			<widget label="采样点添加" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
 				url="widgets/Edit/EditWidget.swf" />	 -->	
 			<widget label="采样点编辑" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
-				url="widgets/Edit/EditWidget.swf" />		
+				url="widgets/Edit/EditWidget.swf" preload="minimized" />		
 
 
 		</widgetgroup>	
@@ -159,7 +158,7 @@
 	   <widgetgroup label="统计分析" icon="assets/images/i_layers.png">
 			     <widget label="反距离插值分析"
 				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
-				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" width="600"/>
 				 <widget label="自然领域法分析"
 				    config="widgets/Geoprocessing/GeoprocessingWidget_zrly.xml"
 				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
