@@ -13,13 +13,10 @@
     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
 	<!-- 一以下webservice bean的配置信息 -->
-	<!-- 
+	<!-- <bean id="userinfo_lvWS" class="com.xiangtan.ws.impl.Userinfo_lvWSImpl"> 
+		<property name="userinfo_lvService" ref="userinfo_lvService"> </property> 
+		</bean> -->
 	<bean id="userinfo_lvWS" class="com.xiangtan.ws.impl.Userinfo_lvWSImpl">
-		<property name="userinfo_lvService" ref="userinfo_lvService">
-		</property>
-	</bean>
-	 -->
-	 <bean id="userinfo_lvWS" class="com.xiangtan.ws.impl.Userinfo_lvWSImpl">
 		<property name="userinfo_lvService" ref="userinfo_lvService">
 		</property>
 	</bean>
@@ -33,6 +30,11 @@
 	</bean>
 	<bean id="role_lvWS" class="com.xiangtan.ws.impl.Role_lvWSImpl">
 		<property name="role_lvService" ref="role_lvService">
+		</property>
+	</bean>
+
+	<bean id="sampleWS" class="com.xiangtan.ws.impl.SampleWSImpl">
+		<property name="sampleService" ref="sampleService">
 		</property>
 	</bean>
 </beans>

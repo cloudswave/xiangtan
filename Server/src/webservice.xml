@@ -10,4 +10,5 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
    <jaxws:endpoint id="pagerWSID" implementor="com.xiangtan.ws.impl.PagerWSImpl" address="/pagerWS" />
    <jaxws:endpoint id="areaWSID" implementor="com.xiangtan.ws.impl.AreaWSImpl" address="/areaWS" />
    <jaxws:endpoint id="userWSID" implementor="com.xiangtan.ws.impl.Userinfo_lvWSImpl" address="/userWS" />
+   <jaxws:endpoint id="sampleWSID" implementor="com.xiangtan.ws.impl.SampleWSImpl" address="/sampleWS" />
 </beans>

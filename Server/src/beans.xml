@@ -53,4 +53,10 @@
 	<!-- 配置切面的bean -->
 	<bean id="authorizeAspect" class="com.xiangtan.aspect.AuthorizeAspect"></bean>
 
+<bean id="sampleDao" class="com.xiangtan.dao.impl.SampleDaoImpl"></bean>
+<bean id="sampleService" class="com.xiangtan.service.impl.SampleServiceImpl">
+	<property name="sampleDao" ref="sampleDao"></property>
+	<property name="role_lvDao" ref="role_lvDao"></property>
+	<property name="areaDao" ref="areaDao"></property>
+</bean>
 </beans>
