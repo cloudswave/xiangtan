@@ -19,8 +19,8 @@
 		url="widgets/Splash/SplashWidget.swf"/> -->
 	<widget left="10" top="50" config="widgets/Navigation/NavigationWidget.xml"
 		url="widgets/Navigation/NavigationWidget.swf" />
-	<widget bottom="35" right="5"
-		config="widgets/HeavyMetal/StaticImageWidget.xml" url="widgets/StaticImage/StaticImageWidget.swf" />
+	<!-- 	<widget bottom="35" right="5"
+		config="widgets/HeavyMetal/StaticImageWidget.xml" url="widgets/StaticImage/StaticImageWidget.swf" />-->
 	<widget right="0" bottom="0"
 		config="widgets/OverviewMap/OverviewMapWidget.xml" url="widgets/OverviewMap/OverviewMapWidget.swf" />
 	<widget right="15" top="55"
@@ -30,17 +30,18 @@
 	<widget left="3" bottom="3"
 		config="widgets/Coordinate/CoordinateWidget.xml" url="widgets/Coordinate/CoordinateWidget.swf" />
 
-	<map wraparound180="true"
-		initialextent="12514782.27601305 3228129.019108134 12588043.32125778 3194884.911988617"
-		fullextent="634564.4566226229 -20000000 20000000 20000000" top="40"
-		
+<!-- initialextent="12514782.27601305 3228129.019108134 12588043.32125778 3194884.911988617" -->
+	<map wraparound180="true" 
+       top="40"
+		initialextent="12442458.506023685 3165913.9895017683 12661221.280975943 3259625.7861794294" 
 		addarcgisbasemaps="false">
 		<!-- 自定义图层 -->
 		<basemaps>
 			<!-- <layer label="宜昌" type="dynamic" visible="true" alpha="1" url="http://210.42.41.30:8399/arcgis/rest/services/Heavymetal/MapServer"/> -->
 <!--              <layer label="地形图" type="googlemap" visible="true"
 				icon="assets/images/basemap_streets.jpg" /> -->
-			<layer label="影像" type="dynamic" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84_clip2/MapServer" icon="assets/images/basemap_imagery.jpg" />  
+			<layer label="影像" type="tiled" visible="true" url="http://192.168.13.39:6080/arcgis/rest/services/xiangtan_image_wgs84_clip3/MapServer" 
+				icon="assets/images/basemap_imagery.jpg" />  
 
 			<!-- <layer label="街道图" type="tiled" visible="true" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"/> 
 				<layer label="航空图" type="tiled" visible="false" url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"/> 
@@ -70,7 +71,6 @@
 				popupconfig="popups/PopUp_1.xml"
 				url="http://192.168.13.39:6080/arcgis/rest/services/samples_xt_wgs84/FeatureServer/0">
 
-				
 			</layer>
 
          
@@ -133,11 +133,6 @@
 	   <widgetgroup label="采样点管理" icon="assets/images/i_piechart.png" >
 			<widget label="上传数据" config="widgets/HeavyMetal/UploadWidget.xml"
 				icon="assets/images/i_layers.png" url="widgets/HeavyMetal/UploadWidget.swf" />
-
-
-<!-- 	      <widget url="widgets/DataExtract/DataExtractWidget.swf"
-				config="widgets/DataExtract/DataExtractWidget_1.xml" label="数据提取"
-				icon="assets/images/i_scissors.png" /> -->
 				
 <!-- 			<widget label="采样点添加" icon="assets/images/i_edit.png" config="widgets/Edit/EditWidget_1.xml"
 				url="widgets/Edit/EditWidget.swf" />	 -->	
@@ -156,6 +151,7 @@
 		</widgetgroup>	 -->
 		
 	   <widgetgroup label="统计分析" icon="assets/images/i_layers.png">
+
 			     <widget label="反距离插值分析"
 				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
 				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" width="600"/>
@@ -165,8 +161,30 @@
 			      <widget label="克里金插值分析"
 				    config="widgets/Geoprocessing/GeoprocessingWidget_king.xml"
 				    icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
-				 
-			
+				  <widget label="最近邻插值"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				  <widget label="局部多项式插值"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				   <widget label="全局多项式插值"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_GPI.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				  <widget label="样条插值"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				   <widget label="径向基函数插值"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				   <widget label="高斯模拟插值"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				   <widget label="含障碍核平滑"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
+				   <widget label="含障碍扩散核"
+				    config="widgets/Geoprocessing/GeoprocessingWidget_idw.xml"
+				     icon="assets/images/i_demographics.png" url="widgets/Geoprocessing/GeoprocessingWidget.swf" />
 		</widgetgroup>	
 
 <!-- 		<widgetgroup label="产地安全" icon="">
@@ -204,4 +222,8 @@
 		<widget label="属性表"
 			config="widgets/AttributeTable/AttributeTableWidget-hm2.xml" url="widgets/AttributeTable/AttributeTableWidget.swf" />
 	</widgetcontainer>
+	<widgetcontainer paneltype="left" initialstate="open">
+        <widget url="widgets/Directions/DirectionsWidget.swf" config="widgets/Directions/DirectionsWidget.xml" label="路线" icon="assets/images/TableOpen32.png"/>
+    </widgetcontainer>
+	
 </configuration>
