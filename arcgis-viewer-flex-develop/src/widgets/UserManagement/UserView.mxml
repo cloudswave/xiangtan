@@ -135,6 +135,22 @@
 				var rolesResult:ArrayCollection=event.result as ArrayCollection;
 				//Alert.show(result.length.toString());
 				if(rolesResult == null){
+					if(event.result){
+						var checkBox:CheckBox = new CheckBox();
+						checkBox.id = event.result.id;;
+						checkBox.label = event.result.roleName;
+						checkBox.setStyle("fontSize",14);
+						checkBox.x = 100;
+						checkBox.y = (i + 1) * 25;
+						checkBox.addEventListener(Event.CHANGE,checkBox_change);
+						//this.addChild(checkBox);//也可是this.gridItem.addChild(checkBox)
+						checkBox.selected = true;
+						if(event.result.type == "region"){
+							regionRoles.addChild(checkBox);
+						}else if(event.result.type == "command"){
+							commandRoles.addChild(checkBox);						
+						}
+					}
 					return;
 				}
 				for(var i:int=0;i<rolesResult.length;i++)

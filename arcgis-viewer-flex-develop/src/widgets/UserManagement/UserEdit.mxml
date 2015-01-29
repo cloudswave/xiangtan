@@ -130,9 +130,27 @@
 			
 			private function getRole_lvsByUseridHandler(event:ResultEvent):void{
 				var userRoles:ArrayCollection=event.result as ArrayCollection;//当前用户所拥有的角色
+//				Alert.show(userRoles.toString());
 				if(userRoles == null){
+					if(event.result){
+//						Alert.show("null+++" + event.result);
+						//这种情况说明只返回了一个对象
+						var region_roles:Array = regionRoles.getChildren();
+						for(var j:int=0;j<region_roles.length;j++){
+							if(event.result.id == region_roles[j].id){
+								region_roles[j].selected = true;
+							}
+						}
+						var command_roles:Array = commandRoles.getChildren();
+						for(var j:int=0;j<command_roles.length;j++){
+							if(event.result.id == command_roles[j].id){
+								command_roles[j].selected = true;
+							}
+						}
+					}
 					return;
 				}
+				//这种情况说明返回的不止一个对象
 				for(var i:int=0;i<userRoles.length;i++){
 					var region_roles:Array = regionRoles.getChildren();
 					for(var j:int=0;j<region_roles.length;j++){

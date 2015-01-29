@@ -159,7 +159,7 @@ public class EncryptUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String str = "123456789123456789";
+		String str = "a123";
 		System.err.println("原始字符串：" + str);
 		System.err.println("加密：" + encrypt(str));
 		System.err.println("解密：" + decrypt(encrypt(str)));
